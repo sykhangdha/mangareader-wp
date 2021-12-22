@@ -12,5 +12,14 @@ The following theme uses MangaStarter as the base and adds additional features t
 - Recently viewed chapters
 - "Advanced Search" page updated(W.I.P)
 
+# Upcoming Featuers
+- Next/Prev chapter button
+- UI Fixes
+- Dark Mode
+- More theme options(Currently only blue)
+- "Text View" for Manga Directory
+- Search by Genre
+- Fix issue with title getting cut off on homepage
+
 # Installation Guide
 (CURRENTLY UNAVAILABLE)
