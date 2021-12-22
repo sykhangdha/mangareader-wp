@@ -24,7 +24,7 @@ The following theme uses MangaStarter as the base and adds additional features t
 # Installation Guide
 
 // Pre-Req //
-- # IMPORTANT # Please note that MangaStarter IS REQUIRED! This theme was not made by me and is only being updated! The theme can be purchased here https://www.codester.com/items/6001/mangastarter-build-a-manga-reader-with-wordpress
+- # IMPORTANT # Please note that MangaStarter IS REQUIRED! I am only updating the theme with new changes! The theme can be purchased here https://www.codester.com/items/6001/mangastarter-build-a-manga-reader-with-wordpress
 - Make sure to set thumbnail size to at least 220 x 320 or there may be some issues with thumbnails being too blurry!
 - A-Z Listing plugin is used for Advanced Search Page
 
