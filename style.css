@@ -1,0 +1,427 @@
+/*
+
+    The following theme requires MangaStarter, yellow pencil is optional to customize theme. 
+	
+
+    T A B L E   O F   C O N T E N T S
+    ........................................................................
+
+    01. Global Styles
+    02. Category Page
+    03. Archive Page
+    04. Chapters Template
+    05. Non-Static Homepage
+    06. Mangas Template
+    07. "Advanced Search" Page
+
+*/
+
+
+
+/*-----------------------------------------------*/
+/*  Global Styles                                */
+/*-----------------------------------------------*/
+body #masthead{
+	background-image:-webkit-linear-gradient(left, #000046 0%, #1cb5e0 100%);
+	background-image:-o-linear-gradient(left, #000046 0%, #1cb5e0 100%);
+	background-image:linear-gradient(to right, #000046 0%, #1cb5e0 100%);
+}
+
+body .uk-grid-collapse h1{
+	font-family:'Anaheim', sans-serif;
+	font-size:30px;
+}
+
+body #top-menu .menu-item a:hover{
+	background-color:transparent;
+}
+
+body #top-menu .menu-item a{
+	background-color:transparent;
+	text-transform:lowercase;
+}
+
+body .latest-chapters .page-title i{
+	color:#2869b8;
+}
+
+body .uk-margin-bottom a h3{
+	color:#284cb8;
+}
+
+body .uk-margin-bottom div i{
+	color:#284cb8;
+}
+
+body #main .latest-chapters h2{
+	border-bottom-color:#284cb8;
+	font-family:Lexend Deca, sans-serif;
+}
+
+body .uk-padding-remove .uk-overlay-panel{
+	background-color:#284cb8 !important;
+}
+
+body #sidebar .widget h3{
+	border-bottom-color:#284cb8;
+	font-family:Lexend Deca, sans-serif;
+}
+
+body .navigation-top h1{
+	position:relative;
+	bottom:-4px;
+}
+
+body #main .page-header h2{
+	border-bottom-color:#0048ff;
+}
+
+body #sidebar .widget .search-submit{
+	background-color:#2858b8;
+}
+
+body #content{
+	font-family:Lexend Deca, sans-serif;
+}
+
+body #main a h3{
+	font-family:'Krub', sans-serif;
+}
+
+body #page{
+	background-image:none !important;
+}
+
+body #masthead .wrap .uk-width-large-3-10{
+	position:relative;
+	top:8px;
+}
+
+body #top-menu a span{
+	text-transform:lowercase !important;
+}
+
+body #site-pagination a{
+	background-color:#293a83 !important;
+}
+
+body #front-slider .uk-grid h2{
+	background-color:#2858b8;
+}
+
+body #front-slider .uk-grid .owl-carousel-controls{
+	border-bottom-color:#2858b8;
+}
+
+body #front-slider .uk-grid .carousel-prev{
+	background-color:#2858b8;
+}
+
+body #front-slider .uk-grid .carousel-next{
+	background-color:#2858b8;
+}
+
+body .owl-carousel .active .wp-post-image{
+	border-style:solid;
+	border-color:#234384;
+	border-width:4px;
+}
+
+body #main a .wp-post-image{
+	border-bottom-right-radius:0px !important;
+	border-bottom-left-radius:0px !important;
+	border-top-right-radius:0px !important;
+	border-top-left-radius:0px !important;
+}
+
+@media (max-width:959px){
+
+	body #site-menu label{
+	background-color:#011edf;
+}
+
+body #top-menu .menu-item a{
+	background-color:#040452;
+	}
+
+}
+
+
+
+@media (max-width:767px){
+
+	body #site-menu label{
+	background-color:#011edf;
+	}
+
+}
+
+
+
+@media (max-width:630px){
+
+	body .navigation-top .site-title a{
+	position:relative;
+	top:-12px;
+}
+
+body #site-menu label{
+	background-color:transparent;
+}
+
+body #top-menu .menu-item a{
+	background-color:transparent;
+}
+
+body #top-menu li{
+	background-color:transparent;
+}
+
+body #top-menu{
+	background-color:transparent !important;
+	}
+
+}
+
+
+
+@media (min-width:961px){
+
+	body .navigation-top h1{
+	margin-top:6px;
+	}
+
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Category Page                                */
+/*-----------------------------------------------*/
+body.category #main .page-header h2{
+	border-bottom-color:#284cb8;
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Archive Page                                 */
+/*-----------------------------------------------*/
+body.archive #main small a{
+	display:none;
+}
+
+body.archive small > span{
+	display:none;
+}
+
+body.archive #main div .uk-icon-comment{
+	display:none;
+}
+
+body.archive .page-header h4 a{
+	background-color:#2a3197;
+	color:#ffffff;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border-style:solid;
+	border-color:#747ce0;
+	border-width:2px;
+}
+
+@media (min-width:481px){
+
+	body.archive #main .hentry .wp-post-image{
+	display:inline-block;
+	}
+
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Chapters Template                            */
+/*-----------------------------------------------*/
+body.single-chapters .entry-header .uk-button-group .next{
+	background-color:#284cb8 !important;
+}
+
+body.single-chapters .entry-header .uk-button-group a{
+	background-color:#284cb8 !important;
+}
+
+body.single-chapters .hentry .uk-grid .uk-alert-warning{
+	background-color:#eafaff;
+	color:#3b69ae;
+	border-top-color:#91baec;
+	border-right-color:#91baec;
+	border-bottom-color:#91baec;
+	border-left-color:#91baec;
+	display:none;
+}
+
+body.single-chapters #foot-widgets{
+	display:none;
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Non-Static Homepage                          */
+/*-----------------------------------------------*/
+body.home #main a .wp-post-image{
+	border-top-left-radius:50px;
+	border-top-right-radius:50px;
+	border-bottom-left-radius:50px;
+	border-bottom-right-radius:50px;
+	-webkit-box-shadow:0px 0px 8px 0px #222222;
+	box-shadow:0px 0px 8px 0px #222222;
+}
+
+body.home #sidebar .widget .search-submit{
+	background-color:#2858b8;
+}
+
+body.home #main .hentry .chapter-content{
+	background-color:rgba(0,0,0,0.49);
+	background-image:-webkit-linear-gradient(left, #1488cc 0%, #2b32b2 100%);
+	background-image:-o-linear-gradient(left, #1488cc 0%, #2b32b2 100%);
+	background-image:linear-gradient(to right, #1488cc 0%, #2b32b2 100%);
+	border-top-right-radius:22px;
+	border-bottom-right-radius:22px;
+}
+
+body.home #main a h3{
+	color:#ffffff;
+	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
+}
+
+body.home #main div small{
+	color:#d1d1d1;
+}
+
+@media (max-width:630px){
+
+	body.home #top-menu li{
+	background-color:transparent;
+}
+
+body.home #site-navigation{
+	background-color:transparent;
+}
+
+body.home #top-menu{
+	background-color:transparent !important;
+}
+
+body.home #top-menu a span{
+	background-color:transparent;
+}
+
+body.home #top-menu .menu-item a{
+	background-color:transparent;
+	}
+
+}
+
+
+
+@media (max-width:479px){
+
+	body.home #main a .wp-post-image{
+	border-top-left-radius:0px !important;
+	border-top-right-radius:0px !important;
+	border-bottom-left-radius:0px !important;
+	border-bottom-right-radius:0px !important;
+	border-style:solid;
+	border-color:#2980b9;
+	}
+
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Mangas Template                              */
+/*-----------------------------------------------*/
+body.single-mangas .hentry .uk-margin-large-top .uk-clearfix{
+	display:none;
+}
+
+body.single-mangas #foot-widgets{
+	display:none;
+}
+
+body.single-mangas .hentry .uk-grid h3{
+	border-bottom-color:#284cb8;
+}
+
+body.single-mangas .hentry .entry-header h2{
+	color:#284cb8;
+}
+
+body.single-mangas .manga-genres div a{
+	background-color:#284cb8 !important;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix .uk-float-right a{
+	display:none;
+}
+
+body.single-mangas #respond{
+	display:none;
+}
+
+body.single-mangas .hentry .uk-grid img{
+	border-top-left-radius:18px !important;
+	border-top-right-radius:18px !important;
+	border-bottom-left-radius:18px !important;
+	border-bottom-right-radius:18px !important;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix small{
+	display:none;
+}
+
+
+
+/*-----------------------------------------------*/
+/*  "My New Wife is Forcing Herself to Smile" Mangas*/
+/*-----------------------------------------------*/
+body.postid-58 .manga-chapters .uk-clearfix .uk-float-left{
+	border-bottom-style:solid;
+	border-bottom-width:3px;
+}
+
+
+
+/*-----------------------------------------------*/
+/*  "Advanced Search" Page                       */
+/*-----------------------------------------------*/
+body.page-id-74 .uk-grid-small button{
+	background-color:#2858b8;
+}
+
+body.page-id-74 #sidebar .widget .search-submit{
+	background-color:#2858b8;
+}
+
+body.page-id-74 .categories ul li{
+	text-transform:uppercase;
+	display:inline;
+	-webkit-column-count:3;
+	column-count:3;
+	list-style-type:circle;
+	border-right-style:solid;
+}
+
+body.page-id-74 #page #content .wrap #primary #main .hentry .entry-content .categories ul li{
+	-ms-grid-columns:auto 1fr !important;
+	grid-template-columns:auto 1fr !important;
+}
+
+body.page-id-74 .categories ul a{
+	padding-left:5px;
+}
