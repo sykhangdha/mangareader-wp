@@ -30,11 +30,10 @@ The following theme uses MangaStarter as the base and adds additional features t
 
 
 // To Install the Theme //
-Go to Appearance->Customize and in "Additional CSS" add the code from "style.css" to apply the theme. More themes will
+- Go to Appearance->Customize and in "Additional CSS" add the code from "style.css" to apply the theme. More themes will
 be available
 
 // To Update Manga Directory Page //
-1)Replace functions.php in main theme folder
-2)Replace "components/loop/content-archive.php" with one from this github
+- Replace functions.php in main theme folder
+- Replace "components/loop/content-archive.php" with one from this github
 
-// Pre-Req //
