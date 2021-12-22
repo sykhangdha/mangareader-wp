@@ -1,5 +1,6 @@
 # mangareader-wp
-A simple manga reader theme for wordpress
+A simple manga reader theme for wordpress using "MangaStarter"
+http://hasky.epizy.com/mangareader/
 
 # Based on MangaStarter/UiKIT
 The following theme uses MangaStarter as the base and adds additional features to the theme.
