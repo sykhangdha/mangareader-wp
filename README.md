@@ -32,7 +32,7 @@ The following theme uses MangaStarter as the base and adds additional features t
 - A-Z Listing plugin is used for Advanced Search Page
 
 
-// To Install the Theme //
+// To Install the "MangaReader" theme use style.css! //
 - Go to Appearance->Customize and in "Additional CSS" add the code from "style.css" to apply the theme. More themes will
 be available
 
