@@ -1,8 +1,6 @@
 /*
 
-    The following CSS codes are created by the YellowPencil plugin.
-    https://yellowpencil.waspthemes.com/
-
+    A modified theme for MangaStarter by Sky Ha
 
     T A B L E   O F   C O N T E N T S
     ........................................................................
@@ -13,8 +11,7 @@
     04. Chapters Template
     05. Non-Static Homepage
     06. Mangas Template
-    07. "My New Wife is Forcing Herself to Smile" Mangas
-    08. "Advanced Search" Page
+    07. "Advanced Search" Page
 
 */
 
@@ -491,7 +488,6 @@ body.single-mangas .manga-chapters .uk-clearfix .uk-float-left a{
 body.single-mangas .manga-chapters .uk-clearfix .uk-float-right{
 	padding-left:11px;
 }
-
 
 
 /*-----------------------------------------------*/
