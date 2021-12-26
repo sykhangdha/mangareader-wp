@@ -52,5 +52,8 @@ be available
 
 // Previous and Next Chapter
 -Recommended plugin: wp-post-nav
--Instructions are mentioned in the plugin on how to insert into the page(hint php echo do shortcode)
+-Use the following code in components/post/content-chapters.php
+      -<?php echo do_shortcode('[wp_post_nav]') ?>
+      -Used CSS to fix previous and next post being displayed strangely on mobile
+      -Currently working on editing the plugin to work better with the theme, but for now this is just a quick fix
 
