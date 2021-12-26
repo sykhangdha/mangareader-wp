@@ -40,3 +40,7 @@ be available
 - Replace functions.php in main theme folder
 - Replace "components/loop/content-archive.php" with one from this github
 
+// Previous and Next Chapter
+-Recommended plugin: wp-post-nav
+-Instructions are mentioned in the plugin on how to insert into the page(hint php echo do shortcode)
+
