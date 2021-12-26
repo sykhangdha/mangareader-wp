@@ -53,9 +53,9 @@ be available
 - Replace "components/loop/content-archive.php" with one from this github
 
 // Previous and Next Chapter
--Recommended plugin: wp-post-nav
--Use the following code in components/post/content-chapters.php
-      -<?php echo do_shortcode('[wp_post_nav]') ?>
-      -Used CSS to fix previous and next post being displayed strangely on mobile
-      -Currently working on editing the plugin to work better with the theme, but for now this is just a quick fix
+- Recommended plugin: wp-post-nav
+- Use the following code in components/post/content-chapters.php
+      - <?php echo do_shortcode('[wp_post_nav]') ?>
+      - Used CSS to fix previous and next post being displayed strangely on mobile
+      - Currently working on editing the plugin to work better with the theme, but for now this is just a quick fix
 
