@@ -1,3 +1,11 @@
+
+// Pre-Req //
+- # IMPORTANT # Please note that MangaStarter IS REQUIRED! I am only updating the theme with new changes! The theme can be purchased here https://www.codester.com/items/6001/mangastarter-build-a-manga-reader-with-wordpress
+- Make sure to set thumbnail size to at least 220 x 320 or there may be some issues with thumbnails being too blurry!
+- A-Z Listing plugin is used for Advanced Search Page
+- wp-post-nav plugin
+
+
 # mangareader-wp
 A simple manga reader theme for wordpress using "MangaStarter"
 http://hasky.epizy.com/mangareader/
@@ -32,11 +40,6 @@ The following theme uses MangaStarter as the base and adds additional features t
 - Fix issue with title getting cut off on homepage
 
 # Installation Guide
-
-// Pre-Req //
-- # IMPORTANT # Please note that MangaStarter IS REQUIRED! I am only updating the theme with new changes! The theme can be purchased here https://www.codester.com/items/6001/mangastarter-build-a-manga-reader-with-wordpress
-- Make sure to set thumbnail size to at least 220 x 320 or there may be some issues with thumbnails being too blurry!
-- A-Z Listing plugin is used for Advanced Search Page
 
 
 // To Install the "MangaReader" theme use style.css! //
