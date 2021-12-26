@@ -2,7 +2,14 @@
 A simple manga reader theme for wordpress using "MangaStarter"
 http://hasky.epizy.com/mangareader/
 
+# New MangaStarter theme(white)
 ![alt text](http://i.epvpimg.com/KFV4fab.png)
+
+# New MangaStarter theme(dark) w/ new manga directory page
+![alt text](http://i.epvpimg.com/qrbHcab.png)
+
+# New manga info page with better chapter listing
+![alt text](http://i.epvpimg.com/0G9Bcab.png)
 
 # Based on MangaStarter/UiKIT
 The following theme uses MangaStarter as the base and adds additional features to the theme.
