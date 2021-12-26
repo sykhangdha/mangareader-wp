@@ -1,7 +1,8 @@
 /*
 
-    The following theme requires MangaStarter, yellow pencil is optional to customize theme. 
-	
+    The following CSS codes are created by the YellowPencil plugin.
+    https://yellowpencil.waspthemes.com/
+
 
     T A B L E   O F   C O N T E N T S
     ........................................................................
@@ -12,7 +13,8 @@
     04. Chapters Template
     05. Non-Static Homepage
     06. Mangas Template
-    07. "Advanced Search" Page
+    07. "My New Wife is Forcing Herself to Smile" Mangas
+    08. "Advanced Search" Page
 
 */
 
@@ -202,6 +204,14 @@ body.category #main .page-header h2{
 	border-bottom-color:#284cb8;
 }
 
+body.category #main small a{
+	display:none;
+}
+
+body.category #main div .uk-icon-comment{
+	display:none;
+}
+
 
 
 /*-----------------------------------------------*/
@@ -264,6 +274,80 @@ body.single-chapters .hentry .uk-grid .uk-alert-warning{
 
 body.single-chapters #foot-widgets{
 	display:none;
+}
+
+body.single-chapters #post-nav-next{
+	display:none;
+}
+
+body.single-chapters #post-nav-next-default h4{
+	display:none;
+}
+
+body.single-chapters #post-nav-previous{
+	display:none;
+}
+
+body.single-chapters #post-nav-previous-default h4{
+	display:none;
+}
+
+body.single-chapters .active label{
+	display:none !important;
+}
+
+@media (max-width:767px){
+
+	body.single-chapters .epn_nav .epn_left a{
+	font-size:16px;
+}
+
+body.single-chapters .epn_nav .epn_right a{
+	font-size:16px;
+}
+
+body.single-chapters #post-nav-previous-default li{
+	display:none;
+}
+
+body.single-chapters #post-nav-next-default li{
+	display:none;
+}
+
+body.single-chapters #post-nav-next-default{
+	margin-left:0px;
+	width:31px !important;
+}
+
+body.single-chapters #post-nav-previous-default{
+	width:31px !important;
+	}
+
+}
+
+
+
+@media (max-width:630px){
+
+	body.single-chapters #post-nav-previous-default li{
+	display:none;
+}
+
+body.single-chapters #post-nav-next-default li{
+	display:none;
+}
+
+body.single-chapters #post-nav-previous-default{
+	width:24px !important;
+	position:absolute !important;
+}
+
+body.single-chapters #post-nav-next-default{
+	margin-left:0px;
+	width:24px !important;
+	position:absolute !important;
+	}
+
 }
 
 
@@ -385,13 +469,35 @@ body.single-mangas .manga-chapters .uk-clearfix small{
 	display:none;
 }
 
+body.single-mangas .hentry .manga-chapters .uk-clearfix{
+	display:inline-block;
+	background-image:-webkit-linear-gradient(left, #396afc 0%, #2948ff 100%);
+	background-image:-o-linear-gradient(left, #396afc 0%, #2948ff 100%);
+	background-image:linear-gradient(to right, #396afc 0%, #2948ff 100%);
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:5px;
+	color:#c9c9c9;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	border-bottom-right-radius:5px;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix .uk-float-left a{
+	color:#ffffff;
+	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix .uk-float-right{
+	padding-left:11px;
+}
+
 
 
 /*-----------------------------------------------*/
 /*  "My New Wife is Forcing Herself to Smile" Mangas*/
 /*-----------------------------------------------*/
 body.postid-58 .manga-chapters .uk-clearfix .uk-float-left{
-	border-bottom-style:solid;
 	border-bottom-width:3px;
 }
 
@@ -424,4 +530,8 @@ body.page-id-74 #page #content .wrap #primary #main .hentry .entry-content .cate
 
 body.page-id-74 .categories ul a{
 	padding-left:5px;
+}
+
+body.page-id-74 .items-outer .letter-section div a{
+	display:none;
 }
