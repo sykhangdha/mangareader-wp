@@ -45,6 +45,7 @@ The following theme uses MangaStarter as the base and adds additional features t
 // To Install the "MangaReader" theme use style.css! //
 - Go to Appearance->Customize and in "Additional CSS" add the code from "style.css" to apply the theme. More themes will
 be available
+-YellowPencil is recommended but not required, I will include both the regular style.css + the export code for yellowpencil to import
 
 // To Update Manga Directory Page //
 - Replace functions.php in main theme folder
