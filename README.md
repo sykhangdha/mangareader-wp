@@ -19,7 +19,7 @@ http://hasky.epizy.com/mangareader/
 ![alt text](http://i.epvpimg.com/qrbHcab.png)
 
 # New manga info page with better chapter listing
-![alt text](http://i.epvpimg.com/0G9Bcab.png)
+![alt text](http://i.epvpimg.com/f4wbcab.png)
 
 # Based on MangaStarter/UiKIT
 The following theme uses MangaStarter as the base and adds additional features to the theme.
