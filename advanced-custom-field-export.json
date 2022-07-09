@@ -1,0 +1,302 @@
+[
+    {
+        "key": "group_5bc004f992c22",
+        "title": "Chapter",
+        "fields": [
+            {
+                "key": "field_5a1123bb8350a",
+                "label": "Title",
+                "name": "title",
+                "type": "text",
+                "instructions": "The title of the chapter.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Ex: 1st Punch",
+                "prepend": "",
+                "append": "",
+                "formatting": "none",
+                "maxlength": ""
+            },
+            {
+                "key": "field_59ff473c9b0e0",
+                "label": "Manga",
+                "name": "manga",
+                "type": "relationship",
+                "instructions": "Select the manga to which this chapter belongs to.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "object",
+                "post_type": [
+                    "mangas"
+                ],
+                "taxonomy": [],
+                "filters": [
+                    "search"
+                ],
+                "max": 1,
+                "min": 0,
+                "elements": [
+                    "featured_image",
+                    "post_type"
+                ]
+            },
+            {
+                "key": "field_5a2197c4c1a8a",
+                "label": "Pages",
+                "name": "",
+                "type": "tab",
+                "instructions": "Choose if the images will be uploaded to the server or external images will be used.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_5a21994feb83e",
+                "label": "Source",
+                "name": "source",
+                "type": "radio",
+                "instructions": "Choose if the pages will be uploaded to the site or external images are to be used.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "Upload": "Upload",
+                    "External": "External"
+                },
+                "other_choice": 0,
+                "save_other_choice": 0,
+                "default_value": "",
+                "layout": "horizontal",
+                "allow_null": 0,
+                "return_format": "value"
+            },
+            {
+                "key": "field_5a011c774de64",
+                "label": "Upload",
+                "name": "upload",
+                "type": "photo_gallery",
+                "instructions": "Add and select the chapter images.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                }
+            },
+            {
+                "key": "field_5a21989692339",
+                "label": "External",
+                "name": "external",
+                "type": "textarea",
+                "instructions": "Add the external direct image links.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "One image link per line.",
+                "maxlength": "",
+                "rows": 3,
+                "new_lines": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "chapters"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [
+            "permalink",
+            "the_content",
+            "excerpt",
+            "custom_fields",
+            "discussion",
+            "comments",
+            "revisions",
+            "slug",
+            "author",
+            "format",
+            "featured_image",
+            "categories",
+            "tags",
+            "send-trackbacks"
+        ],
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5bc004fb5ba22",
+        "title": "Manga",
+        "fields": [
+            {
+                "key": "field_59ff44bdc167a",
+                "label": "Other names",
+                "name": "other_names",
+                "type": "textarea",
+                "instructions": "Additional title or name of the manga.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "One title per line.",
+                "maxlength": "",
+                "rows": 2,
+                "new_lines": ""
+            },
+            {
+                "key": "field_59ff4518c167b",
+                "label": "Release Year",
+                "name": "release_year",
+                "type": "text",
+                "instructions": "Initial release year of the manga.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "formatting": "none",
+                "maxlength": ""
+            },
+            {
+                "key": "field_59ff4599c167e",
+                "label": "Status",
+                "name": "status",
+                "type": "select",
+                "instructions": "Current status of the manga.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "Ongoing": "Ongoing",
+                    "Complete": "Complete",
+                    "Dropped": "Dropped"
+                },
+                "default_value": [],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "placeholder": "",
+                "return_format": "value"
+            },
+            {
+                "key": "field_5a03bbccbd712",
+                "label": "Description",
+                "name": "description",
+                "type": "textarea",
+                "instructions": "Brief summary of the manga.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "maxlength": "",
+                "rows": 3,
+                "new_lines": ""
+            },
+            {
+                "key": "field_5a0f8864538d5",
+                "label": "Mature Content",
+                "name": "mature_content",
+                "type": "select",
+                "instructions": "Is the manga intented for mature audiences?",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "No": "No",
+                    "Yes": "Yes"
+                },
+                "default_value": [],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "placeholder": "",
+                "return_format": "value"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "mangas"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": [
+            "permalink",
+            "the_content",
+            "excerpt",
+            "slug",
+            "author",
+            "format",
+            "tags",
+            "send-trackbacks"
+        ],
+        "active": 1,
+        "description": ""
+    }
+]
