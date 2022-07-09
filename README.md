@@ -1,9 +1,11 @@
 
 // Pre-Req //
-- Please note that MangaStarter IS REQUIRED! I am only updating the theme with new changes! The theme can be purchased here https://www.codester.com/items/6001/mangastarter-build-a-manga-reader-with-wordpress. I may upload theme with full changes on a later date on my website, but strongly recommend purchasing the theme to support the developer.
+- Based on MangaStarter, just updating to work with wordpress 6.0 and adding more features
+     -Download theme here: https://github.com/sykhangdha/mangareader-wp/releases
 - Make sure to set thumbnail size to at least 220 x 320 or there may be some issues with thumbnails being too blurry!
 - A-Z Listing plugin is used for Advanced Search Page
 - wp-post-nav plugin
+-DOCUMENTATION NO YET AVAILABLE! Theme works but documentation for how to install will be released at a later date.
 
 
 # mangareader-wp
@@ -31,13 +33,12 @@ The following theme uses MangaStarter as the base and adds additional features t
 - "Advanced Search" page updated(W.I.P)
 
 # Upcoming Featuers
-- Next/Prev chapter button
-- UI Fixes
-- Dark Mode
+- Next/Prev chapter button *ADDED
+- UI Fixes *ADDED
+- Dark Mode *ADDED
 - More theme options(Currently only blue)
-- "Text View" for Manga Directory
-- Search by Genre
-- Fix issue with title getting cut off on homepage
+- "Text View" for Manga Directory *ADDED
+- Fix issue with title getting cut off on homepage *ADDED
 
 # Installation Guide
 
