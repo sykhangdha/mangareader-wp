@@ -10,7 +10,7 @@
 
 # mangareader-wp
 A simple manga reader theme for wordpress using "MangaStarter"
-http://hasky.epizy.com/mangareader/
+http://hasky.rf.gd/mangareader
 
 # New MangaStarter theme(white)
 ![alt text](http://i.epvpimg.com/KFV4fab.png)
