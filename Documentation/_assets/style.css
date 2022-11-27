@@ -1,0 +1,103 @@
+html, body {
+	margin:0; padding:0; border:0;
+}
+
+/* Typography */
+
+html {
+	color:rgb( 80, 80, 80 ); font-size:13px; font-family: Arial, sans-serif;
+}
+
+pre {
+	margin:0; padding:12px; font-style:italic; font-size:90%; font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight:normal;
+}
+
+/* Top */
+
+#top {
+	width:100%; background:rgb( 52, 52, 52 ) url('images/top.png') repeat-x bottom center; border-bottom:1px solid rgb( 235, 235, 235 );
+}
+	#top div {
+		padding:8px;
+	}
+	#top ul {
+		width:760px; margin:0 auto;
+	}
+	#top ul li {
+		display:inline; padding:2px 6px;
+	}
+	#top ul li a {
+		color:rgb( 200, 200, 200 ); text-decoration:none; font-size:85%;
+	}
+	#top ul li a:hover {
+		color:rgb( 255, 255, 255 );
+	}
+
+
+/* Structure */
+
+#mojo {
+	width:100%; background:rgb( 240, 240, 240 ) url('images/body.png') repeat-x center -15px; padding-top:24px;
+}
+
+#container {
+	width:760px; margin:0 auto; border:1px solid rgb( 227, 227, 227 ); background-color:rgb( 255, 255, 255 ); padding:32px;
+	border-radius:8px;
+	-moz-border-radius:8px;
+	-webkit-border:8px;
+}
+#cloud {
+	background:rgb( 214, 245, 255 ) url('images/cloud.png') repeat-x top center;
+}
+.section {
+	padding:24px 0; border-bottom:1px dotted rgb( 220, 220, 220 );
+}
+#mojo .section {
+	padding:0 0 24px 0 !important;
+}
+
+h1 {
+	color:rgb( 98, 179, 14 ); padding:12px 0; text-transform:uppercase;
+}
+h2 {
+	color:rgb( 58, 126, 142 ); position:relative; z-index:10; background-color:rgb( 255, 255, 255 ); left:-90px; padding:12px 12px 12px 18px; border-left:1px solid rgb( 227, 227, 227 );
+	border-radius:8px;
+	-moz-border-radius:8px;
+	-webkit-border:8px;
+}
+
+.info {
+	font-size:90%; font-style:italic; 
+}
+
+/* Author */
+
+#author {
+	margin:0 auto;
+}
+#author td.author {
+	text-align:left;
+}
+#author td.author ul li {
+	list-style-type:none;
+}
+#author td.author ul li span {
+	 font-weight:bold;
+}
+#author td.author ul li a {
+	font-weight:normal;
+}
+
+#author td.title p {
+	text-align:right;
+}
+
+/* Sections */
+
+.section p {
+	line-height:150%;
+}
