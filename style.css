@@ -1,6 +1,8 @@
 /*
+	A Modified MangaStarter theme CSS
 
-    A modified theme for MangaStarter by Sky Ha
+	Changelog: UI Improvements 11/28/22
+
 
     T A B L E   O F   C O N T E N T S
     ........................................................................
@@ -11,7 +13,8 @@
     04. Chapters Template
     05. Non-Static Homepage
     06. Mangas Template
-    07. "Advanced Search" Page
+    07. "" 
+    08. "" 
 
 */
 
@@ -377,10 +380,20 @@ body.home #main .hentry .chapter-content{
 body.home #main a h3{
 	color:#ffffff;
 	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
+	font-size:15px;
 }
 
 body.home #main div small{
 	color:#d1d1d1;
+	font-size:11px;
+}
+
+body.home .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div{
+	margin-left:-6px;
+}
+
+body.home #page #content .wrap #primary #main .uk-grid .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div a h3{
+	width:100% !important;
 }
 
 @media (max-width:630px){
@@ -418,6 +431,16 @@ body.home #top-menu .menu-item a{
 	border-bottom-right-radius:0px !important;
 	border-style:solid;
 	border-color:#2980b9;
+	}
+
+}
+
+
+
+@media (min-width:768px){
+
+	body.home #main .uk-grid .uk-width-medium-5-10{
+	width:238px;
 	}
 
 }
@@ -468,9 +491,6 @@ body.single-mangas .manga-chapters .uk-clearfix small{
 
 body.single-mangas .hentry .manga-chapters .uk-clearfix{
 	display:inline-block;
-	background-image:-webkit-linear-gradient(left, #396afc 0%, #2948ff 100%);
-	background-image:-o-linear-gradient(left, #396afc 0%, #2948ff 100%);
-	background-image:linear-gradient(to right, #396afc 0%, #2948ff 100%);
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -489,19 +509,44 @@ body.single-mangas .manga-chapters .uk-clearfix .uk-float-right{
 	padding-left:11px;
 }
 
+body.single-mangas .manga-chapters .uk-clearfix a{
+	font-size:19px !important;
+	background-color:#294dee;
+	margin-right:7px;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix .uk-float-left{
+	margin-right:2px;
+	color:#262626;
+}
+
+body.single-mangas #main .uk-clearfix .nav-links{
+	display:none;
+}
+
+
 
 /*-----------------------------------------------*/
-/*  "Advanced Search" Page                       */
+/*  ""                                           */
 /*-----------------------------------------------*/
-body.page-id-74 .uk-grid-small button{
+body.postid-58 .manga-chapters .uk-clearfix .uk-float-left{
+	border-bottom-width:3px;
+}
+
+
+
+/*-----------------------------------------------*/
+/*  ""                                           */
+/*-----------------------------------------------*/
+body.postid-74 .uk-grid-small button{
 	background-color:#2858b8;
 }
 
-body.page-id-74 #sidebar .widget .search-submit{
+body.postid-74 #sidebar .widget .search-submit{
 	background-color:#2858b8;
 }
 
-body.page-id-74 .categories ul li{
+body.postid-74 .categories ul li{
 	text-transform:uppercase;
 	display:inline;
 	-webkit-column-count:3;
@@ -510,15 +555,15 @@ body.page-id-74 .categories ul li{
 	border-right-style:solid;
 }
 
-body.page-id-74 #page #content .wrap #primary #main .hentry .entry-content .categories ul li{
+body.postid-74 #page #content .wrap #primary #main .hentry .entry-content .categories ul li{
 	-ms-grid-columns:auto 1fr !important;
 	grid-template-columns:auto 1fr !important;
 }
 
-body.page-id-74 .categories ul a{
+body.postid-74 .categories ul a{
 	padding-left:5px;
 }
 
-body.page-id-74 .items-outer .letter-section div a{
+body.postid-74 .items-outer .letter-section div a{
 	display:none;
 }
