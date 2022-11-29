@@ -23,7 +23,7 @@ http://hasky.rf.gd/mangareader
 ![alt text](http://i.epvpimg.com/CUO8fab.png)
 
 # Updated reader page for a more minimal design
-![alt text](http://i.epvpimg.com/CUO8fab.png)
+![alt text](http://i.epvpimg.com/xD8gaab.png)
 
 
 # Based on MangaStarter/UiKIT
