@@ -1,7 +1,4 @@
 /*
-	A Modified MangaStarter theme CSS
-
-	Changelog: UI Improvements 11/28/22
 
 
     T A B L E   O F   C O N T E N T S
@@ -13,8 +10,6 @@
     04. Chapters Template
     05. Non-Static Homepage
     06. Mangas Template
-    07. "" 
-    08. "" 
 
 */
 
@@ -23,174 +18,30 @@
 /*-----------------------------------------------*/
 /*  Global Styles                                */
 /*-----------------------------------------------*/
-body #masthead{
-	background-image:-webkit-linear-gradient(left, #000046 0%, #1cb5e0 100%);
-	background-image:-o-linear-gradient(left, #000046 0%, #1cb5e0 100%);
-	background-image:linear-gradient(to right, #000046 0%, #1cb5e0 100%);
-}
-
-body .uk-grid-collapse h1{
-	font-family:'Anaheim', sans-serif;
-	font-size:30px;
+body #top-menu .menu-item a{
+	background-color:transparent;
 }
 
 body #top-menu .menu-item a:hover{
 	background-color:transparent;
 }
 
-body #top-menu .menu-item a{
-	background-color:transparent;
-	text-transform:lowercase;
+body .recentviewed_post li a:hover{
+	color:#878787;
 }
 
-body .latest-chapters .page-title i{
-	color:#2869b8;
-}
-
-body .uk-margin-bottom a h3{
-	color:#284cb8;
-}
-
-body .uk-margin-bottom div i{
-	color:#284cb8;
-}
-
-body #main .latest-chapters h2{
-	border-bottom-color:#284cb8;
-	font-family:Lexend Deca, sans-serif;
-}
-
-body .uk-padding-remove .uk-overlay-panel{
-	background-color:#284cb8 !important;
-}
-
-body #sidebar .widget h3{
-	border-bottom-color:#284cb8;
-	font-family:Lexend Deca, sans-serif;
-}
-
-body .navigation-top h1{
-	position:relative;
-	bottom:-4px;
-}
-
-body #main .page-header h2{
-	border-bottom-color:#0048ff;
-}
-
-body #sidebar .widget .search-submit{
-	background-color:#2858b8;
-}
-
-body #content{
-	font-family:Lexend Deca, sans-serif;
+body .uk-grid-collapse .uk-block-muted a:hover{
+	color:#757575 !important;
 }
 
 body #main a h3{
-	font-family:'Krub', sans-serif;
+	color:#3f3fd3;
 }
 
-body #page{
-	background-image:none !important;
-}
+@media (min-width:768px){
 
-body #masthead .wrap .uk-width-large-3-10{
-	position:relative;
-	top:8px;
-}
-
-body #top-menu a span{
-	text-transform:lowercase !important;
-}
-
-body #site-pagination a{
-	background-color:#293a83 !important;
-}
-
-body #front-slider .uk-grid h2{
-	background-color:#2858b8;
-}
-
-body #front-slider .uk-grid .owl-carousel-controls{
-	border-bottom-color:#2858b8;
-}
-
-body #front-slider .uk-grid .carousel-prev{
-	background-color:#2858b8;
-}
-
-body #front-slider .uk-grid .carousel-next{
-	background-color:#2858b8;
-}
-
-body .owl-carousel .active .wp-post-image{
-	border-style:solid;
-	border-color:#234384;
-	border-width:4px;
-}
-
-body #main a .wp-post-image{
-	border-bottom-right-radius:0px !important;
-	border-bottom-left-radius:0px !important;
-	border-top-right-radius:0px !important;
-	border-top-left-radius:0px !important;
-}
-
-@media (max-width:959px){
-
-	body #site-menu label{
-	background-color:#011edf;
-}
-
-body #top-menu .menu-item a{
-	background-color:#040452;
-	}
-
-}
-
-
-
-@media (max-width:767px){
-
-	body #site-menu label{
-	background-color:#011edf;
-	}
-
-}
-
-
-
-@media (max-width:630px){
-
-	body .navigation-top .site-title a{
-	position:relative;
-	top:-12px;
-}
-
-body #site-menu label{
-	background-color:transparent;
-}
-
-body #top-menu .menu-item a{
-	background-color:transparent;
-}
-
-body #top-menu li{
-	background-color:transparent;
-}
-
-body #top-menu{
-	background-color:transparent !important;
-	}
-
-}
-
-
-
-@media (min-width:961px){
-
-	body .navigation-top h1{
-	margin-top:6px;
+	body #main .hentry .chapter-content{
+	width:90px;
 	}
 
 }
@@ -217,11 +68,11 @@ body.category #main div .uk-icon-comment{
 /*-----------------------------------------------*/
 /*  Archive Page                                 */
 /*-----------------------------------------------*/
-body.archive #main small a{
-	display:none;
+body.archive #sidebar .widget h3{
+	border-bottom-color:#5a5ab8 !important;
 }
 
-body.archive small > span{
+body.archive #main small a{
 	display:none;
 }
 
@@ -229,22 +80,67 @@ body.archive #main div .uk-icon-comment{
 	display:none;
 }
 
-body.archive .page-header h4 a{
-	background-color:#2a3197;
-	color:#ffffff;
-	border-top-left-radius:5px;
-	border-top-right-radius:5px;
-	border-bottom-left-radius:5px;
-	border-bottom-right-radius:5px;
-	border-style:solid;
-	border-color:#747ce0;
-	border-width:2px;
+body.archive small > span{
+	display:none;
+}
+
+body.archive #main .hentry .chapter-content{
+	color:#e0e0e0;
+	background-image:-webkit-linear-gradient(left, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
+	background-image:-o-linear-gradient(left, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
+	background-image:linear-gradient(to right, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
+}
+
+body.archive #masthead{
+	background-image:-webkit-linear-gradient(left, #3f3fd3 0%, rgb(52,138,199) 100%);
+	background-image:-o-linear-gradient(left, #3f3fd3 0%, rgb(52,138,199) 100%);
+	background-image:linear-gradient(to right, #3f3fd3 0%, rgb(52,138,199) 100%);
+}
+
+body.archive #main .page-header h2{
+	border-bottom-color:#5a5ab8;
+}
+
+body.archive #main a h3{
+	color:#efefef !important;
+}
+
+body.archive .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div{
+	border-bottom-style:none;
+}
+
+body.archive #content{
+	-webkit-transform:translatex(0px) translatey(0px);
+	-ms-transform:translatex(0px) translatey(0px);
+	transform:translatex(0px) translatey(0px);
+}
+
+body.archive .new-manga .uk-grid-collapse .uk-overlay-panel{
+	background-color:#5a5ab8 !important;
+}
+
+body.archive .navigation-top .site-title a{
+	font-size:32px;
+}
+
+body.archive #sidebar .widget .search-submit{
+	background-color:#5a5ab8 !important;
 }
 
 @media (min-width:481px){
 
-	body.archive #main .hentry .wp-post-image{
-	display:inline-block;
+	body.archive #main div small{
+	display:none;
+	}
+
+}
+
+
+
+@media (min-width:768px){
+
+	body.archive #main .hentry .chapter-content{
+	width:244px;
 	}
 
 }
@@ -294,6 +190,18 @@ body.single-chapters #post-nav-previous-default h4{
 
 body.single-chapters .active label{
 	display:none !important;
+}
+
+body.single-chapters #masthead{
+	background-color:transparent;
+}
+
+body.single-chapters #masthead .wrap .uk-width-large-3-10{
+	display:none;
+}
+
+body.single-chapters #top-menu .menu-item a:hover{
+	background-color:transparent;
 }
 
 @media (max-width:767px){
@@ -355,92 +263,108 @@ body.single-chapters #post-nav-next-default{
 /*-----------------------------------------------*/
 /*  Non-Static Homepage                          */
 /*-----------------------------------------------*/
+body.home #main .uk-grid .uk-width-medium-5-10{
+	-webkit-box-flex:0 0 auto;
+	-ms-flex:0 0 auto;
+	flex:0 0 auto;
+}
+
 body.home #main a .wp-post-image{
-	border-top-left-radius:50px;
-	border-top-right-radius:50px;
-	border-bottom-left-radius:50px;
-	border-bottom-right-radius:50px;
-	-webkit-box-shadow:0px 0px 8px 0px #222222;
-	box-shadow:0px 0px 8px 0px #222222;
+	height:125px;
+	width:88px;
 }
 
-body.home #sidebar .widget .search-submit{
-	background-color:#2858b8;
-}
-
-body.home #main .hentry .chapter-content{
-	background-color:rgba(0,0,0,0.49);
-	background-image:-webkit-linear-gradient(left, #1488cc 0%, #2b32b2 100%);
-	background-image:-o-linear-gradient(left, #1488cc 0%, #2b32b2 100%);
-	background-image:linear-gradient(to right, #1488cc 0%, #2b32b2 100%);
-	border-top-right-radius:22px;
-	border-bottom-right-radius:22px;
+body.home #page #content .wrap #primary #main .uk-grid .uk-width-medium-5-10{
+	-ms-grid-columns:auto 1fr !important;
+	grid-template-columns:auto 1fr !important;
 }
 
 body.home #main a h3{
-	color:#ffffff;
-	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
-	font-size:15px;
+	font-size:12px;
+	white-space:pre-line;
+	text-align:left;
+	color:#1b1b7d;
 }
 
-body.home #main div small{
-	color:#d1d1d1;
-	font-size:11px;
+body.home #masthead{
+	background-image:-webkit-linear-gradient(left, #3f3fd3 0%, #348ac7 100%);
+	background-image:-o-linear-gradient(left, #3f3fd3 0%, #348ac7 100%);
+	background-image:linear-gradient(to right, #3f3fd3 0%, #348ac7 100%);
+	-webkit-transform:translatex(0px) translatey(0px);
+	-ms-transform:translatex(0px) translatey(0px);
+	transform:translatex(0px) translatey(0px);
 }
 
-body.home .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div{
-	margin-left:-6px;
+body.home .navigation-top .site-title a{
+	font-size:32px;
 }
 
-body.home #page #content .wrap #primary #main .uk-grid .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div a h3{
-	width:100% !important;
+body.home #front-slider .uk-grid h2{
+	background-color:#3f3fd3;
 }
 
-@media (max-width:630px){
-
-	body.home #top-menu li{
-	background-color:transparent;
+body.home #content{
+	-webkit-transform:translatex(0px) translatey(0px);
+	-ms-transform:translatex(0px) translatey(0px);
+	transform:translatex(0px) translatey(0px);
 }
 
-body.home #site-navigation{
-	background-color:transparent;
+body.home #front-slider .uk-grid .owl-carousel-controls{
+	border-bottom-color:#5656cc !important;
 }
 
-body.home #top-menu{
-	background-color:transparent !important;
+body.home #main .latest-chapters h2{
+	border-bottom-color:#5656cc !important;
 }
 
-body.home #top-menu a span{
-	background-color:transparent;
+body.home .latest-chapters .page-title i{
+	color:#3f3fd3;
 }
 
-body.home #top-menu .menu-item a{
-	background-color:transparent;
-	}
-
+body.home #main div i{
+	color:#1654b0;
 }
 
-
-
-@media (max-width:479px){
-
-	body.home #main a .wp-post-image{
-	border-top-left-radius:0px !important;
-	border-top-right-radius:0px !important;
-	border-bottom-left-radius:0px !important;
-	border-bottom-right-radius:0px !important;
-	border-style:solid;
-	border-color:#2980b9;
-	}
-
+body.home #sidebar .widget h3{
+	border-bottom-color:#5656cc !important;
 }
 
+body.home #sidebar .widget .search-submit{
+	background-color:#5959b9;
+}
 
+body.home .new-manga .uk-grid-collapse .uk-overlay-panel{
+	background-color:#5959b9 !important;
+}
+
+body.home #front-slider .uk-grid .carousel-prev{
+	background-color:#5959b9;
+}
+
+body.home #front-slider .uk-grid .carousel-next{
+	background-color:#5959b9;
+}
+
+body.home .recentviewed_post li a{
+	color:#101046;
+}
+
+body.home .uk-grid-collapse .uk-width-xlarge-8-10 .uk-block-muted .uk-vertical-align-middle a{
+	color:#101046 !important;
+}
+
+body.home #sidebar .widget .custom-html-widget{
+	color:#06061d;
+}
 
 @media (min-width:768px){
 
-	body.home #main .uk-grid .uk-width-medium-5-10{
-	width:238px;
+	body.home #main .hentry .chapter-thumb{
+	width:98px;
+}
+
+body.home #main .uk-grid .uk-width-medium-5-10{
+	width:250px;
 	}
 
 }
@@ -463,11 +387,7 @@ body.single-mangas .hentry .uk-grid h3{
 }
 
 body.single-mangas .hentry .entry-header h2{
-	color:#284cb8;
-}
-
-body.single-mangas .manga-genres div a{
-	background-color:#284cb8 !important;
+	color:#348ac7;
 }
 
 body.single-mangas .manga-chapters .uk-clearfix .uk-float-right a{
@@ -490,7 +410,6 @@ body.single-mangas .manga-chapters .uk-clearfix small{
 }
 
 body.single-mangas .hentry .manga-chapters .uk-clearfix{
-	display:inline-block;
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	border-bottom-left-radius:5px;
@@ -498,11 +417,9 @@ body.single-mangas .hentry .manga-chapters .uk-clearfix{
 	-webkit-box-shadow:none;
 	box-shadow:none;
 	border-bottom-right-radius:5px;
-}
-
-body.single-mangas .manga-chapters .uk-clearfix .uk-float-left a{
-	color:#ffffff;
-	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
+	display:inline-grid;
+	width:119px;
+	margin-right:51px;
 }
 
 body.single-mangas .manga-chapters .uk-clearfix .uk-float-right{
@@ -510,60 +427,51 @@ body.single-mangas .manga-chapters .uk-clearfix .uk-float-right{
 }
 
 body.single-mangas .manga-chapters .uk-clearfix a{
-	font-size:19px !important;
-	background-color:#294dee;
-	margin-right:7px;
+	font-size:15px !important;
+	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
+	border-width:2px;
+	text-transform:uppercase;
+	background-color:transparent;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	color:#1b1b7d;
 }
 
 body.single-mangas .manga-chapters .uk-clearfix .uk-float-left{
-	margin-right:2px;
 	color:#262626;
+	border-style:solid;
+	text-align:center;
+	border-color:#284cb8;
 }
 
 body.single-mangas #main .uk-clearfix .nav-links{
 	display:none;
 }
 
-
-
-/*-----------------------------------------------*/
-/*  ""                                           */
-/*-----------------------------------------------*/
-body.postid-58 .manga-chapters .uk-clearfix .uk-float-left{
-	border-bottom-width:3px;
+body.single-mangas #masthead{
+	-webkit-transform:translatex(0px) translatey(0px);
+	-ms-transform:translatex(0px) translatey(0px);
+	transform:translatex(0px) translatey(0px);
+	background-color:transparent;
+	background-image:-webkit-linear-gradient(left, #3f3fd3 0%, #348ac7 100%);
+	background-image:-o-linear-gradient(left, #3f3fd3 0%, #348ac7 100%);
+	background-image:linear-gradient(to right, #3f3fd3 0%, #348ac7 100%);
 }
 
-
-
-/*-----------------------------------------------*/
-/*  ""                                           */
-/*-----------------------------------------------*/
-body.postid-74 .uk-grid-small button{
-	background-color:#2858b8;
+body.single-mangas .manga-genres div a{
+	background-color:#3472df !important;
 }
 
-body.postid-74 #sidebar .widget .search-submit{
-	background-color:#2858b8;
+body.single-mangas #content{
+	-webkit-transform:translatex(0px) translatey(0px);
+	-ms-transform:translatex(0px) translatey(0px);
+	transform:translatex(0px) translatey(0px);
 }
 
-body.postid-74 .categories ul li{
-	text-transform:uppercase;
-	display:inline;
-	-webkit-column-count:3;
-	column-count:3;
-	list-style-type:circle;
-	border-right-style:solid;
+body.single-mangas .uk-grid-collapse .site-title a{
+	font-size:32px;
 }
 
-body.postid-74 #page #content .wrap #primary #main .hentry .entry-content .categories ul li{
-	-ms-grid-columns:auto 1fr !important;
-	grid-template-columns:auto 1fr !important;
-}
-
-body.postid-74 .categories ul a{
-	padding-left:5px;
-}
-
-body.postid-74 .items-outer .letter-section div a{
-	display:none;
+body.single-mangas .manga-chapters .uk-clearfix a:hover{
+	color:#7c7c7c;
 }
