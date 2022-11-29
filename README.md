@@ -12,11 +12,11 @@
 A simple manga reader theme for wordpress using "MangaStarter"
 http://hasky.rf.gd/mangareader
 
-# New MangaStarter theme(white)
-![alt text](http://i.epvpimg.com/KFV4fab.png)
+# New MangaStarter theme(white) w/ new latest chapters style
+![alt text](http://i.epvpimg.com/Yf3hfab.png)
 
-# New MangaStarter theme(dark) w/ new manga directory page
-![alt text](http://i.epvpimg.com/qrbHcab.png)
+# New MangaStarter theme(dark) w/ new latest chapters style
+![alt text](http://i.epvpimg.com/LTKtcab.png)
 
 # New manga info page with better chapter listing
 ![alt text](http://i.epvpimg.com/f4wbcab.png)
@@ -29,19 +29,11 @@ The following theme uses MangaStarter as the base and adds additional features t
   - Thumbnail size fix, please change thumbnail size to 225x320 for best results with the manga reader theme
 - Fixed UI issues for mobile
 - Additional plugin recommendations added in install documentation
-- Recently viewed chapters
-- "Advanced Search" page updated(W.I.P)
-
-# Upcoming Featuers
-- Next/Prev chapter button *ADDED
-- UI Fixes *ADDED
-- Dark Mode *ADDED
-- More theme options(Currently only blue)
-- "Text View" for Manga Directory *ADDED
-- Fix issue with title getting cut off on homepage *ADDED
+- Recently viewed chapters(use any plugin from wordpress repo)
 
 # Installation Guide
 
+//Documentation has been added!
 
 // To Install the "MangaReader" theme use style.css! //
 - Go to Appearance->Customize and in "Additional CSS" add the code from "style.css" to apply the theme. More themes will
@@ -54,7 +46,5 @@ be available
 - Replace "components/loop/content-archive.php" with one from this github
 
 // Previous and Next Chapter
-- Recommended plugin: wp-post-nav(note: info on how to display wp post nav will be in the documentation for the plugin)
-      - Used CSS to fix previous and next post being displayed strangely on mobile
-      - Currently working on editing the plugin to work better with the theme, but for now this is just a quick fix
+- Recommended plugin: wp-post-nav
 
