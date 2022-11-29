@@ -2,7 +2,7 @@
 // Pre-Req //
 - Based on MangaStarter, just updating to work with wordpress 6.0 and adding more features
      -Download theme here: https://github.com/sykhangdha/mangareader-wp/releases
-     -Original theme creator(no longer updates): https://www.codester.com/items/comments/6001/mangastarter-build-a-manga-reader-with-wordpress
+-Original theme creator: https://www.codester.com/items/comments/6001/mangastarter-build-a-manga-reader-with-wordpress
 - Make sure to set thumbnail size to at least 220 x 320 or there may be some issues with thumbnails being too blurry!
 - A-Z Listing plugin is used for Advanced Search Page
 - wp-post-nav plugin
