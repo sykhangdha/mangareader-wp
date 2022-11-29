@@ -1,5 +1,6 @@
 /*
 
+	
 
     T A B L E   O F   C O N T E N T S
     ........................................................................
@@ -37,6 +38,38 @@ body .uk-grid-collapse .uk-block-muted a:hover{
 body #main a h3{
 	color:#3f3fd3;
 }
+
+@media (max-width:672px){
+
+	body #site-menu label{
+	background-color:transparent;
+}
+
+body #site-navigation{
+	background-color:transparent;
+}
+
+body #top-menu{
+	background-color:transparent !important;
+	}
+
+}
+
+
+
+@media (max-width:480px){
+
+	body #main .hentry .chapter-content{
+	text-align:center;
+}
+
+body #main a h3{
+	text-align:center !important;
+	}
+
+}
+
+
 
 @media (min-width:768px){
 
@@ -126,6 +159,16 @@ body.archive .navigation-top .site-title a{
 body.archive #sidebar .widget .search-submit{
 	background-color:#5a5ab8 !important;
 }
+
+@media (max-width:480px){
+
+	body.archive #main div small{
+	display:none;
+	}
+
+}
+
+
 
 @media (min-width:481px){
 
@@ -384,6 +427,7 @@ body.single-mangas #foot-widgets{
 
 body.single-mangas .hentry .uk-grid h3{
 	border-bottom-color:#284cb8;
+	margin-bottom:0px;
 }
 
 body.single-mangas .hentry .entry-header h2{
@@ -427,7 +471,6 @@ body.single-mangas .manga-chapters .uk-clearfix .uk-float-right{
 }
 
 body.single-mangas .manga-chapters .uk-clearfix a{
-	font-size:15px !important;
 	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
 	border-width:2px;
 	text-transform:uppercase;
@@ -442,6 +485,7 @@ body.single-mangas .manga-chapters .uk-clearfix .uk-float-left{
 	border-style:solid;
 	text-align:center;
 	border-color:#284cb8;
+	background-color:#d1daef;
 }
 
 body.single-mangas #main .uk-clearfix .nav-links{
