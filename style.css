@@ -283,6 +283,19 @@ body.single-chapters #post-nav-previous-default{
 }
 
 
+/* Link */
+#top-menu .menu-item a{
+	color:#1e1e1e;
+	height:0px;
+}
+
+/* Grid collapse */
+#masthead .wrap .uk-grid-collapse{
+	text-align:center;
+}
+
+
+
 
 @media (max-width:630px){
 
