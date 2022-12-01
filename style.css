@@ -39,6 +39,12 @@ body #main a h3{
 	color:#3f3fd3;
 }
 
+
+body #site-pagination a{
+	background-color:#3e3eb1 !important;
+}
+
+
 @media (max-width:672px){
 
 	body #site-menu label{
@@ -518,4 +524,24 @@ body.single-mangas .uk-grid-collapse .site-title a{
 
 body.single-mangas .manga-chapters .uk-clearfix a:hover{
 	color:#7c7c7c;
+}
+
+
+body #main a h3{
+	white-space:pre-wrap;
+}
+
+body.archive .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div{
+	border-bottom-style:none;
+}
+
+@media (min-width:481px){
+
+	body.archive #main div small{
+	display:none;
+	}
+
+}
+body.home #main a h3{
+	color:#1b1b7d;
 }
