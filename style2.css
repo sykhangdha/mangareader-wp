@@ -1,17 +1,15 @@
 /*
 
-    Similar to the original Style.CSS but with a different latest chapters style + some color changes
-
+    Style 2 for MangaReader WP. Current theme
 
     T A B L E   O F   C O N T E N T S
     ........................................................................
 
     01. Global Styles
-    02. Category Page
-    03. Archive Page
-    04. Chapters Template
-    05. Non-Static Homepage
-    06. Mangas Template
+    02. Archive Page
+    03. Chapters Template
+    04. Non-Static Homepage
+    05. Mangas Template
 
 */
 
@@ -20,85 +18,82 @@
 /*-----------------------------------------------*/
 /*  Global Styles                                */
 /*-----------------------------------------------*/
+body #masthead{
+	background-image:-webkit-linear-gradient(left, #293eb1 0%, #7987d7 100%);
+	background-image:-o-linear-gradient(left, #293eb1 0%, #7987d7 100%);
+	background-image:linear-gradient(to right, #293eb1 0%, #7987d7 100%);
+}
+
 body .navigation-top .site-title a{
 	font-size:32px;
+	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
+	color:#f9f9f9;
+	-webkit-box-shadow:none;
+	box-shadow:none;
 }
 
-body #masthead{
-	background-image:-webkit-linear-gradient(left, #3f3fd3 0%, rgb(52,138,199) 100%);
-	background-image:-o-linear-gradient(left, #3f3fd3 0%, rgb(52,138,199) 100%);
-	background-image:linear-gradient(to right, #3f3fd3 0%, rgb(52,138,199) 100%);
-	background-color:transparent;
-}
-
-body .latest-chapters .page-title i{
-	color:#7474bf;
-}
-
-body #main a h3{
-	text-shadow:none;
-	color:#f2f2f2;
-}
-
-body .new-manga .uk-grid-collapse .uk-overlay-panel{
-	background-color:#348ac7 !important;
+body #top-menu .menu-item a{
+	color:#f9f9f9;
+	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
 }
 
 body #top-menu .menu-item a:hover{
 	background-color:transparent;
 }
 
-body .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div{
-	border-bottom-style:none;
+body #front-slider .uk-grid h2{
+	background-color:#7987d7;
 }
 
-body #sidebar .widget .search-submit{
-	background-color:#6471c8;
-}
-
-body #main .hentry .chapter-content{
-	background-image:-webkit-linear-gradient(left, rgb(116, 116, 191) 0%, rgb(52, 138, 199) 100%);
-	background-image:-o-linear-gradient(left, rgb(116, 116, 191) 0%, rgb(52, 138, 199) 100%);
-	background-image:linear-gradient(to right, rgb(116, 116, 191) 0%, rgb(52, 138, 199) 100%);
-	border-width:2px;
-}
-
-body #main div small{
-	color:#e2e2e2;
-}
-
-body #main div i{
-	color:#b2b2b2;
-}
-
-body .recentviewed_post li a:hover{
-	color:#727272;
-}
-
-body #content{
+body #front-slider .uk-grid .owl-carousel-controls{
+	border-bottom-color:#7987d7;
 	-webkit-transform:translatex(0px) translatey(0px);
 	-ms-transform:translatex(0px) translatey(0px);
 	transform:translatex(0px) translatey(0px);
 }
 
+body #front-slider .uk-grid .carousel-prev{
+	background-color:#7987d7;
+}
+
+body #front-slider .uk-grid .carousel-next{
+	background-color:#7987d7;
+}
+
+body .latest-chapters .page-title i{
+	color:#7987d7;
+}
+
 body #main .latest-chapters h2{
-	border-bottom-color:#5a5ab8 !important;
+	border-bottom-color:#7987d7;
 }
 
 body #sidebar .widget h3{
-	border-bottom-color:#5a5ab8 !important;
+	border-bottom-color:#7987d7;
+}
+
+body #main a h3{
+	color:#7987d7;
+	white-space:pre-wrap;
+	font-size:15px;
+}
+
+body #main div i{
+	color:#394fca;
+}
+
+body .new-manga .uk-grid-collapse .uk-overlay-panel{
+	background-color:#7987d7 !important;
+}
+
+body #page #content .wrap #primary #main #site-pagination a{
+	background-color:#5366d4 !important;
 }
 
 @media (max-width:672px){
 
 	body #site-menu label{
 	background-color:transparent;
-}
-
-body #top-menu li{
-	-webkit-transform:translatex(0px) translatey(0px);
-	-ms-transform:translatex(0px) translatey(0px);
-	transform:translatex(0px) translatey(0px);
 }
 
 body #top-menu{
@@ -109,19 +104,12 @@ body #top-menu{
 
 
 
-/*-----------------------------------------------*/
-/*  Category Page                                */
-/*-----------------------------------------------*/
-body.category #main .page-header h2{
-	border-bottom-color:#284cb8;
-}
+@media (min-width:768px){
 
-body.category #main small a{
-	display:none;
-}
+	body #main .uk-grid .uk-width-medium-5-10{
+	width:249px;
+	}
 
-body.category #main div .uk-icon-comment{
-	display:none;
 }
 
 
@@ -129,8 +117,16 @@ body.category #main div .uk-icon-comment{
 /*-----------------------------------------------*/
 /*  Archive Page                                 */
 /*-----------------------------------------------*/
+body.archive #main a h3{
+	color:#4e5fbf;
+}
+
 body.archive #sidebar .widget h3{
-	border-bottom-color:#3f3fd3;
+	border-bottom-color:#7987d7;
+}
+
+body.archive #main .page-header h2{
+	border-bottom-color:#7987d7;
 }
 
 body.archive #main small a{
@@ -141,25 +137,22 @@ body.archive #main div .uk-icon-comment{
 	display:none;
 }
 
-body.archive small > span{
+body.archive #main div .uk-icon-clock-o{
 	display:none;
 }
 
-body.archive #main .hentry .chapter-content{
-	color:#e0e0e0;
-	background-image:-webkit-linear-gradient(left, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
-	background-image:-o-linear-gradient(left, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
-	background-image:linear-gradient(to right, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
+body.archive .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div{
+	border-bottom-style:none;
 }
 
-body.archive #masthead{
-	background-image:-webkit-linear-gradient(left, #3f3fd3 0%, rgb(52,138,199) 100%);
-	background-image:-o-linear-gradient(left, #3f3fd3 0%, rgb(52,138,199) 100%);
-	background-image:linear-gradient(to right, #3f3fd3 0%, rgb(52,138,199) 100%);
+body.archive #main .uk-grid .uk-width-medium-5-10{
+	border-style:solid;
+	border-width:1px;
 }
 
-body.archive #main .page-header h2{
-	border-bottom-color:#5a5ab8;
+body.archive #main .uk-grid article{
+	margin-top:35px;
+	margin-right:38px;
 }
 
 @media (min-width:481px){
@@ -176,99 +169,51 @@ body.archive #main .page-header h2{
 /*  Chapters Template                            */
 /*-----------------------------------------------*/
 body.single-chapters .entry-header .uk-button-group .next{
-	background-color:#284cb8 !important;
+	background-color:#7987d7 !important;
 }
 
-body.single-chapters .entry-header .uk-button-group a{
-	background-color:#284cb8 !important;
+body.single-chapters .entry-header .uk-button-group .uk-icon-angle-left{
+	color:#d8d8d8 !important;
+}
+
+body.single-chapters .entry-header .next i{
+	color:#d8d8d8 !important;
+}
+
+body.single-chapters .entry-header .uk-button-group .uk-icon-angle-double-right{
+	color:#d8d8d8 !important;
+}
+
+body.single-chapters .entry-header .uk-button-group .uk-icon-angle-double-left{
+	color:#d8d8d8 !important;
 }
 
 body.single-chapters .hentry .uk-grid .uk-alert-warning{
-	background-color:#eafaff;
-	color:#3b69ae;
-	border-top-color:#91baec;
-	border-right-color:#91baec;
-	border-bottom-color:#91baec;
-	border-left-color:#91baec;
-	display:none;
+	background-color:rgba(234,239,255,0.93);
+	border-top-style:none;
+	border-right-style:none;
+	border-bottom-style:none;
+	border-left-style:none;
+	border-style:solid;
+	border-color:#4293c1;
 }
 
-body.single-chapters #foot-widgets{
-	display:none;
+body.single-chapters .hentry .uk-grid h3{
+	color:#545454;
 }
 
-body.single-chapters #post-nav-next{
-	display:none;
+body.single-chapters .hentry .uk-grid p{
+	color:#606060;
 }
 
-body.single-chapters #post-nav-next-default h4{
-	display:none;
+body.single-chapters #masthead{
+	background-image:-webkit-linear-gradient(left, #293eb1 0%, rgb(121,135,215) 100%);
+	background-image:-o-linear-gradient(left, #293eb1 0%, rgb(121,135,215) 100%);
+	background-image:linear-gradient(to right, #293eb1 0%, rgb(121,135,215) 100%);
 }
 
-body.single-chapters #post-nav-previous{
-	display:none;
-}
-
-body.single-chapters #post-nav-previous-default h4{
-	display:none;
-}
-
-body.single-chapters .active label{
-	display:none !important;
-}
-
-@media (max-width:767px){
-
-	body.single-chapters .epn_nav .epn_left a{
-	font-size:16px;
-}
-
-body.single-chapters .epn_nav .epn_right a{
-	font-size:16px;
-}
-
-body.single-chapters #post-nav-previous-default li{
-	display:none;
-}
-
-body.single-chapters #post-nav-next-default li{
-	display:none;
-}
-
-body.single-chapters #post-nav-next-default{
-	margin-left:0px;
-	width:31px !important;
-}
-
-body.single-chapters #post-nav-previous-default{
-	width:31px !important;
-	}
-
-}
-
-
-
-@media (max-width:630px){
-
-	body.single-chapters #post-nav-previous-default li{
-	display:none;
-}
-
-body.single-chapters #post-nav-next-default li{
-	display:none;
-}
-
-body.single-chapters #post-nav-previous-default{
-	width:24px !important;
-	position:absolute !important;
-}
-
-body.single-chapters #post-nav-next-default{
-	margin-left:0px;
-	width:24px !important;
-	position:absolute !important;
-	}
-
+body.single-chapters .hentry .entry-header .uk-grid .uk-width-medium-1-3 .uk-clearfix .uk-align-right .uk-button-group a{
+	background-color:#3463ba !important;
 }
 
 
@@ -276,30 +221,24 @@ body.single-chapters #post-nav-next-default{
 /*-----------------------------------------------*/
 /*  Non-Static Homepage                          */
 /*-----------------------------------------------*/
+body.home #front-slider .uk-grid .carousel-prev{
+	background-color:#4b5fcc;
+}
+
+body.home #front-slider .uk-grid .carousel-next{
+	background-color:#4b5fcc;
+}
+
+body.home #front-slider .uk-grid h2{
+	background-color:#4e5fbf;
+}
+
 body.home #main a h3{
-	font-size:14px;
+	color:#4e5fbf;
 }
 
-body.home #main .hentry .chapter-content{
-	background-image:-webkit-linear-gradient(left, #3f3fd3 0%, rgb(52,138,199) 100%);
-	background-image:-o-linear-gradient(left, #3f3fd3 0%, rgb(52,138,199) 100%);
-	background-image:linear-gradient(to right, #3f3fd3 0%, rgb(52,138,199) 100%);
-}
-
-body.home #main .latest-chapters h2{
-	border-bottom-color:#3f3fd3;
-}
-
-body.home #sidebar .widget h3{
-	border-bottom-color:#3f3fd3;
-}
-
-@media (min-width:768px){
-
-	body.home #page #content .wrap #primary #main .uk-grid .uk-width-medium-5-10{
-	width:33% !important;
-	}
-
+body.home .new-manga .uk-grid-collapse .uk-overlay-panel{
+	background-color:#293eb1 !important;
 }
 
 
@@ -307,35 +246,16 @@ body.home #sidebar .widget h3{
 /*-----------------------------------------------*/
 /*  Mangas Template                              */
 /*-----------------------------------------------*/
-body.single-mangas .hentry .uk-margin-large-top .uk-clearfix{
-	display:none;
+body.single-mangas .hentry .entry-header h2{
+	color:#4e60ca;
 }
 
-body.single-mangas #foot-widgets{
-	display:none;
+body.single-mangas .manga-genres div a{
+	background-color:#4e60ca !important;
 }
 
 body.single-mangas .hentry .uk-grid h3{
-	border-bottom-color:#284cb8;
-}
-
-body.single-mangas .hentry .entry-header h2{
-	color:#348ac7;
-}
-
-body.single-mangas .manga-chapters .uk-clearfix .uk-float-right a{
-	display:none;
-}
-
-body.single-mangas #respond{
-	display:none;
-}
-
-body.single-mangas .hentry .uk-grid img{
-	border-top-left-radius:18px !important;
-	border-top-right-radius:18px !important;
-	border-bottom-left-radius:18px !important;
-	border-bottom-right-radius:18px !important;
+	border-bottom-color:#4e60ca;
 }
 
 body.single-mangas .manga-chapters .uk-clearfix small{
@@ -343,92 +263,52 @@ body.single-mangas .manga-chapters .uk-clearfix small{
 }
 
 body.single-mangas .hentry .manga-chapters .uk-clearfix{
-	display:inline-block;
-	border-top-left-radius:5px;
-	border-top-right-radius:5px;
-	border-bottom-left-radius:5px;
-	color:#c9c9c9;
-	-webkit-box-shadow:none;
-	box-shadow:none;
-	border-bottom-right-radius:5px;
+	display:inline-flex;
+	position:relative;
+	left:20px;
 }
 
-body.single-mangas .manga-chapters .uk-clearfix .uk-float-left a{
-	color:#ffffff;
-	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
-}
-
-body.single-mangas .manga-chapters .uk-clearfix .uk-float-right{
-	padding-left:11px;
-}
-
-body.single-mangas .manga-chapters .uk-clearfix a{
-	font-size:19px !important;
-	margin-right:7px;
-	background-image:-webkit-linear-gradient(left, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
-	background-image:-o-linear-gradient(left, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
-	background-image:linear-gradient(to right, rgb(63, 63, 211) 0%, rgb(52, 138, 199) 100%);
-}
-
-body.single-mangas .manga-chapters .uk-clearfix .uk-float-left{
-	margin-right:2px;
-	color:#262626;
+body.single-mangas .hentry .uk-margin-large-top .uk-clearfix{
+	display:none;
 }
 
 body.single-mangas #main .uk-clearfix .nav-links{
 	display:none;
 }
 
+body.single-mangas #comments{
+	display:none;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix .uk-float-left{
+	width:97px;
+	background-color:#b5b5b5;
+	font-size:10px;
+	text-align:center;
+	border-style:solid;
+	border-width:2px;
+	border-color:#4e60ca;
+	color:#2948f3;
+	margin-right:12px;
+}
+
+body.single-mangas #page #content .wrap #primary #main .hentry .uk-grid .manga-chapters .uk-clearfix .uk-float-left a{
+	text-decoration:underline !important;
+}
+
 body.single-mangas #masthead{
+	background-image:-webkit-linear-gradient(left, rgb(41, 62, 177) 0%, rgb(121, 135, 215) 100%);
+	background-image:-o-linear-gradient(left, rgb(41, 62, 177) 0%, rgb(121, 135, 215) 100%);
+	background-image:linear-gradient(to right, rgb(41, 62, 177) 0%, rgb(121, 135, 215) 100%);
+}
+
+body.single-mangas .manga-chapters .uk-clearfix a{
+	color:#263796;
+	text-shadow:rgba(0, 0, 0, 0.3) 0px 1px 1px;
+}
+
+body.single-mangas #content{
 	-webkit-transform:translatex(0px) translatey(0px);
 	-ms-transform:translatex(0px) translatey(0px);
 	transform:translatex(0px) translatey(0px);
-}
-
-body.single-mangas .manga-genres div a{
-	background-color:#3472df !important;
-}
-
-
-
-/*-----------------------------------------------*/
-/*  ""                                           */
-/*-----------------------------------------------*/
-body.postid-58 .manga-chapters .uk-clearfix .uk-float-left{
-	border-bottom-width:3px;
-}
-
-
-
-/*-----------------------------------------------*/
-/*  ""                                           */
-/*-----------------------------------------------*/
-body.postid-74 .uk-grid-small button{
-	background-color:#2858b8;
-}
-
-body.postid-74 #sidebar .widget .search-submit{
-	background-color:#2858b8;
-}
-
-body.postid-74 .categories ul li{
-	text-transform:uppercase;
-	display:inline;
-	-webkit-column-count:3;
-	column-count:3;
-	list-style-type:circle;
-	border-right-style:solid;
-}
-
-body.postid-74 #page #content .wrap #primary #main .hentry .entry-content .categories ul li{
-	-ms-grid-columns:auto 1fr !important;
-	grid-template-columns:auto 1fr !important;
-}
-
-body.postid-74 .categories ul a{
-	padding-left:5px;
-}
-
-body.postid-74 .items-outer .letter-section div a{
-	display:none;
 }
