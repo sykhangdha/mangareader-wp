@@ -1,0 +1,267 @@
+/*
+
+    RED DARK MANGAREADER THEME
+
+
+    T A B L E   O F   C O N T E N T S
+    ........................................................................
+
+    01. Global Styles
+    02. Archive Page
+    03. Chapters Template
+    04. Non-Static Homepage
+    05. Mangas Template
+
+*/
+
+
+
+/*-----------------------------------------------*/
+/*  Global Styles                                */
+/*-----------------------------------------------*/
+body #top-menu .menu-item a{
+	color:#e8e8e8 !important;
+}
+
+body #masthead{
+	height:77px;
+	background-image:-webkit-linear-gradient(left, #b31217 0%, #1f0909 98%);
+	background-image:-o-linear-gradient(left, #b31217 0%, #1f0909 98%);
+	background-image:linear-gradient(to right, #b31217 0%, #1f0909 98%);
+}
+
+body .navigation-top h1{
+	font-size:32px;
+}
+
+body #main a h3{
+	white-space:pre-wrap;
+	color:#a00d0d;
+}
+
+body #front-slider .uk-grid .owl-carousel-controls{
+	border-bottom-color:#dd3030;
+}
+
+body #front-slider .uk-grid h2{
+	background-color:#dd3030;
+	color:#ffffff;
+}
+
+body #front-slider .uk-grid .carousel-prev{
+	background-color:#960202;
+}
+
+body #front-slider .uk-grid .carousel-next{
+	background-color:#960202;
+}
+
+body #main div i{
+	color:#e11313;
+}
+
+body .new-manga .uk-grid-collapse .uk-overlay-panel{
+	background-color:#a61616 !important;
+}
+
+body .latest-chapters .page-title i{
+	color:#adadad;
+}
+
+body #main .latest-chapters h2{
+	border-bottom-color:#dd3030;
+	background-image:-webkit-linear-gradient(left, #b31217 0%, #1f0909 98%);
+	background-image:-o-linear-gradient(left, #b31217 0%, #1f0909 98%);
+	background-image:linear-gradient(to right, #b31217 0%, #1f0909 98%);
+	color:#ffffff;
+}
+
+body #sidebar .widget h3{
+	border-bottom-color:#dd3030;
+	color:#ffffff;
+	background-image:-webkit-linear-gradient(left, #b31217 0%, #1f0909 98%);
+	background-image:-o-linear-gradient(left, #b31217 0%, #1f0909 98%);
+	background-image:linear-gradient(to right, #b31217 0%, #1f0909 98%);
+	border-bottom-style:none;
+	padding-left:11px;
+}
+
+body #content{
+	-webkit-transform:translatex(0px) translatey(0px);
+	-ms-transform:translatex(0px) translatey(0px);
+	transform:translatex(0px) translatey(0px);
+}
+
+body #site-pagination a{
+	background-color:#600a0a !important;
+}
+
+body #page #masthead .wrap .navigation-top #site-navigation #top-menu .menu-item a{
+	height:auto !important;
+}
+
+body #top-menu .menu-item a:hover{
+	background-color:transparent;
+}
+
+body .uk-grid-collapse .uk-block-muted a:hover{
+	color:#5e5e5e !important;
+}
+
+body #main .page-header h2{
+	border-bottom-style:none;
+	padding-left:11px;
+}
+
+body .entry-header .uk-button-group .next{
+	background-color:#212121 !important;
+}
+
+body .entry-header .uk-button-group a{
+	background-color:#212121 !important;
+}
+
+body .entry-header .next i{
+	color:#efefef !important;
+}
+
+body .entry-header .uk-button-group .uk-icon-angle-double-right{
+	color:#e2e2e2 !important;
+}
+
+body .entry-header .uk-button-group .uk-icon-angle-left{
+	color:#ffffff !important;
+}
+
+body .entry-header .uk-button-group .uk-icon-angle-double-left{
+	color:#ffffff !important;
+}
+
+body .hentry .uk-grid .uk-alert-warning{
+	display:none;
+}
+
+@media (min-width:768px){
+
+	body #page #content .wrap #primary #main .uk-grid .uk-width-medium-5-10{
+	width:33% !important;
+	}
+
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Archive Page                                 */
+/*-----------------------------------------------*/
+body.archive .uk-width-medium-5-10 .hentry .uk-margin-bottom .chapter-content div{
+	border-bottom-style:none;
+}
+
+body.archive #sidebar .widget h3{
+	background-image:-webkit-linear-gradient(left, rgb(179, 18, 23) 0%, rgb(31, 9, 9) 98%);
+	background-image:-o-linear-gradient(left, rgb(179, 18, 23) 0%, rgb(31, 9, 9) 98%);
+	background-image:linear-gradient(to right, rgb(179, 18, 23) 0%, rgb(31, 9, 9) 98%);
+}
+
+body.archive #main .page-header h2{
+	background-image:-webkit-linear-gradient(left, rgb(179, 18, 23) 0%, rgb(31, 9, 9) 98%);
+	background-image:-o-linear-gradient(left, rgb(179, 18, 23) 0%, rgb(31, 9, 9) 98%);
+	background-image:linear-gradient(to right, rgb(179, 18, 23) 0%, rgb(31, 9, 9) 98%);
+	color:#ffffff;
+}
+
+@media (min-width:481px){
+
+	body.archive #main div small{
+	display:none;
+	}
+
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Chapters Template                            */
+/*-----------------------------------------------*/
+body.single-chapters #top-menu .menu-item a{
+	color:#2d2d2d;
+}
+
+body.single-chapters .wp-dark-mode-switcher label{
+	display:none !important;
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Non-Static Homepage                          */
+/*-----------------------------------------------*/
+body.home #main a h3{
+	color:#a00d0d;
+}
+
+body.home .uk-grid-collapse .uk-width-xlarge-8-10 .uk-block-muted .uk-vertical-align-middle a{
+	color:#530707 !important;
+}
+
+
+
+/*-----------------------------------------------*/
+/*  Mangas Template                              */
+/*-----------------------------------------------*/
+body.single-mangas .manga-genres div a{
+	background-color:#a40303 !important;
+}
+
+body.single-mangas .hentry .entry-header h2{
+	color:#a40303;
+}
+
+body.single-mangas .hentry .uk-grid h3{
+	border-bottom-color:#a60c0c;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix small{
+	display:none;
+}
+
+body.single-mangas .hentry .manga-chapters .uk-clearfix{
+	display:inline-block;
+}
+
+body.single-mangas #page #content .wrap #primary #main .hentry .uk-grid .manga-chapters .uk-clearfix{
+	-ms-grid-columns:1fr 1fr 1fr !important;
+	grid-template-columns:1fr 1fr 1fr !important;
+	-ms-grid-rows:auto 1fr auto 1fr !important;
+	grid-template-rows:auto 1fr auto 1fr !important;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix .uk-float-left{
+	text-align:center;
+	width:513px;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix a{
+	font-size:19px !important;
+	border-style:solid;
+	border-color:#232323;
+	border-width:2px;
+	margin-right:13px;
+}
+
+body.single-mangas .hentry .uk-margin-large-top .uk-clearfix{
+	display:none;
+}
+
+body.single-mangas #main .uk-clearfix .nav-links{
+	display:none;
+}
+
+body.single-mangas #comments{
+	display:none;
+}
+
+body.single-mangas .manga-chapters .uk-clearfix a:hover{
+	color:#4c4c4c;
+}
