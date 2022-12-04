@@ -24,6 +24,10 @@ http://hasky.rf.gd/mangareader
 ![alt text](http://i.epvpimg.com/xD8gaab.png)
 
 
+# APPLYING THEMES
+Use any of the .css files from the github and copy and paste the css code by going to Appearance --> Customize and pasting the code into "Additional CSS".
+
+
 # Based on MangaStarter/UiKIT
 The following theme uses MangaStarter as the base and adds additional features to the theme.
 - Updated functions.php for "Manga Directory" page
@@ -50,4 +54,5 @@ be available
 
 // Previous and Next Chapter
 - Recommended plugin: wp-post-nav
+
 
