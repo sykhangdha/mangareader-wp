@@ -22,6 +22,10 @@ body #main a h3{
 	color:#c0392b;
 }
 
+#main a h3{
+	white-space:pre-line;
+}
+
 body .navigation-top .site-title a{
 	font-size:32px;
 }
