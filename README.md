@@ -19,4 +19,17 @@ With development being basically done on my WP-mangareader-plugin project I am i
 		 - Remove the preg replace function to remove this option
 
 ## Download
-Check the "TEST" folder from this github. The features mentioned above are not fully implemented yet
+Check the test folder
+
+
+## Homepage
+![enter image description here](http://i.epvpimg.com/3Xujeab.png)
+
+
+## Manga archive Page
+
+![enter image description here](http://i.epvpimg.com/gZ7bgab.png)
+
+## Chapter list page
+
+![enter image description here](http://i.epvpimg.com/WTvfdab.png)
