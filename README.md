@@ -1,12 +1,22 @@
+# MangaStarter Rewritten
+With development being basically done on my WP-mangareader-plugin project I am in the process of rewriting parts of the code for the orginal MangaStarter theme to work better. The rewrite will implement the wp-mangareader code into the current reader.
 
-## REWRITE IN PROGRESS!! WORKING ON IMPLEMENTING THE WP-MANGAREADER FEATURES
 
-### Currently Working On
+# What's New?
 
-- Complete rewrite of some parts of the code
-- Implementation of the wp-mangareader plugin I've been working on
-- Improved Manga info page
-- New homepage
-- Better style.css implementation
-- and whatever else I can think of later
+ - Style.CSS changes
+	 - The new rewrite will make it so you no longer have to copy and paste the style.css for the site to work properly. 
+ - New reader functions
+	 - Added new javascript functions to the reader
+		 - Page by Page | List view choice (remembers session)
+		 - Next/Prev chapter button added + going to next chapter using arrow keys or clicking on the last image
+		 - Preload fixes(w.i.p)
+ - New Manga Archive page
+	 - The new archive page now shows the 3 latest chapters added and the date
+ - Manga Info page changes
+	 - Better chapter listing view
+	 - Changed so that it wil replace [Manga Name] 1 with Chapter 1 instead (see content-manga.php for changes)
+		 - Remove the preg replace function to remove this option
 
+## Download
+Check the "TEST" folder from this github. The features mentioned above are not fully implemented yet
