@@ -4,7 +4,7 @@
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
  */
-// Get the chapter parent (manga) 
+// Get the chapter parent (manga)
 $relationship = get_field('manga');
 
 // Source of images, internal or external.
@@ -13,6 +13,49 @@ if (get_field('source') == 'Upload') {
     sort($images);
 } else {
     $images = get_field('external', $post->ID);
+}
+
+// Retrieve the previous and next chapter URLs
+$prev_chapter_url = '';
+$next_chapter_url = '';
+
+if ($relationship && is_array($relationship) && count($relationship) > 0) {
+    $manga = $relationship[0];
+
+    // Get all chapters related to the manga
+    $manga_chapters = get_posts(array(
+        'post_type' => 'chapters',
+        'orderby' => 'date',
+        'order' => 'ASC', // Order by ascending date to get the previous and next chapters
+        'numberposts' => -1, // Retrieve all chapters
+        'meta_query' => array(
+            array(
+                'key' => 'manga', // name of custom field
+                'value' => '"' . $manga->ID . '"', // matches exactly "123", not just 123. This prevents a match for "1234"
+                'compare' => 'LIKE'
+            )
+        )
+    ));
+
+    // Find the current chapter's index in the manga chapters
+    $current_chapter_index = -1;
+    foreach ($manga_chapters as $index => $chapter) {
+        if ($chapter->ID === $post->ID) {
+            $current_chapter_index = $index;
+            break;
+        }
+    }
+
+    // Calculate the previous and next chapter URLs
+    if ($current_chapter_index > 0) {
+        $prev_chapter = $manga_chapters[$current_chapter_index - 1];
+        $prev_chapter_url = get_permalink($prev_chapter->ID);
+    }
+
+    if ($current_chapter_index < count($manga_chapters) - 1) {
+        $next_chapter = $manga_chapters[$current_chapter_index + 1];
+        $next_chapter_url = get_permalink($next_chapter->ID);
+    }
 }
 ?>
 
@@ -38,7 +81,7 @@ if (get_field('source') == 'Upload') {
                 <!-- PAGED and LIST View Buttons -->
                 <div class="uk-clearfix">
                     <div class="uk-align-center">
-                        <button id="paged-view-button" class="uk-button uk-button-primary">Page by Page</button>
+                        <button id="paged-view-button" class="uk-button uk-button-primary active">Page by Page</button>
                         <button id="list-view-button" class="uk-button uk-button-primary">List View</button>
                     </div>
                 </div>
@@ -49,25 +92,19 @@ if (get_field('source') == 'Upload') {
                 <div class="uk-clearfix">
                     <div class="uk-align-right">
                         <div class="uk-button-group">
-                            <a class="first uk-button uk-button-primary disabled-button" href="javascript:"><i
-                                        class="uk-icon-angle-double-left"></i></a>
-                            <a class="previous uk-button uk-button-primary disabled-button" href="javascript:"><i
-                                        class="uk-icon-angle-left"></i></a>
-                        </div>
-
-                        <div class="uk-button uk-form-select" data-uk-form-select>
-                            <span id="page-list" class="uk-text-center"></span>
-                            <i class="uk-icon-angle-down"></i>
-                            <select id="page-list-select" class="selectpicker">
-                                <?php mangastarter_reader_chapter_pages(); ?>
-                            </select>
-                        </div>
-
-                        <div class="uk-button-group">
-                            <a class="next uk-button uk-button-primary" href="javascript:"><i
-                                        class="uk-icon-angle-right"></i></a>
-                            <a class="last uk-button uk-button-primary" href="javascript:"><i
-                                        class="uk-icon-angle-double-right"></i></a>
+                            <?php
+                            // Check if there's a previous chapter
+                            if (!empty($prev_chapter_url)) :
+                            ?>
+                                <a class="previous-chapter uk-button uk-button-primary" href="<?php echo esc_url($prev_chapter_url); ?>"><?php _e('Previous Chapter', 'your-theme-textdomain'); ?></a>
+                            <?php endif; ?>
+                            
+                            <?php
+                            // Check if there's a next chapter
+                            if (!empty($next_chapter_url)) :
+                            ?>
+                                <a class="next-chapter uk-button uk-button-primary" href="<?php echo esc_url($next_chapter_url); ?>"><?php _e('Next Chapter', 'your-theme-textdomain'); ?></a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -116,6 +153,8 @@ if (get_field('source') == 'Upload') {
     </div>
 </article>
 
+
+
 <script>
     (function ($, root, undefined) {
         $(function () {
@@ -135,8 +174,8 @@ if (get_field('source') == 'Upload') {
                 ?>
             ];
 
-            var prev_chapter = "";
-            var next_chapter = "";
+            var prev_chapter = "<?php echo esc_url($prev_chapter_url); ?>";
+            var next_chapter = "<?php echo esc_url($next_chapter_url); ?>";
             var first_chapter = 1;
             var last_chapter = pages.length;
             var preload_next = 3;
@@ -144,6 +183,17 @@ if (get_field('source') == 'Upload') {
             var current_page = 1;
             var base_url = window.location.href;
             var initialized = false;
+
+            // Function to set button styles based on the active view
+            function setActiveViewButton(view) {
+                if (view === 'list') {
+                    $('#list-view-button').addClass('active');
+                    $('#paged-view-button').removeClass('active');
+                } else {
+                    $('#paged-view-button').addClass('active');
+                    $('#list-view-button').removeClass('active');
+                }
+            }
 
             function changePage(id, noscroll, nohash) {
                 id = parseInt(id);
@@ -221,6 +271,18 @@ if (get_field('source') == 'Upload') {
                 return false;
             }
 
+            // Keyboard navigation function
+            function handleArrowKeys(event) {
+                if (event.keyCode === 37) { // Left arrow key
+                    prevPage();
+                } else if (event.keyCode === 39) { // Right arrow key
+                    nextPage();
+                }
+            }
+
+            // Add event listener for arrow keys
+            $(document).keydown(handleArrowKeys);
+
             $('.previous').click(function () {
                 prevPage();
             });
@@ -268,12 +330,16 @@ if (get_field('source') == 'Upload') {
             function togglePagedView() {
                 $('.page-by-page').show();
                 $('.list-view').hide();
+                setActiveViewButton('paged'); // Set Page by Page as active view
+                setViewModeCookie('paged'); // Store the user's selection in a cookie
             }
 
             function toggleListView() {
                 $('.page-by-page').hide();
                 $('.list-view').show();
                 setupListViewClickHandlers();
+                setActiveViewButton('list'); // Set List View as active view
+                setViewModeCookie('list'); // Store the user's selection in a cookie
             }
 
             function setupListViewClickHandlers() {
@@ -298,20 +364,34 @@ if (get_field('source') == 'Upload') {
             });
 
             // Initial View Mode based on Cookie
-            var viewMode = getCookie('viewMode');
+            var viewMode = getViewModeCookie();
             if (viewMode === 'list') {
                 toggleListView();
             } else {
                 togglePagedView();
             }
 
-            function getCookie(name) {
-                var value = "; " + document.cookie;
-                var parts = value.split("; " + name + "=");
-                if (parts.length == 2) return parts.pop().split(";").shift();
+            // Function to set the user's selected view mode in a cookie
+            function setViewModeCookie(view) {
+                document.cookie = "viewMode=" + view + "; path=/";
             }
 
+            // Function to get the user's selected view mode from the cookie
+            function getViewModeCookie() {
+                var name = "viewMode=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var cookieArray = decodedCookie.split(';');
+                for (var i = 0; i < cookieArray.length; i++) {
+                    var cookie = cookieArray[i];
+                    while (cookie.charAt(0) === ' ') {
+                        cookie = cookie.substring(1);
+                    }
+                    if (cookie.indexOf(name) === 0) {
+                        return cookie.substring(name.length, cookie.length);
+                    }
+                }
+                return "";
+            }
         });
     })(jQuery, this);
 </script>
-
