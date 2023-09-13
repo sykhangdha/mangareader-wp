@@ -23,8 +23,7 @@ Check the test folder
 
 
 ## Homepage
-![enter image description here](http://i.epvpimg.com/3Xujeab.png)
-
+- W.I.P
 
 ## Manga archive Page
 
