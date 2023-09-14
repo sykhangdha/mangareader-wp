@@ -5,7 +5,10 @@ With development being basically done on my WP-mangareader-plugin project I am i
 # What's New?
 
  - Style.CSS changes
-	 - The new rewrite will make it so you no longer have to copy and paste the style.css for the site to work properly. 
+	 - The new rewrite will make it so you no longer have to copy and paste the style.css for the site to work properly.
+- New homepage design
+	 - Shows up to 15 mangas and up to 3 of there latest chatpers(see images below)
+		 - View more chapters button added to redirect to the recent chapters list template *NEW
  - New reader functions
 	 - Added new javascript functions to the reader
 		 - Page by Page | List view choice (remembers session)
@@ -13,6 +16,7 @@ With development being basically done on my WP-mangareader-plugin project I am i
 		 - Preload fixes(w.i.p)
  - New Manga Archive page
 	 - The new archive page now shows the 3 latest chapters added and the date
+         - Filter by search + A-Z index added. 
  - Manga Info page changes
 	 - Better chapter listing view
 	 - Changed so that it wil replace [Manga Name] 1 with Chapter 1 instead (see content-manga.php for changes)
@@ -23,12 +27,16 @@ Check the test folder
 
 
 ## Homepage
-- W.I.P
+![enter image description here](http://i.epvpimg.com/ngWVeab.png)
 
 ## Manga archive Page
 
-![enter image description here](http://i.epvpimg.com/gZ7bgab.png)
+![enter image description here](http://i.epvpimg.com/blp3bab.png)
 
-## Chapter list page
+## Manga Info Page
 
 ![enter image description here](http://i.epvpimg.com/WTvfdab.png)
+
+## Recent Chapters List
+
+![enter image description here](http://epvpimg.com/g5lzcab.png)
