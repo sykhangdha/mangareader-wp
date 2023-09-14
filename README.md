@@ -23,7 +23,8 @@ With development being basically done on my WP-mangareader-plugin project I am i
 		 - Remove the preg replace function to remove this option
 
 ## Download
-Check the test folder
+
+- There are two folders in the github TEST/BETA. Check to see which one has been updated to download. Download the xml file in the folder and import using the wordpress import tool
 
 
 ## Homepage
