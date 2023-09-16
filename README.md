@@ -24,7 +24,7 @@ With development being basically done on my WP-mangareader-plugin project I am i
 
 ## Download
 
-- There are two folders in the github TEST/BETA. Check to see which one has been updated to download. Download the xml file in the folder and import using the wordpress import tool
+- [There are two folders in the github TEST/BETA. Check to see which one has been updated to download. Download the xml file in the folder and import using the wordpress import tool](https://github.com/sykhangdha/mangareader-wp/releases)
 
 
 ## Homepage
