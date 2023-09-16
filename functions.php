@@ -317,3 +317,69 @@ add_action( 'pre_get_posts', 'my_change_sort_order');
            $query->set( 'orderby', 'title' );
         endif;    
     };
+
+// Modify the query for mangas to include wp-pagenavi
+function custom_manga_archive_query($query) {
+    if (is_post_type_archive('mangas') && $query->is_main_query()) {
+        // Set the number of posts per page (adjust as needed)
+        $query->set('posts_per_page', 10); // You can change this value as needed
+        $query->set('paged', get_query_var('paged'));
+    }
+}
+add_action('pre_get_posts', 'custom_manga_archive_query');
+
+/**
+ * Modify the main query to include custom post types in search results.
+ *
+ * @param WP_Query $query The main query.
+ */
+function include_custom_post_types_in_search($query) {
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    if ($query->is_search) {
+        $post_types = array('post', 'page', 'manga'); // Add 'manga' to the list of post types.
+        $query->set('post_type', $post_types);
+    }
+}
+add_action('pre_get_posts', 'include_custom_post_types_in_search');
+
+function load_more_chapters() {
+    $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
+    
+    $args = array(
+        'post_type'      => 'chapters',
+        'posts_per_page' => 5,
+        'offset'         => $offset,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    );
+
+    $recent_chapters_query = new WP_Query($args);
+
+    if ($recent_chapters_query->have_posts()) :
+        while ($recent_chapters_query->have_posts()) : $recent_chapters_query->the_post();
+            // Retrieve chapter information and format as needed
+            $chapter_title = get_field('title');
+            $chapter_date = get_the_date('F j, Y');
+            $manga = get_field('manga');
+
+            // Output the HTML structure for each chapter
+            ?>
+            <div class="chapter-item">
+                <h3 class="chapter-title"><a href="<?php the_permalink(); ?>"><?php echo get_the_title($manga->ID); ?></a></h3>
+                <p class="chapter-title"><?php echo $chapter_title; ?></p>
+            </div>
+            <?php
+        endwhile;
+        wp_reset_postdata();
+    else :
+        echo 'No more chapters found.';
+    endif;
+
+    wp_die(); // Always include this to exit the script properly
+}
+
+add_action('wp_ajax_load_more_chapters', 'load_more_chapters');
+add_action('wp_ajax_nopriv_load_more_chapters', 'load_more_chapters');
