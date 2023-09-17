@@ -81,8 +81,8 @@
                     "id": ""
                 },
                 "choices": {
-                    "Upload": "Upload",
                     "External": "External"
+                    "Upload": "Upload",
                 },
                 "other_choice": 0,
                 "save_other_choice": 0,
