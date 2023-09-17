@@ -17,7 +17,8 @@ With development being basically done on my WP-mangareader-plugin project I am i
 		 - Preload fixes(w.i.p)
  - New Manga Archive page
 	 - The new archive page now shows the 3 latest chapters added and the date
-         - Filter by search + A-Z index added. 
+         - Filter by search + A-Z index added.
+         - Recent chapters page(there is a bug with load more button)
  - Manga Info page changes
 	 - Better chapter listing view
 	 - Changed so that it wil replace [Manga Name] 1 with Chapter 1 instead (see content-manga.php for changes)
