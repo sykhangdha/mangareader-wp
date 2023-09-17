@@ -112,8 +112,6 @@ if ($relationship && is_array($relationship) && count($relationship) > 0) {
         </div>
     </header><!-- .entry-header -->
 
-   
-
     <div class="entry-content uk-margin-top">
         <div class="uk-grid" data-uk-grid-margin>
             <div class="uk-width-small-1-1">
@@ -122,54 +120,53 @@ if ($relationship && is_array($relationship) && count($relationship) > 0) {
                     <?php mangastarter_reader_first_page(); ?>
                 </div>
                 <!-- List View -->
-<div class="list-view" style="display:none;">
-    <?php
-    if (get_field('source') == 'Upload') {
-        echo '<ul class="image-list">';
-        foreach ($images as $image) {
-            echo '<li><img src="' . $image['full_image_url'] . '" alt="Image" class="list-view-image"></li>';
-        }
-        echo '</ul>';
-    } else {
-        $imageUrls = explode("\n", $images);
-        echo '<ul class="image-list">';
-        foreach ($imageUrls as $imageUrl) {
-            $imageUrl = preg_replace('/\s+/', '', $imageUrl);
-            echo '<li><img src="' . $imageUrl . '" alt="Image" class="list-view-image"></li>';
-        }
-        echo '</ul>';
-    }
-    ?>
-</div>
-<!-- End of List View -->
+                <div class="list-view" style="display:none;">
+                    <?php
+                    if (get_field('source') == 'Upload') {
+                        echo '<ul class="image-list">';
+                        foreach ($images as $image) {
+                            echo '<li><img src="' . $image['full_image_url'] . '" alt="Image" class="list-view-image"></li>';
+                        }
+                        echo '</ul>';
+                    } else {
+                        $imageUrls = explode("\n", $images);
+                        echo '<ul class="image-list">';
+                        foreach ($imageUrls as $imageUrl) {
+                            $imageUrl = preg_replace('/\s+/', '', $imageUrl);
+                            echo '<li><img src="' . $imageUrl . '" alt="Image" class="list-view-image"></li>';
+                        }
+                        echo '</ul>';
+                    }
+                    ?>
+                </div>
+                <!-- End of List View -->
             </div>
         </div>
 
+        <!-- Add the Previous and Next chapter buttons below the chapter title -->
+        <div class="chapter-navigation-bottom uk-margin-top">
+            <div class="uk-width-small-1-1">
+                <div class="uk-clearfix">
+                    <div class="uk-align-left">
+                        <?php
+                        // Check if there's a previous chapter
+                        if (!empty($prev_chapter_url)) :
+                        ?>
+                            <a class="previous-chapter uk-button uk-button-primary" href="<?php echo esc_url($prev_chapter_url); ?>"><?php _e('Previous Chapter', 'your-theme-textdomain'); ?></a>
+                        <?php endif; ?>
+                    </div>
 
- <!-- Add the Previous and Next chapter buttons below the chapter title -->
-    <div class="chapter-navigation-bottom uk-margin-top">
-        <div class="uk-width-small-1-1">
-            <div class="uk-clearfix">
-                <div class="uk-align-left">
-                    <?php
-                    // Check if there's a previous chapter
-                    if (!empty($prev_chapter_url)) :
-                    ?>
-                        <a class="previous-chapter uk-button uk-button-primary" href="<?php echo esc_url($prev_chapter_url); ?>"><?php _e('Previous Chapter', 'your-theme-textdomain'); ?></a>
-                    <?php endif; ?>
-                </div>
-
-                <div class="uk-align-right">
-                    <?php
-                    // Check if there's a next chapter
-                    if (!empty($next_chapter_url)) :
-                    ?>
-                        <a class="next-chapter uk-button uk-button-primary" href="<?php echo esc_url($next_chapter_url); ?>"><?php _e('Next Chapter', 'your-theme-textdomain'); ?></a>
-                    <?php endif; ?>
+                    <div class="uk-align-right">
+                        <?php
+                        // Check if there's a next chapter
+                        if (!empty($next_chapter_url)) :
+                        ?>
+                            <a class="next-chapter uk-button uk-button-primary" href="<?php echo esc_url($next_chapter_url); ?>"><?php _e('Next Chapter', 'your-theme-textdomain'); ?></a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <div class="uk-grid" data-uk-grid-margin>
             <div class="uk-width-small-1-1">
@@ -379,6 +376,13 @@ if ($relationship && is_array($relationship) && count($relationship) > 0) {
                         $('html, body').animate({
                             scrollTop: nextImage.offset().top
                         }, 'fast');
+                    } else {
+                        // If there's no next image, go to the next chapter
+                        if (next_chapter != "") {
+                            location.href = next_chapter;
+                        } else {
+                            alert('<?php _e('This is the last page of the last chapter.', 'mangastarter'); ?>');
+                        }
                     }
                 });
             }
