@@ -14,11 +14,11 @@ The final release of the mangastarter rework has been released. No further chang
 	 - Added new javascript functions to the reader
 		 - Page by Page | List view choice (remembers session)
 		 - Next/Prev chapter button added + going to next chapter using arrow keys or clicking on the last image
-		 - Preload fixes(w.i.p)
+		 - Preload fixes
  - New Manga Archive page
 	 - The new archive page now shows the 3 latest chapters added and the date
          - Filter by search + A-Z index added.
-         - Recent chapters page(there is a bug with load more button)
+         - Recent chapters page
  - Manga Info page changes
 	 - Better chapter listing view
 	 - Changed so that it wil replace [Manga Name] 1 with Chapter 1 instead (see content-manga.php for changes)
