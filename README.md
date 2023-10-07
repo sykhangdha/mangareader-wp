@@ -26,7 +26,7 @@ The final release of the mangastarter rework has been released. No further chang
 
 ## Download
 
-- [There are two folders in the github TEST/BETA. Check to see which one has been updated to download. Download the xml file in the folder and import using the wordpress import tool](https://github.com/sykhangdha/mangareader-wp/releases)
+- [Release Page](https://github.com/sykhangdha/mangareader-wp/releases)
 
 
 ## Homepage
