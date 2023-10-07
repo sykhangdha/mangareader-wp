@@ -1,5 +1,5 @@
 # MangaStarter Rewritten
-With development being basically done on my WP-mangareader-plugin project I am in the process of rewriting parts of the code for the orginal MangaStarter theme to work better. The rewrite will implement the wp-mangareader code into the current reader. This will be a one time update and any additional updates will be added if there are any additions/fixes to the reader. The latest uploade in the 'TEST' folder is pretty much a working release but does not include the new homepage I am working on and some reader functions. 
+The final release of the mangastarter rework has been released. No further changes planned.
 
 [DEMO HERE
 ](http://skyreader.decentrealizedweb.xyz/)
