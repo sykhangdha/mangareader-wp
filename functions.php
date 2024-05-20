@@ -346,40 +346,43 @@ function include_custom_post_types_in_search($query) {
 add_action('pre_get_posts', 'include_custom_post_types_in_search');
 
 function load_more_chapters() {
-    $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
-    
-    $args = array(
-        'post_type'      => 'chapters',
-        'posts_per_page' => 5,
-        'offset'         => $offset,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-    );
+    $args = $_POST['query'];
+    $additional_query = new WP_Query($args);
 
-    $recent_chapters_query = new WP_Query($args);
-
-    if ($recent_chapters_query->have_posts()) :
-        while ($recent_chapters_query->have_posts()) : $recent_chapters_query->the_post();
-            // Retrieve chapter information and format as needed
-            $chapter_title = get_field('title');
+    if ($additional_query->have_posts()) {
+        while ($additional_query->have_posts()) {
+            $additional_query->the_post();
+            $chapter_title = get_the_title(); // Corrected to get the chapter title
             $chapter_date = get_the_date('F j, Y');
             $manga = get_field('manga');
 
-            // Output the HTML structure for each chapter
-            ?>
-            <div class="chapter-item">
-                <h3 class="chapter-title"><a href="<?php the_permalink(); ?>"><?php echo get_the_title($manga->ID); ?></a></h3>
-                <p class="chapter-title"><?php echo $chapter_title; ?></p>
-            </div>
-            <?php
-        endwhile;
-        wp_reset_postdata();
-    else :
-        echo 'No more chapters found.';
-    endif;
+            if ($manga) {
+                foreach ($manga as $manga_item) {
+                    $manga_title = get_the_title($manga_item); // Retrieve the manga title using the manga item ID
+                    
+                    // Display the chapter information within table row
+                    ?>
+                    <tr class="chapter-item">
+                        <td class="chapter-title"><a href="<?php the_permalink(); ?>"><?php echo esc_html($chapter_title); ?></a></td>
+                        <td class="manga-name"><a href="<?php echo esc_url(get_permalink($manga_item)); ?>"><?php echo esc_html($manga_title); ?></a></td>
+                        <td class="chapter-date"><?php echo esc_html($chapter_date); ?></td>
+                    </tr>
+                    <?php
+                }
+            }
+        }
+    }
 
-    wp_die(); // Always include this to exit the script properly
+    wp_die();
 }
 
 add_action('wp_ajax_load_more_chapters', 'load_more_chapters');
 add_action('wp_ajax_nopriv_load_more_chapters', 'load_more_chapters');
+
+
+function add_chapters_to_homepage_query($query) {
+    if (is_home() && $query->is_main_query()) {
+        $query->set('post_type', array('post', 'chapters'));
+    }
+}
+add_action('pre_get_posts', 'add_chapters_to_homepage_query');
