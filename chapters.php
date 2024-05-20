@@ -1,7 +1,7 @@
 <?php
 /**
  * Features for the addition, sorting and displaying of chapters
- * in the back end and the front
+ * in the back end and the front. Uses preg replace to display chapters.
  */
  
 /**
@@ -53,30 +53,36 @@ function mangastarter_chapter_list() {
     $post_slug = get_post_field( 'post_name' );
     ?>
 
-    <div class="chapter-list">
-        <?php
-        if ( $manga_chapters ) {
-            foreach ( $manga_chapters as $chapters ) {
-                $chapter_title = get_the_title( $chapters->ID );
-                // Remove the post type manga name from the chapter title
-                $chapter_number = preg_replace('/^[^\d]+(\d+).*$/i', '$1', $chapter_title);
-                ?>
-                <a href="<?php echo site_url(); ?>/manga/<?php echo $post_slug; ?>/<?php echo $chapters->post_name; ?>" class="chapter-item">
-                    <div>
-                        Chapter <?php echo $chapter_number; ?>
-                    </div>
-                    <small><?php the_field( 'title', $chapters->ID ); ?> </small>
-                    <div class="date">
-                        <?php echo get_the_date( 'F d, Y', $chapters->ID ); ?>
-                    </div>
-                </a>
-            <?php
+  <div class="chapter-list">
+    <?php
+    if ($manga_chapters) {
+        foreach ($manga_chapters as $chapters) {
+            $chapter_title = get_the_title($chapters->ID);
+            // Extract the last number from the title as the chapter number
+            $chapter_number = '';
+            if (preg_match('/\b(\d+)\b(?!.*\b\d+\b)/', $chapter_title, $matches)) {
+                $chapter_number = $matches[1];
+            } else {
+                $chapter_number = __('N/A', 'mangastarter'); // Set a default value if chapter number is not found
             }
-        } else {
-            echo '<p>' . __( 'There are no chapters available.', 'mangastarter' ) . '</p>';
+            ?>
+            <a href="<?php echo esc_url(get_permalink($chapters->ID)); ?>" class="chapter-item">
+                <div>
+                    Chapter <?php echo $chapter_number; ?>
+                </div>
+                <small><?php the_field('title', $chapters->ID); ?> </small>
+                <div class="date">
+                    <?php echo get_the_date('F d, Y', $chapters->ID); ?>
+                </div>
+            </a>
+        <?php
         }
-        ?>
-    </div>
+    } else {
+        echo '<p>' . __('There are no chapters available.', 'mangastarter') . '</p>';
+    }
+    ?>
+</div>
+
 
     <style>
         .chapter-list {
