@@ -1,13 +1,13 @@
 # MangaStarter Rewritten
 
-# Last WP Version Tested: 6.4.1
+# Last WP Version Tested: 6.5.3
 
-[Install Guide](https://skyha.c1.is/mangastarter-reworked/)
+Install Guide: Not yet Available
 
 The final release of the mangastarter rework has been released. No further changes planned. Any additional changes/extensions for the wordpress theme will be available from my personal site http://skyha.decentrealizedweb.xyz/
 
 [DEMO HERE
-](http://skyreader.decentrealizedweb.xyz/)
+](http://skymanga.42web.io/)
 # What's New?
 
  - Style.CSS changes
