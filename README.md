@@ -4,7 +4,7 @@
 
 Install Guide: Not yet Available
 
-The final release of the mangastarter rework has been released. No further changes planned. Any additional changes/extensions for the wordpress theme will be available from my personal site http://skyha.decentrealizedweb.xyz/
+Download: [BETA VERSION(5.18.24)](https://github.com/sykhangdha/mangareader-wp/releases/tag/Revival1)
 
 [DEMO HERE
 ](http://skymanga.42web.io/)
