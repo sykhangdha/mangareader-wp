@@ -8,6 +8,12 @@ Download: [BETA VERSION(5.18.24)](https://github.com/sykhangdha/mangareader-wp/r
 
 [DEMO HERE
 ](http://skymanga.42web.io/)
+
+# Upcoming Additions
+- New settings page called 'Themes/Styles'
+  	- Gives users a choice between multiple themes and different homepage/recent chapters style!
+
+
 # What's New?
 
  - Style.CSS changes
