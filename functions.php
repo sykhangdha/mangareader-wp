@@ -386,3 +386,120 @@ function add_chapters_to_homepage_query($query) {
     }
 }
 add_action('pre_get_posts', 'add_chapters_to_homepage_query');
+
+// Add the settings page to the admin menu
+function add_themes_styles_settings_page() {
+    add_theme_page(
+        'Themes/Styles', // Page title
+        'Themes/Styles', // Menu title
+        'manage_options', // Capability
+        'themes-styles-settings', // Menu slug
+        'render_themes_styles_settings_page' // Function to display the page
+    );
+}
+add_action('admin_menu', 'add_themes_styles_settings_page');
+
+// Render the settings page
+function render_themes_styles_settings_page() {
+    ?>
+    <div class="wrap">
+        <h1>Themes/Styles Settings</h1>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields('themes_styles_settings_group');
+            do_settings_sections('themes-styles-settings');
+            submit_button();
+            ?>
+        </form>
+    </div>
+    <?php
+}
+
+// Register settings, sections, and fields
+function themes_styles_settings_init() {
+    register_setting('themes_styles_settings_group', 'selected_recent_chapters_template');
+    register_setting('themes_styles_settings_group', 'selected_theme_css');
+
+    add_settings_section(
+        'themes_styles_settings_section',
+        'Template Settings',
+        'themes_styles_settings_section_callback',
+        'themes-styles-settings'
+    );
+
+    add_settings_field(
+        'selected_recent_chapters_template',
+        'Select Recent Chapters Template',
+        'selected_recent_chapters_template_callback',
+        'themes-styles-settings',
+        'themes_styles_settings_section'
+    );
+
+    add_settings_field(
+        'selected_theme_css',
+        'Select a Theme',
+        'selected_theme_css_callback',
+        'themes-styles-settings',
+        'themes_styles_settings_section'
+    );
+}
+add_action('admin_init', 'themes_styles_settings_init');
+
+function themes_styles_settings_section_callback() {
+    echo '<p>Select the template and theme for your site.</p>';
+}
+
+function selected_recent_chapters_template_callback() {
+    // Check if a page with the recent chapters template exists
+    $recent_chapters_page = get_pages(array(
+        'meta_key' => '_wp_page_template',
+        'meta_value' => 'recent-chapters-list.php', // Update this to match your template file
+    ));
+
+    if (empty($recent_chapters_page)) {
+        echo '<p style="color: red;">You must first create a page with the Recent Chapters List template before selecting it here.</p>';
+    } else {
+        $selected_template = get_option('selected_recent_chapters_template', 'recent-chapters-list.php');
+        ?>
+        <select name="selected_recent_chapters_template">
+            <option value="recent-chapters-list.php" <?php selected($selected_template, 'recent-chapters-list.php'); ?>>Style 1</option>
+            <option value="recent-chapters-list-2.php" <?php selected($selected_template, 'recent-chapters-list-2.php'); ?>>Style 2</option>
+        </select>
+        <?php
+    }
+}
+
+// Scan the themes folder and return available CSS files
+function get_available_themes() {
+    $theme_folder = get_template_directory() . '/themes/';
+    $css_files = glob($theme_folder . '*.css');
+    $themes = array();
+    foreach ($css_files as $file) {
+        $themes[] = basename($file);
+    }
+    return $themes;
+}
+
+function selected_theme_css_callback() {
+    $selected_theme = get_option('selected_theme_css', 'default'); // Default to 'default'
+    $themes = get_available_themes();
+    ?>
+    <select name="selected_theme_css">
+        <option value="default" <?php selected($selected_theme, 'default'); ?>>Default</option>
+        <?php foreach ($themes as $theme) : ?>
+            <option value="<?php echo esc_attr($theme); ?>" <?php selected($selected_theme, $theme); ?>><?php echo esc_html($theme); ?></option>
+        <?php endforeach; ?>
+    </select>
+    <?php
+}
+
+function apply_selected_theme_css() {
+    $selected_theme = get_option('selected_theme_css', 'default');
+    if ($selected_theme && $selected_theme !== 'default') {
+        wp_enqueue_style('selected-theme-css', get_template_directory_uri() . '/themes/' . $selected_theme);
+    }
+}
+add_action('wp_enqueue_scripts', 'apply_selected_theme_css');
+?>
+
+
