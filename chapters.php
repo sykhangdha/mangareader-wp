@@ -1,7 +1,7 @@
 <?php
 /**
  * Features for the addition, sorting and displaying of chapters
- * in the back end and the front. Uses preg replace to display chapters.
+ * in the back end and the front
  */
  
 /**
@@ -60,8 +60,8 @@ function mangastarter_chapter_list() {
             $chapter_title = get_the_title($chapters->ID);
             // Extract the last number from the title as the chapter number
             $chapter_number = '';
-            if (preg_match('/\b(\d+)\b(?!.*\b\d+\b)/', $chapter_title, $matches)) {
-                $chapter_number = $matches[1];
+             if (preg_match('/\b(\d+(?:\.\d+)?)\b(?!.*\b\d+(?:\.\d+)?\b)/', $chapter_title, $matches)) {
+                        $chapter_number = $matches[1];
             } else {
                 $chapter_number = __('N/A', 'mangastarter'); // Set a default value if chapter number is not found
             }
