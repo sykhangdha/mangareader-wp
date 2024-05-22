@@ -1,6 +1,6 @@
 <?php
 /**
- * The main template file. Based on mangastarter homepage with massive UI tweaks
+ * The main template file
  *
  * This is the most generic template file in a WordPress theme
  * and one of the two required files for a theme (the other being style.css).
@@ -19,7 +19,7 @@ if (!empty($recent_chapters_page)) {
     $recent_chapters_url = get_permalink($recent_chapters_page[0]->ID);
 } else {
     // Set a default URL if the page is not found
-    $recent_chapters_url = '#';
+    $recent_chapters_url = '/recent-chapters/';
 }
 
 ?>
@@ -218,24 +218,23 @@ if (!empty($recent_chapters_page)) {
 
                 $displayed_chapters = 0;
 
-            while ($chapters_query->have_posts() && $displayed_chapters < 3) :
-    $chapters_query->the_post();
-    // Extract the last number from the title as the chapter number
-    $chapter_title = get_the_title();
-    $chapter_number = '';
-    if (preg_match('/\b(\d+)\b(?!.*\b\d+\b)/', $chapter_title, $matches)) {
-        $chapter_number = $matches[1];
-    } else {
-        $chapter_number = __('N/A', 'mangastarter'); // Set a default value if chapter number is not found
-    }
-    $chapter_title = 'Chapter ' . $chapter_number;
-    $chapter_date = get_the_date('F j, Y');
+                while ($chapters_query->have_posts() && $displayed_chapters < 3) :
+                    $chapters_query->the_post();
+                    // Extract the last number from the title as the chapter number
+                    $chapter_title = get_the_title();
+                    $chapter_number = '';
+                    if (preg_match('/\b(\d+(?:\.\d+)?)\b(?!.*\b\d+(?:\.\d+)?\b)/', $chapter_title, $matches)) {
+                        $chapter_number = $matches[1];
+                    } else {
+                        $chapter_number = __('N/A', 'mangastarter'); // Set a default value if chapter number is not found
+                    }
+                    $chapter_title = 'Chapter ' . $chapter_number;
+                    $chapter_date = get_the_date('F j, Y');
 
-    // Display chapter as a button with title and date
-    echo '<a href="' . get_permalink() . '" class="chapter-button">' . esc_html($chapter_title) . ' - ' . esc_html($chapter_date) . '</a>';
-    $displayed_chapters++;
-endwhile;
-
+                    // Display chapter as a button with title and date
+                    echo '<a href="' . get_permalink() . '" class="chapter-button">' . esc_html($chapter_title) . ' - ' . esc_html($chapter_date) . '</a>';
+                    $displayed_chapters++;
+                endwhile;
 
                 if ($chapters_query->found_posts > 3) {
                     // If there are more than 3 chapters, show the "More" button
