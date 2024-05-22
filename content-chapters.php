@@ -265,8 +265,12 @@ if ($relationship && is_array($relationship) && count($relationship) > 0) {
                 current_page = id;
                 next = parseInt(id + 1);
                 jQuery("html, body").stop(true, true);
-                if (!noscroll)
-                    $("html, body").animate({scrollTop: $('div.page-by-page').eq(0).offset().top});
+                
+                // Check if the screen width is greater than 950px (not a mobile device)
+                if (!noscroll && $(window).width() > 800) {
+                    $("html, body").animate({scrollTop: 0}); // Scroll to the top of the entire page
+                }
+
                 jQuery('.scan-page').attr('src', pages[current_page - 1].page_image);
                 jQuery('.scan-page').attr('alt', '<?php _e('Page', 'mangastarter'); ?> ' + current_page);
                 if (!nohash)
@@ -427,3 +431,37 @@ if ($relationship && is_array($relationship) && count($relationship) > 0) {
         });
     })(jQuery, this);
 </script>
+
+<style>
+    .list-view img,
+    .page-by-page img {
+        width: 100%;
+        height: auto;
+    }
+
+    .image-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .image-list li {
+        margin-bottom: 20px;
+    }
+
+    /* Media queries for mobile devices */
+    @media screen and (max-width: 800px) {
+        .list-view img,
+        .page-by-page img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .image-list li {
+            margin-bottom: 40px; /* Increase margin for better separation on mobile */
+        }
+    }
+</style>
+
