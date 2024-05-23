@@ -14,7 +14,7 @@ Download: [BETA VERSION(5.18.24)](https://github.com/sykhangdha/mangareader-wp/r
   	- Gives users a choice between multiple themes and different homepage/recent chapters style! ✅ added!
 - Fix issue with chapter numbering ✅ fixed
 - Manga list page fixes and new style(shown below) ✅ fixed/added
-- Reader page fixes/implementation of wp-mangareader-plugin ⚠️ Partially done...
+- Reader page fixes/implementation of wp-mangareader-plugin ✅ fixed
 - Two styles for homepage(select between two in Theme/Style settings) ⚠️ Style 1 done | Style 2 W.I.P 
   
 
