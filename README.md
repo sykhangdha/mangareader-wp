@@ -15,7 +15,9 @@ Download: [BETA VERSION(5.18.24)](https://github.com/sykhangdha/mangareader-wp/r
 - Fix issue with chapter numbering ✅ fixed
 - Manga list page fixes and new style(shown below) ✅ fixed/added
 - Reader page fixes/implementation of wp-mangareader-plugin ✅ fixed
-- Two styles for homepage(select between two in Theme/Style settings) ⚠️ Style 1 [done] | Style 2 [done] | Selection between two styles [W.I.P] 
+- Two styles for homepage(select between two in Theme/Style settings) ✅ Style 1 [done] | Style 2 [done] | Selection between two styles [done]
+- Bug fixes/testing ⚠️ working on it...
+  
 
 
 # What's New?
