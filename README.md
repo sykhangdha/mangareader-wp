@@ -2,21 +2,20 @@
 
 # Last WP Version Tested: 6.5.3
 
-Install Guide: Not yet Available
+Install Guide: [Available Here](https://skyha.rf.gd/mangastarter-install-guide/)
 
 Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/mangareader-wp/releases/download/Revival1/MangaStarter-RevivalV1.zip)
 
 [DEMO HERE
 ](http://skymanga.42web.io/)
 
-# Upcoming Additions/Fixes (5.22.24)
+# Additions/Fixes (5.22.24)
 - New settings page called 'Themes/Styles'✅ added!
   	- Gives users a choice between multiple themes and different homepage/recent chapters style! ✅ added!
 - Fix issue with chapter numbering ✅ fixed
 - Manga list page fixes and new style(shown below) ✅ fixed/added
 - Reader page fixes/implementation of wp-mangareader-plugin ✅ fixed
 - Two styles for homepage(select between two in Theme/Style settings) ✅ Style 1 [done] | Style 2 [done] | Selection between two styles [done]
-- Bug fixes/testing ⚠️ working on it...
   
 
 
@@ -47,7 +46,10 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
 
 
 ## Homepage
-![enter image description here](http://i.epvpimg.com/ngWVeab.png)
+Style 1:
+![enter image description here](http://i.epvpimg.com/Z1oFbab.png)
+Style 2:
+![enter image description here](http://i.epvpimg.com/1RL9cab.png)
 
 ## Manga archive Page
 
@@ -60,3 +62,7 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
 ## Recent Chapters List
 
 ![enter image description here](http://epvpimg.com/g5lzcab.png)
+
+Alternative Style:
+
+![enter image description here](http://i.epvpimg.com/gQJebab.png)
