@@ -26,6 +26,103 @@ if (!empty($recent_chapters_page)) {
 
 <div class="wrap">
     <style>
+    
+            .manga-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .manga-item {
+                flex: 1;
+                min-width: calc(50% - 20px); /* Adjust for the desired number of columns */
+                background-color: #f7f7f7;
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+
+            .manga-thumbnail img {
+                max-width: 100%;
+                max-height: auto;
+            }
+
+            .manga-item a {
+                text-decoration: none;
+                color: #333;
+                font-weight: bold;
+                border-bottom: 1px solid #ddd;
+                transition: background-color 0.3s;
+            }
+
+            .manga-item a:hover {
+                background-color: #ddd;
+            }
+
+            .chapter-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .chapter-button {
+                background-color: #f7f7f7;
+                color: #333;
+                text-decoration: none;
+                padding: 5px 10px;
+                border-radius: 5px;
+                margin-top: 10px;
+                display: inline-block;
+                transition: background-color 0.3s;
+            }
+
+            .chapter-button:hover {
+                background-color: #ddd;
+            }
+
+            .more-button {
+                background-color: #ddd;
+                color: #333;
+                text-decoration: none;
+                padding: 5px 10px;
+                border-radius: 5px;
+                margin-top: 10px;
+                display: block;
+                transition: background-color 0.3s;
+            }
+
+            .more-button:hover {
+                background-color: #999;
+            }
+
+            @media screen and (max-width: 767px) {
+                .manga-item {
+                    min-width: 100%; /* Full width on mobile */
+                }
+            }
+
+            /* Style for the "View more" button */
+            .recently-updated-heading {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .view-more-button {
+                background-color: #0073e6;
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-weight: bold;
+                transition: background-color 0.3s;
+            }
+
+            .view-more-button:hover {
+                background-color: #005aad;
+            }
         .wrap {
             display: flex;
             flex-wrap: wrap; /* Allow content and sidebar to wrap to next line */
