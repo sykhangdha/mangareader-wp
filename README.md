@@ -4,7 +4,7 @@
 
 Install Guide: Not yet Available
 
-Download: [BETA VERSION(5.18.24)](https://github.com/sykhangdha/mangareader-wp/releases/tag/Revival1)
+Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/mangareader-wp/releases/download/Revival1/MangaStarter-RevivalV1.zip)
 
 [DEMO HERE
 ](http://skymanga.42web.io/)
