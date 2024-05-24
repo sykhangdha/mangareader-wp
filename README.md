@@ -45,7 +45,7 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
 - [Release Page](https://github.com/sykhangdha/mangareader-wp/releases)
 
 
-## Homepage
+## Homepage (With Choso theme)
 Style 1:
 ![enter image description here](http://i.epvpimg.com/Z1oFbab.png)
 Style 2:
