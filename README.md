@@ -66,3 +66,8 @@ Style 2:
 Alternative Style:
 
 ![enter image description here](http://i.epvpimg.com/gQJebab.png)
+
+## NEW: Theme/Style settings page
+
+![themepage](http://i.epvpimg.com/ltKVcab.png)
+
