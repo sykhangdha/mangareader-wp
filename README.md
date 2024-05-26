@@ -22,6 +22,7 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
   	- Null check
   	- CSS duplicates
   	- Unused php funcitons
+  	- Issues with chapter listing when using quick chapter extension
 
 # What's New?
 
