@@ -79,7 +79,7 @@
         <div class="uk-width-small-5-6 uk-width-medium-7-10 chapter-content">
             <div>
                 <a href="<?php the_permalink(); ?>">
-                    <h3><?php the_title(); ?></h3>
+                     <h3 class="manga-title"><?php the_title(); ?></h3>
                 </a>
             </div>
 
@@ -95,7 +95,7 @@
                     'meta_query' => array(
                         array(
                             'key' => 'manga', // name of custom field
-                            'value' => '"' . get_the_ID() . '"', // matches exactly "123", not just 123. This prevents a match for "1234"
+                            'value' => get_the_ID(), // Use get_the_ID() to get the current manga post ID
                             'compare' => 'LIKE'
                         )
                     )
