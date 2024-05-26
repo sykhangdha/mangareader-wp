@@ -9,6 +9,13 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
 [DEMO HERE
 ](http://skymanga.42web.io/)
 
+# Quick Install Method
+- Download the theme and activate it in wordpress
+- Install and activate the required plugins(will show after activating theme)
+- Import this xml file [HERE](https://raw.githubusercontent.com/sykhangdha/mangareader-wp/main/skymanga.WordPress.2024-05-26.xml)
+  	- Tools -> Import -> Wordpress(install if not already installed) -> Upload xml file
+- This will import some mangas/chapters for you already and give you the same look from the skymanga website
+
 # Additions/Fixes (5.22.24)
 - New settings page called 'Themes/Styles'✅ added!
   	- Gives users a choice between multiple themes and different homepage/recent chapters style! ✅ added!
