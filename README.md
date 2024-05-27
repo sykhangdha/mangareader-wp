@@ -16,6 +16,17 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
   	- Tools -> Import -> Wordpress(install if not already installed) -> Upload xml file
 - This will import some mangas/chapters for you already and give you the same look from the skymanga website
 
+# TamperMonkey Script
+- Users can use the mangakakalot.tv image link grabber [script here](https://github.com/sykhangdha/mangareader-wp/tree/main/tampermonkey_script)
+- The script currently only works on mangakakalot.tv
+- How to use:
+  	- Download the script
+  	- Add to TamperMonkey
+  	- Once activated visit the chapter(ex: https://ww8.mangakakalot.tv/chapter/manga-hk985267/chapter-1)
+  	- Scroll down and make sure all image links are loaded(the website uses lazyload so some images do not load until scrolled)
+  	- On the bottom right, click the 'Grab All image links' button and it will copy the images into your clipboard
+  	- Copy and paste the image links in the quick chapter extension(wordpress plugin) and it will add the chapter and images for you![coming next update]
+
 # Upcoming Additions/Hotfixes for next release
 - Quick Chapter extension 🚨 not yet available
 - Code cleanup/fixes by checking for any error logs detected with WP_Debug function
@@ -23,6 +34,7 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
   	- CSS duplicates
   	- Unused php funcitons
   	- Issues with chapter listing when using quick chapter extension
+  	- Add scripts/extension download section for mangastarter
 
 # What's New?
 
