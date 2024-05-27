@@ -26,11 +26,11 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
   	- Add scripts/extension download section for mangastarter
  
  # TamperMonkey Script
-- Users can use the mangakakalot.tv image link grabber [script here](https://github.com/sykhangdha/mangareader-wp/tree/main/tampermonkey_script)
+- Users can use the mangakakalot.tv image link grabber [script here](https://raw.githubusercontent.com/sykhangdha/mangareader-wp/main/tampermonkey_script/mangakalottv.js)
 - The script currently only works on mangakakalot.tv
 - How to use:
-  	- Download the script
-  	- Add to TamperMonkey
+  	- [Download the script](https://raw.githubusercontent.com/sykhangdha/mangareader-wp/main/tampermonkey_script/mangakalottv.js)
+  	- Add to TamperMonkey(this can be done by going to tampermonkey->create new script-> copy and paste the script code above and save
   	- Once activated visit the chapter(ex: https://ww8.mangakakalot.tv/chapter/manga-hk985267/chapter-1)
   	- Scroll down and make sure all image links are loaded(the website uses lazyload so some images do not load until scrolled)
   	- On the bottom right, click the 'Grab All image links' button and it will copy the images into your clipboard
