@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.5
 // @description  Grab all image links and copy them into clipboard
-// @author       You
+// @author       sky
 // @match        https://ww8.mangakakalot.tv/chapter/*/*
 // @grant        GM_setClipboard
 // ==/UserScript==
