@@ -24,6 +24,7 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
   	- Unused php funcitons
   	- Issues with chapter listing when using quick chapter extension
   	- Add scripts/extension download section for mangastarter
+- Bug with style 1 homepage style not showing latest manga update [fixed will release the hotfix later]
  
  # TamperMonkey Script
 - Users can use the mangakakalot.tv image link grabber [script here](https://raw.githubusercontent.com/sykhangdha/mangareader-wp/main/tampermonkey_script/mangakalottv.js)
