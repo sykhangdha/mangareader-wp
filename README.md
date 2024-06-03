@@ -4,7 +4,7 @@
 
 Install Guide: [Available Here](https://skyha.rf.gd/mangastarter-install-guide/)
 
-Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/mangareader-wp/releases/download/Revival1/MangaStarter-RevivalV1.zip)
+Download: [MangaStarter-Revival-HotFix2(6.03.24)](https://github.com/sykhangdha/mangareader-wp/releases/download/HotFix2/mangastart-Rebuilt-Hotfix2.zip)
 
 [DEMO HERE
 ](http://skymanga.42web.io/)
@@ -15,16 +15,6 @@ Download: [MangaStarter-Revival V1(5.22.24)](https://github.com/sykhangdha/manga
 - Import this xml file [HERE](https://raw.githubusercontent.com/sykhangdha/mangareader-wp/main/skymanga.WordPress.2024-05-26.xml) (CTRL + S  to save the file)
   	- Tools -> Import -> Wordpress(install if not already installed) -> Upload xml file
 - This will import some mangas/chapters for you already and give you the same look from the skymanga website
-
-# Upcoming Additions/Hotfixes for next release
-- Quick Chapter extension 🚨 not yet available
-- Code cleanup/fixes by checking for any error logs detected with WP_Debug function
-  	- Null check
-  	- CSS duplicates
-  	- Unused php funcitons
-  	- Issues with chapter listing when using quick chapter extension
-  	- Add scripts/extension download section for mangastarter
-- Bug with style 1 homepage style not showing latest manga update [fixed will release the hotfix later]
  
  # TamperMonkey Script
 - Users can use the mangakakalot.tv image link grabber [script here](https://raw.githubusercontent.com/sykhangdha/mangareader-wp/main/tampermonkey_script/mangakalottv.js)
