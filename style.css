@@ -1,0 +1,250 @@
+/*
+Theme Name: Fluent MangaDex Theme (Glass UI)
+Author: HaSky
+Version: 1.4
+*/
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #1a1a1a;
+    color: #e5e5e5;
+    font-size: 16px;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+a {
+    color: #57b2ff;
+    text-decoration: none;
+    transition: 0.2s ease-in-out;
+}
+
+a:hover {
+    color: #85d6ff;
+}
+
+/* Header */
+.site-header {
+    background-color: #111;
+    padding: 30px 0;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+
+.site-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Navigation */
+.main-navigation {
+    background-color: #1e1e1e;
+    padding: 12px 0;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+}
+
+.main-navigation .menu {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.main-navigation .menu li a {
+    padding: 10px 18px;
+    background-color: #2b2b2b;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+.main-navigation .menu li a:hover {
+    background-color: #57b2ff;
+    color: #000;
+}
+
+/* Announcement - Glass Panel */
+.announcement-section {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 32px;
+    border-radius: 16px;
+    background: rgba(35, 35, 35, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    animation: fadeInUp 0.6s ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.announcement-image {
+    flex: 0 0 auto;
+    width: 140px;
+    max-width: 100%;
+    animation: zoomIn 0.6s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.announcement-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    display: block;
+}
+
+.announcement-text {
+    flex: 1;
+    color: #e5e5e5;
+}
+
+.announcement-text h2 {
+    font-size: 1.9em;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.announcement-text p {
+    font-size: 1.05em;
+    color: #cfcfcf;
+    line-height: 1.7;
+}
+
+.update-site-btn {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 10px 20px;
+    font-weight: bold;
+    background: rgba(87, 178, 255, 0.85);
+    color: #000;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.update-site-btn:hover {
+    background-color: #85d6ff;
+    transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Manga Grid */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.manga-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 30px;
+}
+
+.manga-item {
+    background-color: #242424;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.manga-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.manga-item img {
+    width: 100%;
+    height: auto;
+}
+
+.manga-item h3 {
+    font-size: 1.1em;
+    color: #fff;
+    margin: 10px 12px 0;
+}
+
+.manga-item p {
+    font-size: 0.9em;
+    color: #aaa;
+    margin: 6px 12px 12px;
+}
+
+/* Footer */
+.site-footer {
+    background-color: #111;
+    color: #aaa;
+    text-align: center;
+    padding: 24px 20px;
+    font-size: 0.9em;
+    border-top: 1px solid #222;
+    margin-top: 60px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .announcement-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .announcement-image {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .announcement-text {
+        text-align: center;
+    }
+
+    .main-navigation .menu {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .manga-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+}

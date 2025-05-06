@@ -1,0 +1,464 @@
+/* === Fluent Admin Panel Dark Theme - Refined for Manga Reader === */
+
+/* General Admin Styling */
+body.wp-admin {
+    background-color: #121212;
+    color: #e5e5e5;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Manga Reader Settings Wrapper */
+.wp-admin .wrap,
+.manga-reader-settings.wrap {
+    background: rgba(35, 35, 35, 0.6);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+/* Typography */
+.wp-admin h1,
+.wp-admin h2,
+.wp-admin h3,
+.wp-admin h4 {
+    color: #e5e5e5;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.wp-admin h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+}
+
+.wp-admin label,
+.wp-admin legend {
+    color: #ddd;
+}
+
+.wp-admin h2#update-site-button-heading,
+.wp-admin h2#announcement-heading {
+    color: #e5e5e5 !important;
+    font-size: 1.6em;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* Sections */
+.manga-reader-section {
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background: #1a1a1a;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.manga-reader-section .section-title {
+    padding: 15px;
+    margin: 0;
+    background: #252525;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: #e5e5e5;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.manga-reader-section .section-title:hover {
+    background: #2a2a2a;
+}
+
+.manga-reader-section .section-title .dashicons {
+    font-size: 20px;
+    color: #ccc;
+}
+
+.manga-reader-section .section-title .toggle-section {
+    transition: transform 0.3s ease;
+}
+
+.manga-reader-section .section-title.collapsed .toggle-section {
+    transform: rotate(-90deg);
+}
+
+.manga-reader-section .section-content {
+    padding: 20px;
+    max-height: 2000px; /* Increased to accommodate content */
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+    opacity: 1;
+}
+
+.manga-reader-section .section-content.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* Cards */
+.manga-reader-card {
+    background: #1e1e1e;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.manga-reader-card h3 {
+    margin-top: 0;
+    font-size: 16px;
+    color: #ddd;
+}
+
+.manga-reader-card p {
+    color: #aaa;
+    margin-bottom: 15px;
+}
+
+/* Forms */
+.manga-reader-form .form-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.manga-reader-form .form-row label {
+    font-weight: 600;
+    color: #ddd;
+}
+
+.manga-reader-form input[type="text"],
+.manga-reader-form input[type="email"],
+.manga-reader-form input[type="number"],
+.manga-reader-form input[type="password"],
+.manga-reader-form input[type="file"],
+.manga-reader-form select,
+.manga-reader-form textarea {
+    background-color: #2b2b2b;
+    color: #e5e5e5;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-size: 15px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.manga-reader-form input[type="file"] {
+    padding: 8px;
+}
+
+.manga-reader-form textarea,
+.manga-reader-form textarea#announcement-textbox {
+    background-color: #2b2b2b;
+    border: 1px solid #444;
+    color: #e5e5e5;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    width: 100%;
+    resize: vertical;
+}
+
+.manga-reader-form input:focus,
+.manga-reader-form select:focus,
+.manga-reader-form textarea:focus {
+    border-color: #57b2ff;
+    box-shadow: 0 0 5px rgba(87, 178, 255, 0.5);
+}
+
+/* Buttons */
+.manga-reader-form input[type="submit"],
+.manga-reader-form button,
+.manga-reader-form .button,
+.manga-reader-form .button-primary {
+    background: #57b2ff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.manga-reader-form .button-secondary,
+.manga-reader-form .button#cancel-edit {
+    background-color: #333;
+    color: #ddd;
+    border: 1px solid #555;
+}
+
+.manga-reader-form .button:hover,
+.manga-reader-form .button-primary:hover {
+    background: #85d6ff;
+    transform: scale(1.04);
+}
+
+.manga-reader-form .button-secondary:hover,
+.manga-reader-form .button#cancel-edit:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+/* Form Table Layout */
+.wp-admin .form-table th {
+    color: #ccc;
+    font-weight: 500;
+    padding: 12px 10px;
+    text-align: left;
+    width: 220px;
+}
+
+.wp-admin .form-table td {
+    padding: 12px 10px;
+    color: #e5e5e5;
+}
+
+/* Chapter Editing Table */
+.manga-reader-settings .wp-list-table {
+    background: #1c1c1c;
+    border: 1px solid #333;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.manga-reader-settings .wp-list-table th {
+    color: #e5e5e5;
+    font-weight: 600;
+    padding: 12px;
+    background: #282828;
+    border-bottom: 1px solid #333;
+}
+
+.manga-reader-settings .wp-list-table td {
+    color: teal;
+    padding: 12px;
+    border-top: 1px solid #333;
+}
+
+.manga-reader-settings .wp-list-table.striped > tbody > tr:nth-child(even) {
+    background: #222222;
+}
+
+.manga-reader-settings .wp-list-table.striped > tbody > tr:nth-child(odd) {
+    background: #1c1c1c;
+}
+
+.manga-reader-settings .wp-list-table .edit-chapter {
+    background: #57b2ff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.manga-reader-settings .wp-list-table .edit-chapter:hover {
+    background: #85d6ff;
+    transform: scale(1.04);
+}
+
+/* Spinner */
+.manga-reader-form .spinner {
+    display: none;
+    float: none;
+    margin-left: 10px;
+    background-color: #57b2ff;
+}
+
+.manga-reader-form .spinner.is-active {
+    display: inline-block;
+}
+
+/* Previews */
+.cover-preview,
+.image-preview {
+    margin: 10px 0;
+    padding: 10px;
+    background: #252525;
+    border: 1px dashed #444;
+    border-radius: 8px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cover-preview:empty::before,
+.image-preview:empty::before {
+    content: "No images selected";
+    color: #aaa;
+    font-style: italic;
+}
+
+.cover-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.image-preview img {
+    max-width: 100px;
+    max-height: 100px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+/* Results */
+.form-results {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.form-results p {
+    margin: 0;
+    padding: 10px;
+}
+
+.form-results p[style*="color:green"] {
+    background: #1e3d2f;
+    color: #aaffaa;
+}
+
+.form-results p[style*="color:red"] {
+    background: #3d1e1e;
+    color: #ffaaaa;
+}
+
+/* Manga List */
+.manga-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.manga-list li {
+    padding: 8px;
+    background: #252525;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    color: #e5e5e5;
+}
+
+.manga-list li img {
+    vertical-align: middle;
+}
+
+/* Notices */
+.wp-admin .notice,
+.wp-admin .updated,
+.wp-admin .error {
+    background-color: #1e1e1e !important;
+    color: #e5e5e5 !important;
+    border-left: 4px solid #57b2ff !important;
+    border-radius: 6px;
+    box-shadow: none !important;
+    padding: 10px 15px !important;
+}
+
+/* Postbox / Meta Boxes */
+.wp-admin .postbox {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    margin-bottom: 25px;
+}
+
+.wp-admin .postbox h2.hndle,
+.wp-admin .postbox .hndle {
+    padding: 12px 16px;
+    background: #252525;
+    color: #e5e5e5;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    border-bottom: 1px solid #333;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.wp-admin .postbox .inside {
+    padding: 20px;
+    background: #1a1a1a;
+    color: #e5e5e5;
+}
+
+/* Settings Grouping */
+.wp-admin .settings-wrap {
+    margin-top: 20px;
+    background: #1c1c1c;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* Submit Box */
+.wp-admin .submit {
+    margin-top: 30px;
+}
+
+/* Checkboxes & Radios */
+.wp-admin input[type="checkbox"],
+.wp-admin input[type="radio"] {
+    accent-color: #57b2ff;
+}
+
+/* Help Text & Descriptions */
+.wp-admin .description,
+.wp-admin .help {
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* Horizontal Rule */
+.wp-admin hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 30px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .manga-reader-form .form-row {
+        grid-template-columns: 1fr;
+    }
+    .manga-reader-form .form-row label {
+        margin-bottom: 5px;
+    }
+    .wp-admin .wrap,
+    .manga-reader-settings.wrap {
+        padding: 15px;
+    }
+    .wp-admin .form-table th {
+        width: 100%;
+        display: block;
+    }
+    .wp-admin .form-table td {
+        display: block;
+        padding-top: 5px;
+    }
+}

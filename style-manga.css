@@ -1,0 +1,284 @@
+/* General Body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #2b2d31;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    color: #ddd;
+}
+
+/* Manga Heading */
+#manga-heading {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px auto;
+    text-align: center;
+    color: #fff;
+}
+
+/* Main Layout */
+#manga-layout {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    align-items: flex-start;
+    width: 100%; /* Ensure it takes up full width */
+}
+
+/* Manga Images Section */
+#manga-images {
+    flex: 3;
+    text-align: center;
+    width: 75%; /* Increased width for more space */
+    padding: 20px;
+}
+
+/* Manga Image */
+.manga-image {
+    width: 70%; /* Image size adjustments for content */
+    max-width: 100%; /* Ensure they don't overflow */
+    height: auto;
+    margin: 15px auto;
+    display: block;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    object-fit: contain;
+    transition: opacity 0.5s ease;
+}
+
+/* Cover Image Container */
+#manga-cover {
+    width: 50%; /* Adjust the width of the cover container */
+    max-width: 100%; /* Ensure it doesn't overflow */
+    margin: 20px auto; /* Center it horizontally */
+    display: block;
+    text-align: center;
+}
+
+/* Cover Image */
+#manga-cover img {
+    width: 100%; /* Make sure the cover image inside the div takes full width */
+    max-width: 100%; /* Avoid overflow */
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    object-fit: contain;
+}
+
+/* Sidebar Section */
+#manga-sidebar {
+    flex: 1;
+    background-color: #1e1f23;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 300px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 20px; /* Sticky positioning */
+    height: fit-content; /* Ensure the sidebar height adjusts to content */
+}
+
+/* Chapter List Container */
+#mangaview-chapterlist-container {
+    flex: 2;
+    background-color: #1e1f23;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 500px;
+    overflow-y: auto;
+    width: 100%; /* Ensure full width */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Chapter List */
+#mangaview-chapterlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Full width for list */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Gap between chapters */
+    align-items: center; /* Center the list items */
+}
+
+#mangaview-chapterlist li {
+    background-color: #333;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between; /* Space between chapter name and date */
+    align-items: center;
+    transition: background 0.3s, transform 0.2s;
+    cursor: pointer;
+    width: 100%; /* Ensure the chapter items take up full width */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#mangaview-chapterlist li:hover {
+    background-color: #444;
+    transform: translateY(-4px);
+}
+
+#mangaview-chapterlist li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    display: block;
+    width: 80%; /* Ensure chapter name takes most space */
+}
+
+.chapter-date {
+    font-size: 0.85em;
+    color: #bbb;
+    font-style: italic;
+}
+
+/* Pagination Controls */
+.paged-controls {
+    margin-top: 20px;
+    text-align: center;
+    width: 100%; /* Ensure pagination controls use full width */
+}
+
+.paged-controls button {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 6px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.paged-controls button:hover {
+    background-color: #006b91;
+}
+
+/* Bottom Navigation Buttons */
+#bottom-chapter-navigation {
+    text-align: center;
+    margin-top: 30px;
+    width: 100%; /* Full width for bottom navigation */
+}
+
+#bottom-chapter-navigation button {
+    background-color: #5a5c60;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#bottom-chapter-navigation button:hover {
+    background-color: #7a7d81;
+}
+
+/* Back to Chapter List Button */
+#back-to-chapters {
+    background-color: #222;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1em;
+    border-radius: 6px;
+    border: none;
+    margin: 15px 0;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+#back-to-chapters:hover {
+    background-color: #333;
+}
+
+/* List View Button */
+.view-toggle button {
+    background-color: #222;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1em;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-toggle button:hover {
+    background-color: #333;
+}
+
+/* Spinner */
+.spinner {
+    font-size: 1.5em;
+    color: #aaa;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Footer */
+.site-footer {
+    background-color: #1e1f23;
+    padding: 20px;
+    text-align: center;
+    color: #aaa;
+    font-size: 0.95em;
+    margin-top: 60px;
+    border-top: 1px solid #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #manga-layout {
+        flex-direction: column;
+    }
+
+    #manga-images,
+    #manga-sidebar,
+    #mangaview-chapterlist-container {
+        width: 100%;
+    }
+
+    .manga-image {
+        width: 90%;
+    }
+
+    #mangaview-chapterlist li {
+        font-size: 1em;
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .view-toggle button {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+
+    .manga-image {
+        width: 100%;
+    }
+
+    #mangaview-chapterlist li {
+        font-size: 0.95em;
+        padding: 8px 10px;
+    }
+}
