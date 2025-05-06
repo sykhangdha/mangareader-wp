@@ -1,13 +1,14 @@
-# MangaStarter Rewritten
+# MangaStarter Rewritten[Beta]
 
-# Last WP Version Tested: 6.5.3
+[Beta V.1: 5/5/2025](https://github.com/sykhangdha/mangareader-wp/releases/tag/betaNew)
+[DEMO HERE
+](http://skymanga.42web.io/)
+
+# Stable Release
 
 Install Guide: [Available Here](https://skyha.rf.gd/mangastarter-install-guide/)
 
 Download: [MangaStarter-Revival-HotFix2(6.03.24)](https://github.com/sykhangdha/mangareader-wp/releases/download/HotFix2/mangastart-Rebuilt-Hotfix2.zip)
-
-[DEMO HERE
-](http://skymanga.42web.io/)
 
 # Quick Install Method
 - Download the theme and activate it in wordpress
