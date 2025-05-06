@@ -16,7 +16,7 @@ add_action('after_setup_theme', 'manga_reader_theme_setup');
 // ===============================
 function manga_reader_get_asset_version() {
     $cache_reset = get_option('manga_reader_cache_reset', 0);
-    return $cache_reset ? $cache_reset : '2.5'; // Updated version for media library fix
+    return $cache_reset ? $cache_reset : '2.6';
 }
 
 // ===============================
@@ -87,8 +87,7 @@ add_action('template_redirect', 'manga_reader_template_redirect');
 // NAME NORMALIZATION HELPERS
 // ===============================
 function manga_reader_normalize_name($name) {
-    // Remove apostrophes and other special characters, replace spaces with hyphens, and convert to lowercase
-    $name = preg_replace('/[^\w\s-]/', '', $name); // Remove all non-word characters except spaces and hyphens
+    $name = preg_replace('/[^\w\s-]/', '', $name);
     $name = str_replace(' ', '-', $name);
     return strtolower($name);
 }
@@ -99,7 +98,6 @@ function manga_reader_denormalize_name($normalized, $base_path = null) {
 
     foreach (array_filter(glob($base_path . '*'), 'is_dir') as $dir) {
         $dir_name = basename($dir);
-        // Normalize the directory name for comparison
         $normalized_dir = manga_reader_normalize_name($dir_name);
         if ($normalized_dir === $normalized) {
             return $dir_name;
@@ -318,7 +316,6 @@ function manga_reader_check_chapter_naming() {
 
     $chapters = [];
 
-    // Check file system chapters
     if (is_dir($path)) {
         $dirs = array_filter(glob($path . '/*'), 'is_dir');
         foreach ($dirs as $dir) {
@@ -326,7 +323,6 @@ function manga_reader_check_chapter_naming() {
         }
     }
 
-    // Check database chapters
     $args = [
         'post_type' => 'manga_chapter',
         'post_status' => 'publish',
@@ -393,6 +389,7 @@ function manga_reader_get_chapter_data() {
         'image_ids' => is_array($image_ids) ? $image_ids : [],
         'image_urls' => is_array($image_urls) ? implode("\n", $image_urls) : '',
         'image_previews' => implode('', $image_previews),
+        'chapter_date' => get_the_date('Y-m-d', $chapter_id),
     ]);
 }
 add_action('wp_ajax_manga_reader_get_chapter_data', 'manga_reader_get_chapter_data');
@@ -508,6 +505,45 @@ function manga_reader_update_chapter() {
     wp_send_json_success(['message' => 'Chapter updated successfully!']);
 }
 add_action('wp_ajax_manga_reader_update_chapter', 'manga_reader_update_chapter');
+
+// ===============================
+// AJAX: DELETE CHAPTER
+// ===============================
+function manga_reader_delete_chapter() {
+    check_ajax_referer('manga_reader_admin_nonce', 'nonce');
+
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error(['message' => 'Permission denied.']);
+    }
+
+    $chapter_id = intval($_POST['chapter_id'] ?? 0);
+    if (!$chapter_id) {
+        wp_send_json_error(['message' => 'Invalid chapter ID.']);
+    }
+
+    $post = get_post($chapter_id);
+    if (!$post || $post->post_type !== 'manga_chapter') {
+        wp_send_json_error(['message' => 'Chapter not found.']);
+    }
+
+    // Delete associated images
+    $image_ids = get_post_meta($chapter_id, 'chapter_images', true) ?: [];
+    if (is_array($image_ids)) {
+        foreach ($image_ids as $image_id) {
+            wp_delete_attachment($image_id, true);
+        }
+    }
+
+    // Delete the chapter post
+    $deleted = wp_delete_post($chapter_id, true);
+
+    if ($deleted) {
+        wp_send_json_success(['message' => 'Chapter deleted successfully!']);
+    } else {
+        wp_send_json_error(['message' => 'Failed to delete chapter.']);
+    }
+}
+add_action('wp_ajax_manga_reader_delete_chapter', 'manga_reader_delete_chapter');
 
 // ===============================
 // AJAX: SCAN MANGA FOLDER
@@ -683,23 +719,78 @@ function manga_reader_settings_page() {
     $mangas = is_dir($base_path) ? array_filter(glob($base_path . '*'), 'is_dir') : [];
     $manga_options = array_map(fn($dir) => basename($dir), $mangas);
 
-    $chapters = [];
+    // Handle pagination and manga filter
+    $per_page = 15;
+    $current_page = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+    $offset = ($current_page - 1) * $per_page;
+    $selected_manga = isset($_GET['manga_filter']) ? sanitize_text_field($_GET['manga_filter']) : '';
+
+    // Fetch database chapters
     $args = [
         'post_type' => 'manga_chapter',
         'post_status' => 'publish',
-        'posts_per_page' => -1,
+        'posts_per_page' => $per_page,
+        'offset' => $offset,
+        'meta_query' => [],
     ];
+
+    if ($selected_manga) {
+        $args['meta_query'][] = [
+            'key' => 'manga_name',
+            'value' => $selected_manga,
+            'compare' => '=',
+        ];
+    }
+
     $query = new WP_Query($args);
+    $db_chapters = [];
     while ($query->have_posts()) {
         $query->the_post();
-        $chapters[] = [
+        $db_chapters[] = [
             'id' => get_the_ID(),
             'title' => get_the_title(),
             'manga' => get_post_meta(get_the_ID(), 'manga_name', true),
             'date' => get_the_date('Y-m-d'),
+            'source' => 'database',
         ];
     }
+    $total_db_chapters = $query->found_posts;
     wp_reset_postdata();
+
+    // Fetch filesystem chapters
+    $fs_chapters = [];
+    $total_fs_chapters = 0;
+    if (is_dir($base_path)) {
+        $manga_dirs = $selected_manga ? [$base_path . $selected_manga] : $mangas;
+        foreach ($manga_dirs as $manga_dir) {
+            if (!is_dir($manga_dir)) {
+                continue;
+            }
+            $manga_name = basename($manga_dir);
+            $chapter_dirs = array_filter(glob($manga_dir . '/*'), 'is_dir');
+            foreach ($chapter_dirs as $chapter_dir) {
+                $chapter_name = basename($chapter_dir);
+                $fs_chapters[] = [
+                    'id' => null, // No post ID for filesystem chapters
+                    'title' => $chapter_name,
+                    'manga' => $manga_name,
+                    'date' => file_exists($chapter_dir) ? date("Y-m-d", filemtime($chapter_dir)) : '',
+                    'source' => 'folder',
+                ];
+                $total_fs_chapters++;
+            }
+        }
+    }
+
+    // Combine and sort chapters
+    $all_chapters = array_merge($db_chapters, $fs_chapters);
+    usort($all_chapters, fn($a, $b) => strcmp($b['title'], $a['title']));
+
+    // Apply pagination to combined chapters
+    $total_chapters = $total_db_chapters + $total_fs_chapters;
+    $total_pages = ceil($total_chapters / $per_page);
+    $paged_chapters = array_slice($all_chapters, $offset, $per_page);
+
     ?>
     <div class="wrap manga-reader-settings">
         <h1><span class="dashicons dashicons-book-alt"></span> Manga Reader Settings</h1>
@@ -833,74 +924,158 @@ https://example.com/image2.jpg"></textarea>
 
                     <div class="manga-reader-card">
                         <h3>Edit Chapters</h3>
-                        <p>Modify existing chapters stored in the database.</p>
-                        <?php if ($chapters): ?>
+                        <p>Modify or delete existing chapters stored in the database. Folder-based chapters are managed directly in the <code>/manga/</code> directory.</p>
+                        <div class="form-row">
+                            <label for="manga_filter">Filter by Manga:</label>
+                            <select name="manga_filter" id="manga_filter">
+                                <option value="">All Manga</option>
+                                <?php foreach ($manga_options as $manga): ?>
+                                    <option value="<?= esc_attr($manga) ?>" <?php selected($selected_manga, $manga); ?>>
+                                        <?= esc_html($manga) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <?php if ($paged_chapters): ?>
                             <table class="wp-list-table widefat fixed striped">
                                 <thead>
                                     <tr>
                                         <th>Manga</th>
                                         <th>Chapter</th>
                                         <th>Date</th>
+                                        <th>Source</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($chapters as $chapter): ?>
-                                        <tr>
+                                    <?php foreach ($paged_chapters as $chapter): ?>
+                                        <tr data-chapter-id="<?= esc_attr($chapter['id'] ?: 'fs-' . esc_attr($chapter['title'])) ?>">
                                             <td><?= esc_html($chapter['manga']) ?></td>
                                             <td><?= esc_html($chapter['title']) ?></td>
                                             <td><?= esc_html($chapter['date'] ?: 'N/A') ?></td>
+                                            <td><?= esc_html(ucfirst($chapter['source'])) ?></td>
                                             <td>
-                                                <button class="button edit-chapter" data-id="<?= esc_attr($chapter['id']) ?>">Edit</button>
+                                                <?php if ($chapter['source'] === 'database'): ?>
+                                                    <button class="button edit-chapter" data-id="<?= esc_attr($chapter['id']) ?>">Edit</button>
+                                                    <button class="button delete-chapter" data-id="<?= esc_attr($chapter['id']) ?>">Delete</button>
+                                                <?php else: ?>
+                                                    <span class="description">FileSys: Use FTP to modify</span>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
+                                        <?php if ($chapter['source'] === 'database'): ?>
+                                            <tr class="edit-chapter-form" data-chapter-id="<?= esc_attr($chapter['id']) ?>" style="display:none;">
+                                                <td colspan="5">
+                                                    <div class="edit-chapter-container">
+                                                        <h4>Edit Chapter: <?= esc_html($chapter['title']) ?></h4>
+                                                        <form class="update-chapter-form manga-reader-form" method="post" enctype="multipart/form-data">
+                                                            <?php wp_nonce_field('manga_reader_update_chapter', 'manga_reader_update_nonce'); ?>
+                                                            <input type="hidden" name="chapter_id" value="<?= esc_attr($chapter['id']) ?>" />
+                                                            <div class="form-row">
+                                                                <label for="edit_chapter_manga_<?= esc_attr($chapter['id']) ?>">Select Manga:</label>
+                                                                <select name="chapter_manga" id="edit_chapter_manga_<?= esc_attr($chapter['id']) ?>" required>
+                                                                    <option value="">Select a Manga</option>
+                                                                    <?php foreach ($manga_options as $manga): ?>
+                                                                        <option value="<?= esc_attr($manga) ?>" <?php selected($chapter['manga'], $manga); ?>>
+                                                                            <?= esc_html($manga) ?>
+                                                                        </option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <label for="edit_chapter_name_<?= esc_attr($chapter['id']) ?>">Chapter Name:</label>
+                                                                <input type="text" name="chapter_name" id="edit_chapter_name_<?= esc_attr($chapter['id']) ?>" value="<?= esc_attr($chapter['title']) ?>" required />
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <label for="edit_chapter_date_<?= esc_attr($chapter['id']) ?>">Chapter Date (optional):</label>
+                                                                <input type="date" name="chapter_date" id="edit_chapter_date_<?= esc_attr($chapter['id']) ?>" value="<?= esc_attr($chapter['date']) ?>">
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <label for="edit_chapter_images_<?= esc_attr($chapter['id']) ?>">Upload Images:</label>
+                                                                <input type="button" class="edit-chapter-images-upload button" data-id="<?= esc_attr($chapter['id']) ?>" value="Select Images" />
+                                                            </div>
+                                                            <div class="edit-image-preview" data-id="<?= esc_attr($chapter['id']) ?>"></div>
+                                                            <input type="hidden" name="chapter_image_ids" class="edit-chapter-image-ids" data-id="<?= esc_attr($chapter['id']) ?>" />
+                                                            <div class="form-row">
+                                                                <label for="edit_chapter_image_urls_<?= esc_attr($chapter['id']) ?>">Image URLs (one per line):</label>
+                                                                <textarea name="chapter_image_urls" id="edit_chapter_image_urls_<?= esc_attr($chapter['id']) ?>" rows="5"></textarea>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <button type="submit" class="button button-primary">Update Chapter</button>
+                                                                <button type="button" class="button close-edit-form">Close</button>
+                                                                <span class="spinner"></span>
+                                                            </div>
+                                                        </form>
+                                                        <div class="chapter-update-results form-results"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                        <?php else: ?>
-                            <p>No database chapters found.</p>
-                        <?php endif; ?>
 
-                        <div id="edit-chapter-form" style="display:none; margin-top:20px;">
-                            <h4>Edit Chapter</h4>
-                            <form id="update-chapter-form" method="post" enctype="multipart/form-data" class="manga-reader-form">
-                                <?php wp_nonce_field('manga_reader_update_chapter', 'manga_reader_update_nonce'); ?>
-                                <input type="hidden" name="chapter_id" id="edit_chapter_id" />
-                                <div class="form-row">
-                                    <label for="edit_chapter_manga">Select Manga:</label>
-                                    <select name="chapter_manga" id="edit_chapter_manga" required>
-                                        <option value="">Select a Manga</option>
-                                        <?php foreach ($manga_options as $manga): ?>
-                                            <option value="<?= esc_attr($manga) ?>"><?= esc_html($manga) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                            <!-- Pagination -->
+                            <?php if ($total_pages > 1): ?>
+                                <div class="tablenav">
+                                    <div class="tablenav-pages">
+                                        <span class="displaying-num"><?= esc_html($total_chapters) ?> items</span>
+                                        <span class="pagination-links">
+                                            <?php
+                                            $base_url = add_query_arg(['page' => 'manga-reader-settings'], admin_url('admin.php'));
+                                            if ($selected_manga) {
+                                                $base_url = add_query_arg(['manga_filter' => $selected_manga], $base_url);
+                                            }
+
+                                            // First page
+                                            if ($current_page > 1) {
+                                                $first_url = remove_query_arg('paged', $base_url);
+                                                echo '<a class="first-page button" href="' . esc_url($first_url) . '">«</a> ';
+                                            } else {
+                                                echo '<span class="first-page button disabled">«</span> ';
+                                            }
+
+                                            // Previous page
+                                            if ($current_page > 1) {
+                                                $prev_page = $current_page - 1;
+                                                $prev_url = $prev_page == 1 ? remove_query_arg('paged', $base_url) : add_query_arg(['paged' => $prev_page], $base_url);
+                                                echo '<a class="prev-page button" href="' . esc_url($prev_url) . '">‹</a> ';
+                                            } else {
+                                                echo '<span class="prev-page button disabled">‹</span> ';
+                                            }
+
+                                            // Page numbers
+                                            echo '<span class="paging-input">';
+                                            echo sprintf(
+                                                '%d of <span class="total-pages">%d</span>',
+                                                esc_html($current_page),
+                                                esc_html($total_pages)
+                                            );
+                                            echo '</span>';
+
+                                            // Next page
+                                            if ($current_page < $total_pages) {
+                                                $next_url = add_query_arg(['paged' => $current_page + 1], $base_url);
+                                                echo '<a class="next-page button" href="' . esc_url($next_url) . '">›</a> ';
+                                            } else {
+                                                echo '<span class="next-page button disabled">›</span> ';
+                                            }
+
+                                            // Last page
+                                            if ($current_page < $total_pages) {
+                                                $last_url = add_query_arg(['paged' => $total_pages], $base_url);
+                                                echo '<a class="last-page button" href="' . esc_url($last_url) . '">»</a>';
+                                            } else {
+                                                echo '<span class="last-page button disabled">»</span>';
+                                            }
+                                            ?>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="form-row">
-                                    <label for="edit_chapter_name">Chapter Name:</label>
-                                    <input type="text" name="chapter_name" id="edit_chapter_name" required />
-                                </div>
-                                <div class="form-row">
-                                    <label for="edit_chapter_date">Chapter Date (optional):</label>
-                                    <input type="date" name="chapter_date" id="edit_chapter_date">
-                                </div>
-                                <div class="form-row">
-                                    <label for="edit_chapter_images">Upload Images:</label>
-                                    <input type="button" id="edit_chapter_images_upload" class="button" value="Select Images" />
-                                </div>
-                                <div id="edit_image-preview" class="image-preview"></div>
-                                <input type="hidden" name="chapter_image_ids" id="edit_chapter_image_ids" />
-                                <div class="form-row">
-                                    <label for="edit_chapter_image_urls">Image URLs (one per line):</label>
-                                    <textarea name="chapter_image_urls" id="edit_chapter_image_urls" rows="5"></textarea>
-                                </div>
-                                <div class="form-row">
-                                    <button type="submit" class="button button-primary">Update Chapter</button>
-                                    <button type="button" id="cancel-edit" class="button">Cancel</button>
-                                    <span class="spinner"></span>
-                                </div>
-                            </form>
-                            <div id="chapter-update-results" class="form-results"></div>
-                        </div>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <p>No chapters found.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -1136,6 +1311,11 @@ function manga_reader_dynamic_styles() {
         }
         .update-site-btn:hover {
             background-color: <?php echo esc_attr(get_theme_mod('accent_color', '#57b2ff')); ?>;
+        }
+        .edit-chapter-form {
+            background: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
         }
     </style>
     <?php
