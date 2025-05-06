@@ -168,7 +168,7 @@ This theme uses a `manga/` folder in your WordPress root and the theme directory
 ## 🙌 Acknowledgments
 - Built with WordPress and jQuery.  
 - Shoutout to [O.M.V](https://rsm23.github.io/O.M.V-V2/) and MangaDex for inspiration.  
-- Thanks to the community for pushing this idea forward!  
+- Made because I wanted a simple manga viewer
 
 ---
 
