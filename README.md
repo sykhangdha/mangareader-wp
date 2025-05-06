@@ -4,15 +4,16 @@
 [📥 Release Notes + Download](https://github.com/sykhangdha/mangareader-wp/releases/tag/betaNew)  
 [👀 Live Demo](http://skymanga.42web.io/)
 
-Welcome to *MangaStarter Rewritten*, a fresh take on a custom WordPress theme built for manga lovers! This theme lets you host and read manga online with ease, featuring smooth chapter browsing, fast AJAX loading, customizable styles, and a handy admin panel to manage your collection. It’s still in beta, so expect some tweaks as we go! Manually adding chapters may still be a bit buggy(scanning manga folder is recommended way to add for now, but next update will fix most issues with manually adding a manga and chapter)
+Welcome to *MangaStarter Rewritten*, a custom manga viewer theme using Windows 11(fluent) design elements!
+
+*Note: The rewrite uses a new method to grab chapters and no longer requires plugins to be installed
 
 ---
 
 ## 🚀 Getting Started
 
 ### ✨ What’s This Theme About?
-*MangaStarter Rewritten* is designed to bring your manga collection to life on WordPress. Whether you’re a reader or a site owner, it offers a seamless experience with dynamic features and a user-friendly setup.
-
+*MangaStarter Rewritten* is designed to bring your manga collection to wordpress.
 ### 📋 Installation Steps
 1. **Upload the Theme**  
    - Drop the `manga-reader-theme` folder into `wp-content/themes/`.  OR upload theme through wordpress
