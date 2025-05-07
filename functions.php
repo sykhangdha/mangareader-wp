@@ -711,6 +711,7 @@ function manga_reader_register_settings() {
     register_setting('manga_reader_options_group', 'show_update_button');
     register_setting('manga_reader_announcement_group', 'announcement_title');
     register_setting('manga_reader_announcement_group', 'announcement_text');
+    register_setting('manga_reader_announcement_group', 'announcement_image');
 }
 add_action('admin_init', 'manga_reader_register_settings');
 
@@ -1106,7 +1107,7 @@ https://example.com/image2.jpg"></textarea>
 
                     <div class="manga-reader-card">
                         <h3>Site Announcement</h3>
-                        <p>Display a custom announcement on the frontend.</p>
+                        <p>Display a custom announcement with an optional image on the frontend.</p>
                         <form method="post" action="options.php" class="manga-reader-form">
                             <?php settings_fields('manga_reader_announcement_group'); ?>
                             <div class="form-row">
@@ -1116,6 +1117,22 @@ https://example.com/image2.jpg"></textarea>
                             <div class="form-row">
                                 <label for="announcement_text">Announcement Text:</label>
                                 <textarea name="announcement_text" id="announcement_text" rows="5"><?= esc_textarea(get_option('announcement_text')) ?></textarea>
+                            </div>
+                            <div class="form-row">
+                                <label for="announcement_image_url">Announcement Image URL:</label>
+                                <input type="text" name="announcement_image" id="announcement_image_url" value="<?= esc_attr(get_option('announcement_image')) ?>" placeholder="e.g., https://example.com/image.jpg" />
+                            </div>
+                            <div class="form-row">
+                                <label>Upload Image:</label>
+                                <input type="button" id="announcement_image_upload" class="button" value="Select Image" />
+                                <div id="announcement_image_preview" class="image-preview">
+                                    <?php
+                                    $image_url = get_option('announcement_image');
+                                    if ($image_url) {
+                                        echo '<img src="' . esc_url($image_url) . '" style="max-width:100px; margin:5px;" />';
+                                    }
+                                    ?>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <button type="submit" class="button button-primary">Save Announcement</button>
