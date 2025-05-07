@@ -75,7 +75,14 @@ function get_chapters_for_manga($manga_name) {
 <!-- Announcement Section -->
 <div class="announcement-section">
     <div class="announcement-image">
-        <img src="https://stickershop.line-scdn.net/stickershop/v1/product/617/LINEStorePC/main.png?v=9" alt="Announcement Image" class="announcement-image-flip">
+        <?php
+        $announcement_image = get_option('announcement_image');
+        if ($announcement_image) :
+        ?>
+            <img src="<?php echo esc_url($announcement_image); ?>" alt="Announcement Image" class="announcement-image-flip">
+        <?php else : ?>
+            <img src="https://via.placeholder.com/200x200?text=No+Image" alt="No Announcement Image" class="announcement-image-flip">
+        <?php endif; ?>
     </div>
     <div class="announcement-text">
         <?php
