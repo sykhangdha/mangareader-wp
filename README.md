@@ -8,6 +8,11 @@ Welcome to *MangaStarter Rewritten*, a custom manga viewer theme using Windows 1
 
 *Note: The rewrite uses a new method to grab chapters and no longer requires plugins to be installed
 
+## Upcoming changes(viewable in the live demo)
+- Add chapter list to sidebar for manga viewer
+- Switched method for scrolling
+- Improve sidebar view and manga page(currently shows chapter list twice when going back to chapter list)
+
 ---
 
 ## 🚀 Getting Started
