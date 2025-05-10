@@ -39,7 +39,7 @@ body {
 #manga-images {
     flex: 4;
     text-align: center;
-    max-width: calc(100% - 240px); /* Account for sidebar (200px + 20px gap + 20px padding) */
+    max-width: calc(100% - 240px);
     padding: 20px;
     position: relative;
     transition: max-width 0.3s ease;
@@ -51,10 +51,10 @@ body {
 
 /* Manga Image */
 .manga-image {
-    width: 50%; /* Smaller when sidebar is open */
-    max-width: 1200px; /* Cap size on wide screens */
+    width: 50%;
+    max-width: 1200px;
     height: auto;
-    margin: 10px auto; /* Reduced vertical spacing */
+    margin: 10px auto;
     display: block;
     border-radius: 6px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -63,7 +63,7 @@ body {
 }
 
 #manga-images.sidebar-expanded .manga-image {
-    width: 52.5%; /* Slightly larger (5% increase) when sidebar is closed */
+    width: 52.5%;
 }
 
 /* Cover Image */
@@ -84,7 +84,7 @@ body {
     object-fit: contain;
 }
 
-/* Sidebar (Manga Sidebar) */
+/* Sidebar */
 #manga-sidebar.sidebar {
     flex: 1;
     background-color: #1e1f23;
@@ -144,7 +144,8 @@ body {
 }
 
 /* Chapter List */
-#mangaview-chapterlist, #mangaview-chapterlist-sidebar {
+#mangaview-chapterlist,
+#mangaview-chapterlist-sidebar {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -155,7 +156,8 @@ body {
     align-items: center;
 }
 
-#mangaview-chapterlist li, #mangaview-chapterlist-sidebar li {
+#mangaview-chapterlist li,
+#mangaview-chapterlist-sidebar li {
     background-color: #333;
     padding: 12px 15px;
     border-radius: 8px;
@@ -168,12 +170,14 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-#mangaview-chapterlist li:hover, #mangaview-chapterlist-sidebar li:hover {
+#mangaview-chapterlist li:hover,
+#mangaview-chapterlist-sidebar li:hover {
     background-color: #444;
     transform: translateY(-4px);
 }
 
-#mangaview-chapterlist li a, #mangaview-chapterlist-sidebar li a {
+#mangaview-chapterlist li a,
+#mangaview-chapterlist-sidebar li a {
     text-decoration: none;
     color: #fff;
     font-weight: bold;
@@ -220,45 +224,47 @@ body {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Sidebar Toggle Button (Fluent Design) */
+/* Sidebar Toggle Button */
 .sidebar-toggle {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: rgba(30, 31, 35, 0.8); /* Semi-transparent dark acrylic */
-    backdrop-filter: blur(10px); /* Acrylic blur effect */
+    background: rgba(30, 31, 35, 0.8);
+    backdrop-filter: blur(10px);
     color: #ffffff;
     padding: 12px 20px;
     border: none;
-    border-radius: 12px; /* Rounded corners */
+    border-radius: 12px;
     cursor: pointer;
     font-family: 'Segoe UI', 'Arial', sans-serif;
     font-size: 1.1em;
     font-weight: 600;
-    text-transform: none; /* Natural casing for Fluent */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    text-transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     z-index: 1002;
 }
 
 .sidebar-toggle:hover {
-    background: rgba(50, 51, 56, 0.9); /* Slightly lighter on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Elevated shadow */
-    transform: translateY(-2px); /* Slight lift */
+    background: rgba(50, 51, 56, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 .sidebar-toggle:active {
-    background: rgba(70, 71, 77, 0.9); /* Pressed state */
-    transform: translateY(0); /* Return to original position */
+    background: rgba(70, 71, 77, 0.9);
+    transform: translateY(0);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar-toggle:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.4); /* Focus ring with Windows 11 accent */
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.4);
 }
 
 /* View Toggle Buttons */
@@ -276,7 +282,7 @@ body {
     border: none;
     margin: 0 5px;
     cursor: pointer;
-    transitionBac: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .view-toggle button:hover {
@@ -284,7 +290,8 @@ body {
 }
 
 /* Back to Home Button */
-#back-to-home, #back-to-home-sidebar {
+#back-to-home,
+#back-to-home-sidebar {
     background-color: #222;
     color: #fff;
     padding: 12px 20px;
@@ -299,7 +306,8 @@ body {
     transition: background-color 0.3s ease;
 }
 
-#back-to-home:hover, #back-to-home-sidebar:hover {
+#back-to-home:hover,
+#back-to-home-sidebar:hover {
     background-color: #333;
 }
 
@@ -325,25 +333,6 @@ body {
 .paged-controls button:hover {
     background-color: #006b91;
 }
-
-/* Image */
-#manga-cover img{
-	display:inline-block;
-	transform:translatex(0px) translatey(0px);
-}
-
-/* Image */
-#page #content #manga-main #chapter-list-container #manga-cover img{
-	width:27% !important;
-}
-
-#manga-images img{
-  
-  		width:60% !important;
-	
-}
-
-
 
 /* Bottom Navigation Buttons */
 #bottom-chapter-navigation {
@@ -384,13 +373,10 @@ body {
         flex-direction: column;
     }
 
-    #manga-images {
-        max-width: 100%;
-        width: 100%;
-    }
-
+    #manga-images,
     #manga-images.sidebar-expanded {
         max-width: 100%;
+        width: 100%;
     }
 
     #manga-sidebar.sidebar {
@@ -400,17 +386,6 @@ body {
         right: auto;
         top: auto;
         margin: 20px 0;
-    }
-
-    #manga-sidebar.sidebar-hidden {
-        visibility: hidden;
-        opacity: 0;
-        transform: translateX(100%);
-    }
-
-    #chapter-list-container {
-        max-width: 100%;
-        width: 100%;
     }
 
     .sidebar-toggle {
@@ -429,16 +404,18 @@ body {
     }
 
     .manga-image {
-        width: 50%; /* Smaller when sidebar is open */
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto;
     }
 
-    #manga-images.sidebar-expanded .manga-image {
-        width: 52.5%; /* Slightly larger (5% increase) when sidebar is closed */
+    .manga-image-wrapper {
+        background-color: transparent !important;
     }
 
-    #mangaview-chapterlist li, #mangaview-chapterlist-sidebar li {
-        font-size: 0.95em;
-        padding: 10px 15px;
+    /* Image */
+    #page #content #manga-main #manga-images-container #manga-images img {
+        width: 100% !important;
     }
 }
 
@@ -449,19 +426,17 @@ body {
     }
 
     .manga-image {
-        width: 55%; /* Smaller when sidebar is open */
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto;
     }
 
-    #manga-images.sidebar-expanded .manga-image {
-        width: 57.75%; /* Slightly larger (5% increase) when sidebar is closed */
+    .manga-image-wrapper {
+        background-color: transparent !important;
     }
 
-    #mangaview-chapterlist li, #mangaview-chapterlist-sidebar li {
-        font-size: 0.9em;
-        padding: 8px 10px;
-    }
-
-    #back-to-home, #back-to-home-sidebar {
+    #back-to-home,
+    #back-to-home-sidebar {
         width: 100%;
     }
 
