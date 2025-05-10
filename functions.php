@@ -14,9 +14,12 @@ add_action('after_setup_theme', 'manga_reader_theme_setup');
 // ===============================
 // ASSET VERSION (CACHE BUSTING)
 // ===============================
-function manga_reader_get_asset_version() {
-    $cache_reset = get_option('manga_reader_cache_reset', 0);
-    return $cache_reset ? $cache_reset : '2.6';
+function manga_reader_get_asset_version($file) {
+    $file_path = get_template_directory() . '/' . ltrim($file, '/');
+    if (file_exists($file_path)) {
+        return filemtime($file_path); // Use file modification time for cache busting
+    }
+    return '1.0'; // Fallback version if file doesn't exist
 }
 
 // ===============================
@@ -25,18 +28,28 @@ function manga_reader_get_asset_version() {
 function manga_reader_enqueue_assets() {
     if (is_admin()) return;
 
-    $ver = manga_reader_get_asset_version();
     $dir = get_template_directory_uri();
 
-    wp_enqueue_style('manga-theme-style', "$dir/style.css", [], $ver);
+    wp_enqueue_style('manga-theme-style', "$dir/style.css", [], manga_reader_get_asset_version('style.css'));
+    wp_enqueue_style('manga-reader-manga-style', "$dir/style-manga.css", [], manga_reader_get_asset_version('style-manga.css'));
+    wp_enqueue_script('manga-reader-script', "$dir/script.js", ['jquery'], manga_reader_get_asset_version('script.js'), true);
+    wp_localize_script('manga-reader-script', 'mangaAjax', [
+        'ajaxurl' => admin_url('admin-ajax.php'),
+    ]);
 
-    if (get_query_var('manga_name')) {
-        wp_enqueue_style('manga-reader-manga-style', "$dir/style-manga.css", [], $ver);
-        wp_enqueue_script('manga-reader-script', "$dir/script.js", ['jquery'], $ver, true);
-        wp_localize_script('manga-reader-script', 'mangaAjax', [
-            'ajaxurl' => admin_url('admin-ajax.php'),
-        ]);
-    }
+    add_filter('style_loader_tag', function ($tag, $handle) {
+        if (strpos($handle, 'manga') !== false) {
+            $tag = str_replace('<link', '<link data-cache-control="no-cache, no-store, must-revalidate"', $tag);
+        }
+        return $tag;
+    }, 10, 2);
+
+    add_filter('script_loader_tag', function ($tag, $handle) {
+        if (strpos($handle, 'manga') !== false) {
+            $tag = str_replace('<script', '<script data-cache-control="no-cache, no-store, must-revalidate"', $tag);
+        }
+        return $tag;
+    }, 10, 2);
 }
 add_action('wp_enqueue_scripts', 'manga_reader_enqueue_assets');
 
@@ -46,11 +59,10 @@ add_action('wp_enqueue_scripts', 'manga_reader_enqueue_assets');
 function manga_reader_admin_assets($hook) {
     if (!isset($_GET['page']) || $_GET['page'] !== 'manga-reader-settings') return;
 
-    $ver = manga_reader_get_asset_version();
     $dir = get_template_directory_uri();
 
-    wp_enqueue_style('manga-reader-admin-style', "$dir/admin-style.css", [], $ver);
-    wp_enqueue_script('manga-reader-admin-script', "$dir/admin-script.js", ['jquery'], $ver, true);
+    wp_enqueue_style('manga-reader-admin-style', "$dir/admin-style.css", [], manga_reader_get_asset_version('admin-style.css'));
+    wp_enqueue_script('manga-reader-admin-script', "$dir/admin-script.js", ['jquery'], manga_reader_get_asset_version('admin-script.js'), true);
     wp_localize_script('manga-reader-admin-script', 'mangaAdminAjax', [
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce'   => wp_create_nonce('manga_reader_admin_nonce'),
@@ -164,13 +176,16 @@ function manga_reader_display_manga($manga_name) {
             <img id="manga-cover" class="cover" src="<?= esc_url($cover_url) ?>" alt="<?= esc_attr($actual) ?> Cover">
         <?php endif; ?>
         <h2 id="manga-heading"><?= esc_html($actual) ?></h2>
-        <div id="chapter-list-container"><ul id="mangaview-chapterlist"></ul></div>
+        <div id="chapter-list-container" class="sidebar">
+            <h3>MangaViewer 1.0</h3>
+            <ul id="mangaview-chapterlist"></ul>
+        </div>
         <div class="view-toggle">
             <button data-view="list">List View</button>
             <button data-view="paged">Paged View</button>
         </div>
         <div id="manga-images" class="manga-images"></div>
-        <button id="back-to-chapters" style="display:none;">Back to Chapter List</button>
+        <button id="back-to-chapters" data-action="back-to-chapters" style="display:none;">Back to Chapter List</button>
     </div>
     <?php
     return ob_get_clean();
@@ -526,7 +541,6 @@ function manga_reader_delete_chapter() {
         wp_send_json_error(['message' => 'Chapter not found.']);
     }
 
-    // Delete associated images
     $image_ids = get_post_meta($chapter_id, 'chapter_images', true) ?: [];
     if (is_array($image_ids)) {
         foreach ($image_ids as $image_id) {
@@ -534,7 +548,6 @@ function manga_reader_delete_chapter() {
         }
     }
 
-    // Delete the chapter post
     $deleted = wp_delete_post($chapter_id, true);
 
     if ($deleted) {
@@ -674,7 +687,7 @@ function manga_reader_update_manga_cover() {
         }
 
         if (file_exists($cover_path)) {
-            unlink($cover_path); // Remove existing cover
+            unlink($cover_path);
         }
 
         if (move_uploaded_file($file['tmp_name'], $cover_path)) {
@@ -708,7 +721,6 @@ function manga_reader_add_admin_menu() {
 add_action('admin_menu', 'manga_reader_add_admin_menu');
 
 function manga_reader_register_settings() {
-    register_setting('manga_reader_options_group', 'show_update_button');
     register_setting('manga_reader_announcement_group', 'announcement_title');
     register_setting('manga_reader_announcement_group', 'announcement_text');
     register_setting('manga_reader_announcement_group', 'announcement_image');
@@ -720,13 +732,11 @@ function manga_reader_settings_page() {
     $mangas = is_dir($base_path) ? array_filter(glob($base_path . '*'), 'is_dir') : [];
     $manga_options = array_map(fn($dir) => basename($dir), $mangas);
 
-    // Handle pagination and manga filter
     $per_page = 15;
     $current_page = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
     $offset = ($current_page - 1) * $per_page;
     $selected_manga = isset($_GET['manga_filter']) ? sanitize_text_field($_GET['manga_filter']) : '';
 
-    // Fetch database chapters
     $args = [
         'post_type' => 'manga_chapter',
         'post_status' => 'publish',
@@ -758,7 +768,6 @@ function manga_reader_settings_page() {
     $total_db_chapters = $query->found_posts;
     wp_reset_postdata();
 
-    // Fetch filesystem chapters
     $fs_chapters = [];
     $total_fs_chapters = 0;
     if (is_dir($base_path)) {
@@ -772,7 +781,7 @@ function manga_reader_settings_page() {
             foreach ($chapter_dirs as $chapter_dir) {
                 $chapter_name = basename($chapter_dir);
                 $fs_chapters[] = [
-                    'id' => null, // No post ID for filesystem chapters
+                    'id' => null,
                     'title' => $chapter_name,
                     'manga' => $manga_name,
                     'date' => file_exists($chapter_dir) ? date("Y-m-d", filemtime($chapter_dir)) : '',
@@ -783,11 +792,9 @@ function manga_reader_settings_page() {
         }
     }
 
-    // Combine and sort chapters
     $all_chapters = array_merge($db_chapters, $fs_chapters);
     usort($all_chapters, fn($a, $b) => strcmp($b['title'], $a['title']));
 
-    // Apply pagination to combined chapters
     $total_chapters = $total_db_chapters + $total_fs_chapters;
     $total_pages = ceil($total_chapters / $per_page);
     $paged_chapters = array_slice($all_chapters, $offset, $per_page);
@@ -1016,7 +1023,6 @@ https://example.com/image2.jpg"></textarea>
                                 </tbody>
                             </table>
 
-                            <!-- Pagination -->
                             <?php if ($total_pages > 1): ?>
                                 <div class="tablenav">
                                     <div class="tablenav-pages">
@@ -1028,7 +1034,6 @@ https://example.com/image2.jpg"></textarea>
                                                 $base_url = add_query_arg(['manga_filter' => $selected_manga], $base_url);
                                             }
 
-                                            // First page
                                             if ($current_page > 1) {
                                                 $first_url = remove_query_arg('paged', $base_url);
                                                 echo '<a class="first-page button" href="' . esc_url($first_url) . '">«</a> ';
@@ -1036,7 +1041,6 @@ https://example.com/image2.jpg"></textarea>
                                                 echo '<span class="first-page button disabled">«</span> ';
                                             }
 
-                                            // Previous page
                                             if ($current_page > 1) {
                                                 $prev_page = $current_page - 1;
                                                 $prev_url = $prev_page == 1 ? remove_query_arg('paged', $base_url) : add_query_arg(['paged' => $prev_page], $base_url);
@@ -1045,7 +1049,6 @@ https://example.com/image2.jpg"></textarea>
                                                 echo '<span class="prev-page button disabled">‹</span> ';
                                             }
 
-                                            // Page numbers
                                             echo '<span class="paging-input">';
                                             echo sprintf(
                                                 '%d of <span class="total-pages">%d</span>',
@@ -1054,7 +1057,6 @@ https://example.com/image2.jpg"></textarea>
                                             );
                                             echo '</span>';
 
-                                            // Next page
                                             if ($current_page < $total_pages) {
                                                 $next_url = add_query_arg(['paged' => $current_page + 1], $base_url);
                                                 echo '<a class="next-page button" href="' . esc_url($next_url) . '">›</a> ';
@@ -1062,7 +1064,6 @@ https://example.com/image2.jpg"></textarea>
                                                 echo '<span class="next-page button disabled">›</span> ';
                                             }
 
-                                            // Last page
                                             if ($current_page < $total_pages) {
                                                 $last_url = add_query_arg(['paged' => $total_pages], $base_url);
                                                 echo '<a class="last-page button" href="' . esc_url($last_url) . '">»</a>';
@@ -1088,23 +1089,6 @@ https://example.com/image2.jpg"></textarea>
                     <span class="toggle-section dashicons dashicons-arrow-down-alt2"></span>
                 </h2>
                 <div class="section-content">
-                    <div class="manga-reader-card">
-                        <h3>Update Site Button</h3>
-                        <p>Enable a button to clear user-side CSS/JS cache.</p>
-                        <form method="post" action="options.php" class="manga-reader-form">
-                            <?php settings_fields('manga_reader_options_group'); ?>
-                            <div class="form-row">
-                                <label>
-                                    <input type="checkbox" name="show_update_button" value="yes" <?php checked(get_option('show_update_button'), 'yes'); ?>>
-                                    Activate Update Site Button
-                                </label>
-                            </div>
-                            <div class="form-row">
-                                <button type="submit" class="button button-primary">Save Settings</button>
-                            </div>
-                        </form>
-                    </div>
-
                     <div class="manga-reader-card">
                         <h3>Site Announcement</h3>
                         <p>Display a custom announcement with an optional image on the frontend.</p>
@@ -1157,18 +1141,6 @@ https://example.com/image2.jpg"></textarea>
 // ===============================
 // UTILITIES
 // ===============================
-function manga_reader_clear_cache() {
-    if (isset($_GET['refresh'])) {
-        wp_redirect(home_url());
-        exit;
-    }
-}
-add_action('init', 'manga_reader_clear_cache');
-
-function manga_reader_should_show_update_button() {
-    return get_option('show_update_button') === 'yes';
-}
-
 function manga_reader_get_latest_chapter($manga_name) {
     $base_path = ABSPATH . 'manga/';
     $actual = manga_reader_denormalize_name(manga_reader_normalize_name($manga_name), $base_path);
@@ -1250,7 +1222,7 @@ function manga_reader_customize_register($wp_customize) {
     ]);
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'header_background_color', [
         'label'    => __('Header Background Color', 'manga-reader-theme'),
-        'section'  => 'manga_reader_colors',
+        'section' => 'manga_reader_colors',
         'settings' => 'header_background_color',
     ]));
 
@@ -1322,12 +1294,6 @@ function manga_reader_dynamic_styles() {
         }
         .site-footer {
             color: <?php echo esc_attr(get_theme_mod('footer_text_color', '#aaaaaa')); ?>;
-        }
-        .update-site-btn {
-            background-color: <?php echo esc_attr(get_theme_mod('accent_color', '#57b2ff')); ?>;
-        }
-        .update-site-btn:hover {
-            background-color: <?php echo esc_attr(get_theme_mod('accent_color', '#57b2ff')); ?>;
         }
         .edit-chapter-form {
             background: #f9f9f9;
