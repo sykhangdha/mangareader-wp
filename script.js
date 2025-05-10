@@ -13,12 +13,14 @@ jQuery(document).ready(function ($) {
     const $heading = $('#manga-heading');
     const $imageContainer = $('#manga-images');
     const $chapterListContainer = $('#mangaview-chapterlist');
+    const $sidebarList = $('#mangaview-chapterlist-sidebar');
     const $coverImage = $('#manga-cover');
     const $sidebar = $('#manga-sidebar');
     const $chapterListWrapper = $('#chapter-list-container');
+    const $imageWrapper = $('#manga-images-container');
     const mangaName = $('.manga-viewer').data('manga-name');
 
-    // Create spinner element
+    // Create global spinner element
     const $spinner = $('<div>', {
         class: 'manga-spinner',
         css: {
@@ -28,6 +30,54 @@ jQuery(document).ready(function ($) {
         },
         html: '<div class="spinner-circle"></div>'
     }).appendTo($imageContainer);
+
+    // Create loading message element
+    const $loadingMessage = $('<div>', {
+        class: 'manga-loading-message',
+        css: {
+            display: 'none',
+            textAlign: 'center',
+            margin: '20px 0',
+            fontSize: '18px',
+            color: '#333'
+        },
+        text: 'Images are loading please wait 3 seconds'
+    }).appendTo($imageContainer);
+
+    // Create sidebar toggle button
+    const $toggleButton = $('<button>', {
+        class: 'sidebar-toggle',
+        text: 'Chapters/Settings',
+        css: {
+            display: 'none'
+        }
+    }).appendTo($imageWrapper);
+
+    // Ensure close button exists
+    if (!$sidebar.find('.sidebar-close').length) {
+        $('<button>', {
+            class: 'sidebar-close',
+            text: 'Close',
+            css: { display: 'block' }
+        }).prependTo($sidebar);
+    }
+    const $closeButton = $sidebar.find('.sidebar-close');
+
+    // Detect mobile device
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    }
+
+    // Preload images in background
+    function preloadImages(imageUrls) {
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.src = url;
+            img.onerror = () => {
+                console.warn(`Failed to preload image: ${url}`);
+            };
+        });
+    }
 
     function showLoadingHeading() {
         $heading.text(`${mangaName} - Loading...`);
@@ -43,12 +93,32 @@ jQuery(document).ready(function ($) {
         $heading.text(`${mangaName} - ${formatted}`);
     }
 
+    function toggleSidebar(show) {
+        if (show) {
+            $sidebar.removeClass('sidebar-hidden').css({ display: 'block', opacity: 1, transform: 'translateX(0)' });
+            $imageContainer.removeClass('sidebar-expanded');
+            $toggleButton.css('display', 'none');
+            $closeButton.css('display', 'block');
+        } else {
+            $sidebar.addClass('sidebar-hidden').css({ opacity: 0, transform: 'translateX(100%)' });
+            $imageContainer.addClass('sidebar-expanded');
+            $toggleButton.css('display', 'block');
+            $closeButton.css('display', 'none');
+        }
+    }
+
     function loadChapters() {
         updateHeading('Chapters');
-        $imageContainer.hide().empty();
+        $imageWrapper.hide();
+        $imageContainer.empty();
         $spinner.hide();
-        $sidebar.find('.view-toggle, #back-to-chapters').hide();
+        $loadingMessage.hide();
         $chapterListContainer.empty().show();
+        $sidebarList.empty();
+        $chapterListWrapper.show();
+        toggleSidebar(false);
+        $('.view-toggle').hide();
+        $coverImage.show();
 
         $.post(mangaAjax.ajaxurl, {
             action: 'get_chapters',
@@ -69,6 +139,7 @@ jQuery(document).ready(function ($) {
                 }).join('');
 
                 $chapterListContainer.html(html);
+                $sidebarList.html(html);
                 $(window).trigger('resize');
             } else {
                 $heading.text(`${mangaName} - No Chapters Available`);
@@ -76,22 +147,14 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    function preloadImages(imageUrls) {
-        imageUrls.forEach(url => {
-            const img = new Image();
-            img.src = url;
-            img.onerror = () => {
-                console.warn(`Failed to preload image: ${url}`);
-            };
-        });
-    }
-
     function loadImages(chapter) {
         showLoadingHeading();
         $chapterListWrapper.hide();
-        $coverImage.fadeOut();
-        $imageContainer.empty().hide();
+        $imageWrapper.show();
+        $imageContainer.empty().show();
         $spinner.show();
+        $loadingMessage.hide();
+        $('.view-toggle').show();
 
         $.post(mangaAjax.ajaxurl, {
             action: 'get_images',
@@ -106,59 +169,83 @@ jQuery(document).ready(function ($) {
 
                 if (currentImages.length === 0) {
                     $heading.text(`${mangaName} - No Images Available`);
-                    $sidebar.find('.view-toggle, #back-to-chapters').hide();
+                    $('.view-toggle').hide();
+                    $loadingMessage.hide();
+                    toggleSidebar(false);
                     return;
                 }
 
-                preloadImages(currentImages);
-
-                if (currentChapterIndex < allChapters.length - 1) {
-                    const nextChapter = allChapters[currentChapterIndex + 1].name;
-                    $.post(mangaAjax.ajaxurl, {
-                        action: 'get_images',
-                        manga: mangaName,
-                        chapter: nextChapter
-                    }, function (nextRes) {
-                        if (nextRes.success && Array.isArray(nextRes.data)) {
-                            preloadImages(nextRes.data);
-                        }
-                    });
+                if (isMobileDevice()) {
+                    preloadImages(currentImages);
                 }
 
                 renderImages(() => {
                     updateHeading(chapter);
-                    $imageContainer.show();
-                    $sidebar.find('.view-toggle, #back-to-chapters').show();
-                    $sidebar.fadeIn();
+                    toggleSidebar(true);
                 });
             } else {
                 $heading.text(`${mangaName} - Images Not Found`);
-                $sidebar.find('.view-toggle, #back-to-chapters').hide();
+                $('.view-toggle').hide();
+                $loadingMessage.hide();
+                toggleSidebar(false);
             }
         }).fail(function () {
             $spinner.hide();
+            $loadingMessage.hide();
             $heading.text(`${mangaName} - Error Loading Images`);
-            $sidebar.find('.view-toggle, #back-to-chapters').hide();
+            $('.view-toggle').hide();
+            toggleSidebar(false);
         });
     }
 
     function renderImages(done) {
         $imageContainer.empty();
+        const isMobile = isMobileDevice();
 
         if (viewType === 'list') {
-            currentImages.forEach((src, i) => {
-                const $img = $('<img>', {
-                    src,
-                    class: 'manga-image',
-                    css: { display: 'none' }
-                }).on('load', function () {
-                    $(this).fadeIn(300 + i * 50);
-                }).on('error', function () {
-                    console.warn(`Failed to load image: ${src}`);
-                    $(this).remove();
+            if (isMobile) {
+                $imageContainer.show();
+                $loadingMessage.show();
+                setTimeout(() => {
+                    $imageContainer.empty();
+                    currentImages.forEach(src => {
+                        const $imgWrapper = $('<div>', {
+                            class: 'manga-image-wrapper',
+                            css: {
+                                position: 'relative',
+                                backgroundColor: '#f0f0f0',
+                                minHeight: '100px'
+                            }
+                        });
+                        const $img = $('<img>', {
+                            src: src,
+                            class: 'manga-image',
+                            css: { display: 'block', width: '100%', height: 'auto' }
+                        }).on('error', function () {
+                            console.warn(`Failed to load image: ${src}`);
+                            $(this).parent().remove();
+                        });
+                        $imgWrapper.append($img);
+                        $imageContainer.append($imgWrapper);
+                    });
+                    done();
+                }, 3000);
+            } else {
+                currentImages.forEach((src, i) => {
+                    const $img = $('<img>', {
+                        src: src,
+                        class: 'manga-image',
+                        css: { display: 'none' }
+                    }).on('load', function () {
+                        $(this).fadeIn(300 + i * 50);
+                    }).on('error', function () {
+                        console.warn(`Failed to load image: ${src}`);
+                        $(this).remove();
+                    });
+                    $imageContainer.append($img);
                 });
-                $imageContainer.append($img);
-            });
+                done();
+            }
         } else {
             if (!currentImages[currentIndex]) {
                 currentIndex = 0;
@@ -204,10 +291,10 @@ jQuery(document).ready(function ($) {
                     renderImages(done);
                 }
             });
+            done();
         }
 
         showBottomNav();
-        done();
     }
 
     function showBottomNav() {
@@ -233,7 +320,6 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    // Smooth drag scrolling for List View
     function lerp(start, end, factor) {
         return start + (end - start) * factor;
     }
@@ -262,7 +348,7 @@ jQuery(document).ready(function ($) {
 
     $(document).on('mousemove', function (e) {
         if (isDragging && viewType === 'list') {
-            const deltaY = (startY - e.pageY) * 2.0; // Increased multiplier for faster scrolling
+            const deltaY = (startY - e.pageY) * 2.0;
             targetScrollTop = startScrollTop + deltaY;
         }
     });
@@ -275,25 +361,26 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    // Keyboard navigation for smooth, manga-like scrolling in List View
     $(document).on('keydown', function (e) {
-        if (viewType === 'list' && (e.key === 'ArrowDown' || e.key === ' ')) {
+        if (viewType !== 'list') return;
+        if (e.key === 'ArrowDown' || e.key === ' ') {
             e.preventDefault();
             const viewportHeight = $(window).height();
-            const scrollDistance = viewportHeight * 0.8; // Scroll 80% of viewport height
-            const currentScroll = $(window).scrollTop();
-            const $images = $('.manga-image:visible');
-            const lastImageBottom = $images.last().offset().top + $images.last().height();
+            const scrollDistance = viewportHeight * 0.8;
+            const currentScroll = window.scrollY;
+            const $lastImage = $('.manga-image:visible').last();
+            const lastImageBottom = $lastImage.length ? $lastImage.offset().top + $lastImage.height() : 0;
 
-            // If near the end of the chapter, load the next chapter
             if (currentScroll + viewportHeight >= lastImageBottom - 50 && currentChapterIndex < allChapters.length - 1) {
                 loadImages(allChapters[currentChapterIndex + 1].name);
             } else {
-                // Scroll down by partial viewport height
-                $('html, body').animate({
-                    scrollTop: currentScroll + scrollDistance
-                }, 500); // Slower animation for readability
+                window.scrollBy({ top: scrollDistance, behavior: 'smooth' });
             }
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const viewportHeight = $(window).height();
+            const scrollDistance = -viewportHeight * 0.8;
+            window.scrollBy({ top: scrollDistance, behavior: 'smooth' });
         }
     });
 
@@ -304,21 +391,25 @@ jQuery(document).ready(function ($) {
         loadImages(chapter);
     });
 
-    $('#back-to-chapters').on('click', function () {
-        $imageContainer.hide().empty();
-        $spinner.hide();
-        $('#bottom-chapter-navigation').remove();
-        $sidebar.find('.view-toggle, #back-to-chapters').hide();
-        $chapterListWrapper.show();
-        $coverImage.fadeIn();
-        loadChapters();
-    });
-
     $('.view-toggle button').on('click', function () {
         viewType = $(this).data('view');
         if (currentImages.length) {
             renderImages(() => updateHeading(allChapters[currentChapterIndex].name));
         }
+    });
+
+    $toggleButton.on('click', function () {
+        console.log('Toggle button clicked');
+        toggleSidebar(true);
+    });
+
+    $closeButton.on('click', function () {
+        console.log('Close button clicked');
+        toggleSidebar(false);
+    });
+
+    $('#back-to-home, #back-to-home-sidebar').on('click', function () {
+        window.location.href = '<?php echo esc_url(home_url()); ?>';
     });
 
     loadChapters();
