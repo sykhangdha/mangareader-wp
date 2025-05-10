@@ -14,6 +14,11 @@ body {
     margin: 20px 0;
 }
 
+/* Image */
+#manga-images img{
+	width:60% !important;
+}
+
 /* Manga Heading */
 #manga-heading {
     font-size: 2em;
