@@ -99,11 +99,13 @@ jQuery(document).ready(function ($) {
             $imageContainer.removeClass('sidebar-expanded');
             $toggleButton.css('display', 'none');
             $closeButton.css('display', 'block');
+            $sidebar.find('.view-toggle').show();
         } else {
             $sidebar.addClass('sidebar-hidden').css({ opacity: 0, transform: 'translateX(100%)' });
             $imageContainer.addClass('sidebar-expanded');
             $toggleButton.css('display', 'block');
             $closeButton.css('display', 'none');
+            $sidebar.find('.view-toggle').hide();
         }
     }
 
@@ -116,8 +118,6 @@ jQuery(document).ready(function ($) {
         $chapterListContainer.empty().show();
         $sidebarList.empty();
         $chapterListWrapper.show();
-        toggleSidebar(false);
-        $('.view-toggle').hide();
         $coverImage.show();
 
         $.post(mangaAjax.ajaxurl, {
@@ -133,17 +133,62 @@ jQuery(document).ready(function ($) {
                     return extractNum(b.name) - extractNum(a.name);
                 });
 
-                const html = allChapters.map(ch => {
-                    const date = ch.date ? `<span class="chapter-date">(${ch.date})</span>` : '';
-                    return `<li><a href="#" class="chapter-link" data-chapter="${ch.name}">${ch.name}</a> ${date}</li>`;
-                }).join('');
+                // Create chapter list HTML efficiently
+                const fragment = document.createDocumentFragment();
+                allChapters.forEach(ch => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = '#';
+                    a.className = 'chapter-link';
+                    a.dataset.chapter = ch.name;
+                    a.textContent = ch.name;
+                    li.appendChild(a);
+                    if (ch.date) {
+                        const dateSpan = document.createElement('span');
+                        dateSpan.className = 'chapter-date';
+                        dateSpan.textContent = `(${ch.date})`;
+                        li.appendChild(dateSpan);
+                    }
+                    fragment.appendChild(li);
+                });
 
-                $chapterListContainer.html(html);
-                $sidebarList.html(html);
+                $chapterListContainer.empty().append(fragment.cloneNode(true));
+                $sidebarList.empty().append(fragment);
+
+                // Ensure view-toggle is placed under <p>MangaViewer v1.0</p>
+                $sidebar.find('.view-toggle').remove();
+                const $viewToggle = $('<div>', {
+                    class: 'view-toggle'
+                }).append(
+                    $('<button>', {
+                        text: 'List View',
+                        'data-view': 'list'
+                    }),
+                    $('<button>', {
+                        text: 'Paged View',
+                        'data-view': 'paged'
+                    })
+                );
+                $sidebar.find('p').after($viewToggle);
+
+                // Highlight current chapter and scroll to it
+                if (currentChapterIndex >= 0) {
+                    const $currentChapter = $sidebarList.find(`.chapter-link[data-chapter="${allChapters[currentChapterIndex].name}"]`);
+                    if ($currentChapter.length) {
+                        $currentChapter.parent().addClass('current-chapter');
+                        $sidebarList[0].scrollTop = $currentChapter.parent()[0].offsetTop - $sidebarList[0].offsetTop;
+                    }
+                }
+
+                toggleSidebar(false);
                 $(window).trigger('resize');
             } else {
                 $heading.text(`${mangaName} - No Chapters Available`);
+                $sidebar.find('.view-toggle').hide();
             }
+        }).fail(function () {
+            $heading.text(`${mangaName} - Error Loading Chapters`);
+            $sidebar.find('.view-toggle').hide();
         });
     }
 
@@ -154,7 +199,7 @@ jQuery(document).ready(function ($) {
         $imageContainer.empty().show();
         $spinner.show();
         $loadingMessage.hide();
-        $('.view-toggle').show();
+        $coverImage.hide();
 
         $.post(mangaAjax.ajaxurl, {
             action: 'get_images',
@@ -169,7 +214,6 @@ jQuery(document).ready(function ($) {
 
                 if (currentImages.length === 0) {
                     $heading.text(`${mangaName} - No Images Available`);
-                    $('.view-toggle').hide();
                     $loadingMessage.hide();
                     toggleSidebar(false);
                     return;
@@ -182,10 +226,17 @@ jQuery(document).ready(function ($) {
                 renderImages(() => {
                     updateHeading(chapter);
                     toggleSidebar(true);
+
+                    // Highlight current chapter in sidebar
+                    $sidebarList.find('.current-chapter').removeClass('current-chapter');
+                    const $currentChapter = $sidebarList.find(`.chapter-link[data-chapter="${chapter}"]`);
+                    if ($currentChapter.length) {
+                        $currentChapter.parent().addClass('current-chapter');
+                        $sidebarList[0].scrollTop = $currentChapter.parent()[0].offsetTop - $sidebarList[0].offsetTop;
+                    }
                 });
             } else {
                 $heading.text(`${mangaName} - Images Not Found`);
-                $('.view-toggle').hide();
                 $loadingMessage.hide();
                 toggleSidebar(false);
             }
@@ -193,7 +244,6 @@ jQuery(document).ready(function ($) {
             $spinner.hide();
             $loadingMessage.hide();
             $heading.text(`${mangaName} - Error Loading Images`);
-            $('.view-toggle').hide();
             toggleSidebar(false);
         });
     }
@@ -391,7 +441,7 @@ jQuery(document).ready(function ($) {
         loadImages(chapter);
     });
 
-    $('.view-toggle button').on('click', function () {
+    $(document).on('click', '.view-toggle button', function () {
         viewType = $(this).data('view');
         if (currentImages.length) {
             renderImages(() => updateHeading(allChapters[currentChapterIndex].name));
