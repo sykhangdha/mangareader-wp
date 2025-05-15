@@ -1,7 +1,8 @@
 # 🎉 MangaStarter Rewritten [Beta] 🎉
 
-**Beta V.1.5: 5/15/2025(NEW VERSION)**  
+**BetaV.1.5: 5/15/2025**  
 [📥 Release Notes + Download](https://github.com/sykhangdha/mangareader-wp/releases/tag/betaNew)
+
 [👀 Live Demo](http://skymanga.42web.io/)
 
 Welcome to *MangaStarter Rewritten*, a custom manga viewer theme using Windows 11(fluent) design elements!
