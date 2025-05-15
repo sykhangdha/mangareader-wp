@@ -14,6 +14,7 @@ Welcome to *MangaStarter Rewritten*, a custom manga viewer theme using Windows 1
 - Improve sidebar view and manga page(currently shows chapter list twice when going back to chapter list)
 - Admin settings improvement
 - Improve image loading for slow servers
+- Theming system(Site is currently using 'Manga95' theme by me that follows design elements from Windows95/Chicago95(linux theme)
 
 ---
 
