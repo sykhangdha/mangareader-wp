@@ -1,4 +1,5 @@
 jQuery(document).ready(function ($) {
+    // State variables
     let currentImages = [];
     let currentIndex = 0;
     let viewType = 'list';
@@ -10,6 +11,7 @@ jQuery(document).ready(function ($) {
     let targetScrollTop = 0;
     let currentScrollTop = 0;
 
+    // DOM elements
     const $heading = $('#manga-heading');
     const $imageContainer = $('#manga-images');
     const $chapterListContainer = $('#mangaview-chapterlist');
@@ -20,27 +22,17 @@ jQuery(document).ready(function ($) {
     const $imageWrapper = $('#manga-images-container');
     const mangaName = $('.manga-viewer').data('manga-name');
 
-    // Create global spinner element
+    // Create global spinner
     const $spinner = $('<div>', {
         class: 'manga-spinner',
-        css: {
-            display: 'none',
-            textAlign: 'center',
-            margin: '20px 0'
-        },
+        css: { display: 'none', textAlign: 'center', margin: '20px 0' },
         html: '<div class="spinner-circle"></div>'
     }).appendTo($imageContainer);
 
-    // Create loading message element
+    // Create loading message
     const $loadingMessage = $('<div>', {
         class: 'manga-loading-message',
-        css: {
-            display: 'none',
-            textAlign: 'center',
-            margin: '20px 0',
-            fontSize: '18px',
-            color: '#333'
-        },
+        css: { display: 'none', textAlign: 'center', margin: '20px 0', fontSize: '18px', color: '#333' },
         text: 'Images are loading please wait 3 seconds'
     }).appendTo($imageContainer);
 
@@ -48,9 +40,7 @@ jQuery(document).ready(function ($) {
     const $toggleButton = $('<button>', {
         class: 'sidebar-toggle',
         text: 'Chapters/Settings',
-        css: {
-            display: 'none'
-        }
+        css: { display: 'none' }
     }).appendTo($imageWrapper);
 
     // Ensure close button exists
@@ -63,26 +53,26 @@ jQuery(document).ready(function ($) {
     }
     const $closeButton = $sidebar.find('.sidebar-close');
 
-    // Detect mobile device
+    // Utility: Detect mobile device
     function isMobileDevice() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     }
 
-    // Preload images in background
+    // Utility: Preload images
     function preloadImages(imageUrls) {
         imageUrls.forEach(url => {
             const img = new Image();
             img.src = url;
-            img.onerror = () => {
-                console.warn(`Failed to preload image: ${url}`);
-            };
+            img.onerror = () => console.warn(`Failed to preload image: ${url}`);
         });
     }
 
+    // Update heading with loading state
     function showLoadingHeading() {
         $heading.text(`${mangaName} - Loading...`);
     }
 
+    // Format and update heading
     function updateHeading(chapter) {
         const formatted = chapter === 'Chapters'
             ? 'Chapters'
@@ -93,6 +83,7 @@ jQuery(document).ready(function ($) {
         $heading.text(`${mangaName} - ${formatted}`);
     }
 
+    // Toggle sidebar visibility
     function toggleSidebar(show) {
         if (show) {
             $sidebar.removeClass('sidebar-hidden').css({ display: 'block', opacity: 1, transform: 'translateX(0)' });
@@ -106,9 +97,15 @@ jQuery(document).ready(function ($) {
             $toggleButton.css('display', 'block');
             $closeButton.css('display', 'none');
             $sidebar.find('.view-toggle').hide();
+            // Force layout recalculation on mobile
+            if (isMobileDevice()) {
+                $imageContainer.css('width', '100%');
+                setTimeout(() => $imageContainer.css('width', ''), 0);
+            }
         }
     }
 
+    // Load chapters
     function loadChapters() {
         updateHeading('Chapters');
         $imageWrapper.hide();
@@ -133,7 +130,7 @@ jQuery(document).ready(function ($) {
                     return extractNum(b.name) - extractNum(a.name);
                 });
 
-                // Create chapter list HTML efficiently
+                // Create chapter list HTML for both main and sidebar lists
                 const fragment = document.createDocumentFragment();
                 allChapters.forEach(ch => {
                     const li = document.createElement('li');
@@ -146,32 +143,25 @@ jQuery(document).ready(function ($) {
                     if (ch.date) {
                         const dateSpan = document.createElement('span');
                         dateSpan.className = 'chapter-date';
-                        dateSpan.textContent = `(${ch.date})`;
+                        dateSpan.textContent = ` (${ch.date})`;
                         li.appendChild(dateSpan);
                     }
                     fragment.appendChild(li);
                 });
 
+                // Populate main and sidebar chapter lists
                 $chapterListContainer.empty().append(fragment.cloneNode(true));
                 $sidebarList.empty().append(fragment);
 
-                // Ensure view-toggle is placed under <p>MangaViewer v1.0</p>
+                // Add view toggle buttons
                 $sidebar.find('.view-toggle').remove();
-                const $viewToggle = $('<div>', {
-                    class: 'view-toggle'
-                }).append(
-                    $('<button>', {
-                        text: 'List View',
-                        'data-view': 'list'
-                    }),
-                    $('<button>', {
-                        text: 'Paged View',
-                        'data-view': 'paged'
-                    })
+                const $viewToggle = $('<div>', { class: 'view-toggle' }).append(
+                    $('<button>', { text: 'List View', 'data-view': 'list' }),
+                    $('<button>', { text: 'Paged View', 'data-view': 'paged' })
                 );
-                $sidebar.find('p').after($viewToggle);
+                $sidebar.find('.viewer-version').after($viewToggle);
 
-                // Highlight current chapter and scroll to it
+                // Highlight current chapter in sidebar
                 if (currentChapterIndex >= 0) {
                     const $currentChapter = $sidebarList.find(`.chapter-link[data-chapter="${allChapters[currentChapterIndex].name}"]`);
                     if ($currentChapter.length) {
@@ -180,6 +170,8 @@ jQuery(document).ready(function ($) {
                     }
                 }
 
+                // Show navigation buttons
+                showBottomNav();
                 toggleSidebar(false);
                 $(window).trigger('resize');
             } else {
@@ -192,6 +184,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    // Load images for a chapter
     function loadImages(chapter) {
         showLoadingHeading();
         $chapterListWrapper.hide();
@@ -248,6 +241,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    // Render images based on view type
     function renderImages(done) {
         $imageContainer.empty();
         const isMobile = isMobileDevice();
@@ -261,11 +255,7 @@ jQuery(document).ready(function ($) {
                     currentImages.forEach(src => {
                         const $imgWrapper = $('<div>', {
                             class: 'manga-image-wrapper',
-                            css: {
-                                position: 'relative',
-                                backgroundColor: '#f0f0f0',
-                                minHeight: '100px'
-                            }
+                            css: { position: 'relative', backgroundColor: '#f0f0f0', minHeight: '100px' }
                         });
                         const $img = $('<img>', {
                             src: src,
@@ -347,11 +337,12 @@ jQuery(document).ready(function ($) {
         showBottomNav();
     }
 
+    // Show bottom navigation
     function showBottomNav() {
         $('#bottom-chapter-navigation').remove();
 
         const $nav = $(`
-            <div id="bottom-chapter-navigation" style="text-align:center; margin:20px 0;">
+            <div id="bottom-chapter-navigation" class="bottom-nav">
                 <button id="next-chapter-bottom">Prev Chapter</button>
                 <button id="prev-chapter-bottom">Next Chapter</button>
             </div>
@@ -370,10 +361,12 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    // Smooth scroll interpolation
     function lerp(start, end, factor) {
         return start + (end - start) * factor;
     }
 
+    // Update scroll position
     function updateScroll() {
         if (isDragging && viewType === 'list') {
             currentScrollTop = lerp(currentScrollTop, targetScrollTop, 0.1);
@@ -382,6 +375,7 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    // Drag-to-scroll
     $(document).on('mousedown', '.manga-image', function (e) {
         if (viewType === 'list') {
             e.preventDefault();
@@ -411,6 +405,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    // Keyboard navigation
     $(document).on('keydown', function (e) {
         if (viewType !== 'list') return;
         if (e.key === 'ArrowDown' || e.key === ' ') {
@@ -434,6 +429,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    // Chapter link click
     $(document).on('click', '.chapter-link', function (e) {
         e.preventDefault();
         const chapter = $(this).data('chapter');
@@ -441,6 +437,7 @@ jQuery(document).ready(function ($) {
         loadImages(chapter);
     });
 
+    // View toggle
     $(document).on('click', '.view-toggle button', function () {
         viewType = $(this).data('view');
         if (currentImages.length) {
@@ -448,19 +445,20 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    // Sidebar toggle buttons
     $toggleButton.on('click', function () {
-        console.log('Toggle button clicked');
         toggleSidebar(true);
     });
 
     $closeButton.on('click', function () {
-        console.log('Close button clicked');
         toggleSidebar(false);
     });
 
+    // Back to home
     $('#back-to-home, #back-to-home-sidebar').on('click', function () {
         window.location.href = '<?php echo esc_url(home_url()); ?>';
     });
 
+    // Initial load
     loadChapters();
 });

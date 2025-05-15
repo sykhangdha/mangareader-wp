@@ -1,17 +1,35 @@
+/* CSS Variables */
+:root {
+    --primary-bg: #2b2d31;
+    --sidebar-bg: #1e1f23;
+    --card-bg: #333;
+    --hover-bg: #444;
+    --accent-blue: #57b2ff;
+    --text-color: #ddd;
+    --text-dark: #aaa;
+    --button-bg: #222;
+    --button-hover: #333;
+    --nav-button-bg: #5a5c60;
+    --nav-button-hover: #7a7d81;
+    --spacing: 20px;
+    --border-radius: 6px;
+    --shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 /* General Body */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #2b2d31;
+    background-color: var(--primary-bg);
     margin: 0;
     padding: 0;
     font-size: 14px;
-    color: #ddd;
+    color: var(--text-color);
 }
 
 /* Manga Header */
 .manga-header {
     text-align: center;
-    margin: 20px 0;
+    margin: var(--spacing) 0;
 }
 
 /* Manga Heading */
@@ -20,6 +38,7 @@ body {
     font-weight: bold;
     margin: 10px auto;
     color: #fff;
+    text-align: center;
 }
 
 /* Manga Images Container */
@@ -27,8 +46,8 @@ body {
     max-width: 1600px;
     margin: 0 auto;
     display: flex;
-    gap: 20px;
-    padding: 20px;
+    gap: var(--spacing);
+    padding: var(--spacing);
     align-items: flex-start;
     justify-content: space-between;
     width: 100%;
@@ -40,7 +59,7 @@ body {
     flex: 4;
     text-align: center;
     max-width: calc(100% - 240px);
-    padding: 20px;
+    padding: var(--spacing);
     position: relative;
     transition: max-width 0.3s ease;
 }
@@ -56,8 +75,8 @@ body {
     height: auto;
     margin: 10px auto;
     display: block;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
     object-fit: contain;
     transition: width 0.3s ease, opacity 0.5s ease;
 }
@@ -70,7 +89,7 @@ body {
 #manga-cover {
     width: 50%;
     max-width: 100%;
-    margin: 20px auto;
+    margin: var(--spacing) auto;
     display: block;
     text-align: center;
 }
@@ -79,24 +98,24 @@ body {
     width: 100%;
     max-width: 100%;
     height: auto;
-    border-radius: 6px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
     object-fit: contain;
 }
 
 /* Sidebar */
 #manga-sidebar.sidebar {
     flex: 1;
-    background-color: #1e1f23;
-    padding: 20px;
+    background-color: var(--sidebar-bg);
+    padding: var(--spacing);
     border-radius: 8px;
     max-width: 200px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-top: var(--spacing);
+    margin-bottom: var(--spacing);
+    box-shadow: var(--shadow);
     position: fixed;
-    right: 20px;
-    top: 20px;
+    right: var(--spacing);
+    top: var(--spacing);
     height: fit-content;
     max-height: calc(100vh - 40px);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -110,17 +129,17 @@ body {
     visibility: hidden;
 }
 
-/* Chapter List Container */
-#chapter-list-container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #1e1f23;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Sidebar Content */
+.sidebar-content {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.viewer-version {
+    color: var(--text-dark);
+    font-size: 1em;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 /* Sidebar Close Button */
@@ -128,7 +147,7 @@ body {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #333;
+    background-color: var(--card-bg);
     color: #fff;
     padding: 8px 12px;
     border: none;
@@ -141,7 +160,7 @@ body {
 }
 
 .sidebar-close:hover {
-    background-color: #444;
+    background-color: var(--hover-bg);
 }
 
 /* Chapter List */
@@ -154,11 +173,11 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    align-items: center;
+    align-items: flex-start;
 }
 
 #mangaview-chapterlist-sidebar {
-    max-height: calc(100vh - 200px);
+    max-height: 400px; /* Fits ~10 chapters */
     overflow-y: auto;
     padding-right: 10px;
 }
@@ -173,7 +192,7 @@ body {
 }
 
 #mangaview-chapterlist-sidebar::-webkit-scrollbar-thumb {
-    background: #57b2ff;
+    background: var(--accent-blue);
     border-radius: 3px;
 }
 
@@ -183,9 +202,9 @@ body {
 
 #mangaview-chapterlist li,
 #mangaview-chapterlist-sidebar li {
-    background-color: #333;
+    background-color: var(--card-bg);
     padding: 12px 15px;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -197,12 +216,12 @@ body {
 
 #mangaview-chapterlist li:hover,
 #mangaview-chapterlist-sidebar li:hover {
-    background-color: #444;
+    background-color: var(--hover-bg);
     transform: translateY(-4px);
 }
 
 #mangaview-chapterlist-sidebar li.current-chapter {
-    background-color: #57b2ff;
+    background-color: var(--accent-blue);
     color: #fff;
 }
 
@@ -219,23 +238,23 @@ body {
     text-decoration: none;
     color: #fff;
     font-weight: bold;
-    display: block;
-    width: 80%;
+    flex-grow: 1;
     font-size: 0.95em;
 }
 
 .chapter-date {
     font-size: 0.8em;
-    color: #bbb;
+    color: var(--text-dark);
     font-style: italic;
+    margin-left: 5px;
 }
 
 /* Loading and Image Wrapper */
 .manga-loading-message {
     font-size: 18px;
-    color: #aaa;
+    color: var(--text-dark);
     text-align: center;
-    margin: 20px 0;
+    margin: var(--spacing) 0;
 }
 
 .manga-image-wrapper {
@@ -255,7 +274,7 @@ body {
     width: 24px;
     height: 24px;
     border: 3px solid #ccc;
-    border-top-color: #57b2ff;
+    border-top-color: var(--accent-blue);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     display: inline-block;
@@ -270,8 +289,8 @@ body {
 /* Sidebar Toggle Button */
 .sidebar-toggle {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: var(--spacing);
+    right: var(--spacing);
     background: rgba(30, 31, 35, 0.8);
     backdrop-filter: blur(10px);
     color: #ffffff;
@@ -312,46 +331,45 @@ body {
 }
 
 .view-toggle button {
-    background-color: #222;
+    background-color: var(--button-bg);
     color: #fff;
-    padding: 12px 20px;
-    font-size: 1em;
-    border-radius: 6px;
+    padding: 10px 15px;
+    font-size: 0.9em;
+    border-radius: var(--border-radius);
     border: none;
     margin: 0 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: calc(50% - 10px);
 }
 
 .view-toggle button:hover {
-    background-color: #333;
+    background-color: var(--button-hover);
 }
 
 /* Back to Home Button */
-#back-to-home,
-#back-to-home-sidebar {
-    background-color: #222;
+.back-to-home {
+    background-color: var(--button-bg);
     color: #fff;
-    padding: 12px 20px;
+    padding: 10px 15px;
     font-size: 1em;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     border: none;
     margin: 15px auto;
     cursor: pointer;
     display: block;
-    width: 200px;
+    width: 100%;
     text-align: center;
     transition: background-color 0.3s ease;
 }
 
-#back-to-home:hover,
-#back-to-home-sidebar:hover {
-    background-color: #333;
+.back-to-home:hover {
+    background-color: var(--button-hover);
 }
 
 /* Pagination Controls */
 .paged-controls {
-    margin-top: 20px;
+    margin-top: var(--spacing);
     text-align: center;
     width: 100%;
 }
@@ -362,7 +380,7 @@ body {
     padding: 10px 20px;
     font-size: 1em;
     border: none;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     margin: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -373,36 +391,38 @@ body {
 }
 
 /* Bottom Navigation Buttons */
-#bottom-chapter-navigation {
+.bottom-nav {
     text-align: center;
     margin-top: 30px;
     width: 100%;
+    z-index: 100;
+    position: relative;
 }
 
-#bottom-chapter-navigation button {
-    background-color: #5a5c60;
+.bottom-nav button {
+    background-color: var(--nav-button-bg);
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     margin: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-#bottom-chapter-navigation button:hover {
-    background-color: #7a7d81;
+.bottom-nav button:hover {
+    background-color: var(--nav-button-hover);
 }
 
 /* Footer */
 .site-footer {
-    background-color: #1e1f23;
-    padding: 20px;
+    background-color: var(--sidebar-bg);
+    padding: var(--spacing);
     text-align: center;
-    color: #aaa;
+    color: var(--text-dark);
     font-size: 0.95em;
     margin-top: 60px;
-    border-top: 1px solid #333;
+    border-top: 1px solid var(--card-bg);
 }
 
 /* Responsive Design */
@@ -423,11 +443,11 @@ body {
         width: 100%;
         right: auto;
         top: auto;
-        margin: 20px 0;
+        margin: var(--spacing) 0;
     }
 
     #mangaview-chapterlist-sidebar {
-        max-height: calc(100vh - 150px);
+        max-height: 400px;
     }
 
     .sidebar-toggle {
@@ -459,7 +479,8 @@ body {
 @media (max-width: 480px) {
     .view-toggle button {
         padding: 8px 10px;
-        font-size: 0.9em;
+        font-size: 0.85em;
+        width: calc(50% - 8px);
     }
 
     .manga-image {
@@ -472,8 +493,7 @@ body {
         background-color: transparent !important;
     }
 
-    #back-to-home,
-    #back-to-home-sidebar {
+    .back-to-home {
         width: 100%;
     }
 
