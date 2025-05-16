@@ -1,7 +1,7 @@
-# 🎉 MangaStarter Rewritten [Beta] 🎉
+# 🎉 MangaStarter Rewritten [Initial Release] 🎉
 
-**BetaV.1.5: 5/15/2025(Uses new retro theme)**  
-[📥 Release Notes + Download](https://github.com/sykhangdha/mangareader-wp/releases/tag/betaNew)
+**1.0 - Initial Release: 5/15/2025(Uses new retro theme)**  
+[📥 Release Notes + Download](https://github.com/sykhangdha/mangareader-wp/releases/tag/v1)
 
 [👀 Live Demo](http://skymanga.42web.io/)
 
