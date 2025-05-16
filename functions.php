@@ -17,9 +17,34 @@ add_action('after_setup_theme', 'manga_reader_theme_setup');
 function manga_reader_get_asset_version($file) {
     $file_path = get_template_directory() . '/' . ltrim($file, '/');
     if (file_exists($file_path)) {
-        return filemtime($file_path); // Use file modification time for cache busting
+        return filemtime($file_path);
     }
-    return '1.0'; // Fallback version if file doesn't exist
+    return '1.0';
+}
+
+// ===============================
+// GET AVAILABLE THEMES
+// ===============================
+function manga_reader_get_available_themes() {
+    $themes_dir = get_template_directory() . '/themes/';
+    $themes = [];
+
+    if (!is_dir($themes_dir)) {
+        return $themes;
+    }
+
+    $dirs = array_filter(glob($themes_dir . '*'), 'is_dir');
+    foreach ($dirs as $dir) {
+        $theme_name = basename($dir);
+        $style_path = $dir . '/style.css';
+        $manga_style_path = $dir . '/style-manga.css';
+
+        if (file_exists($style_path) && file_exists($manga_style_path)) {
+            $themes[] = $theme_name;
+        }
+    }
+
+    return $themes;
 }
 
 // ===============================
@@ -29,12 +54,34 @@ function manga_reader_enqueue_assets() {
     if (is_admin()) return;
 
     $dir = get_template_directory_uri();
+    // Use user-specific theme if set, otherwise fall back to site-wide theme
+    $user_id = get_current_user_id();
+    $selected_theme = $user_id ? get_user_meta($user_id, 'manga_reader_user_theme', true) : '';
+    if (!$selected_theme) {
+        $selected_theme = get_option('manga_reader_theme', 'default');
+    }
+    $style_path = 'style.css';
+    $manga_style_path = 'style-manga.css';
 
-    wp_enqueue_style('manga-theme-style', "$dir/style.css", [], manga_reader_get_asset_version('style.css'));
-    wp_enqueue_style('manga-reader-manga-style', "$dir/style-manga.css", [], manga_reader_get_asset_version('style-manga.css'));
-    wp_enqueue_script('manga-reader-script', "$dir/script.js", ['jquery'], manga_reader_get_asset_version('script.js'), true);
+    // Validate custom theme
+    if ($selected_theme !== 'default') {
+        $theme_dir = get_template_directory() . '/themes/' . sanitize_key($selected_theme);
+        $theme_style = $theme_dir . '/style.css';
+        $theme_manga_style = $theme_dir . '/style-manga.css';
+
+        if (is_dir($theme_dir) && file_exists($theme_style) && file_exists($theme_manga_style)) {
+            $style_path = "themes/$selected_theme/style.css";
+            $manga_style_path = "themes/$selected_theme/style-manga.css";
+            $dir = get_template_directory_uri() . '/themes/' . sanitize_key($selected_theme);
+        }
+    }
+
+    wp_enqueue_style('manga-theme-style', "$dir/" . basename($style_path), [], manga_reader_get_asset_version($style_path));
+    wp_enqueue_style('manga-reader-manga-style', "$dir/" . basename($manga_style_path), ['manga-theme-style'], manga_reader_get_asset_version($manga_style_path));
+    wp_enqueue_script('manga-reader-script', get_template_directory_uri() . '/script.js', ['jquery'], manga_reader_get_asset_version('script.js'), true);
     wp_localize_script('manga-reader-script', 'mangaAjax', [
         'ajaxurl' => admin_url('admin-ajax.php'),
+        'theme_nonce' => wp_create_nonce('manga_reader_theme_switch'),
     ]);
 
     add_filter('style_loader_tag', function ($tag, $handle) {
@@ -173,18 +220,26 @@ function manga_reader_display_manga($manga_name) {
     ob_start(); ?>
     <div class="manga-viewer" data-manga-name="<?= esc_attr($actual) ?>">
         <?php if ($cover_url): ?>
-            <img id="manga-cover" class="cover" src="<?= esc_url($cover_url) ?>" alt="<?= esc_attr($actual) ?> Cover">
+            <div id="manga-cover">
+                <img class="cover" src="<?= esc_url($cover_url) ?>" alt="<?= esc_attr($actual) ?> Cover">
+            </div>
         <?php endif; ?>
         <h2 id="manga-heading"><?= esc_html($actual) ?></h2>
-        <div id="chapter-list-container" class="sidebar">
-            <h3>MangaViewer 1.0</h3>
-            <ul id="mangaview-chapterlist"></ul>
+        <div id="manga-sidebar" class="sidebar sidebar-hidden">
+            <button class="sidebar-close">×</button>
+            <div class="sidebar-content">
+                <h3 class="viewer-version">MangaViewer 1.0</h3>
+                <ul id="mangaview-chapterlist-sidebar"></ul>
+            </div>
+        </div>
+        <div id="manga-images-container">
+            <div id="manga-images" class="manga-images"></div>
         </div>
         <div class="view-toggle">
             <button data-view="list">List View</button>
             <button data-view="paged">Paged View</button>
         </div>
-        <div id="manga-images" class="manga-images"></div>
+        <button class="sidebar-toggle">Toggle Sidebar</button>
         <button id="back-to-chapters" data-action="back-to-chapters" style="display:none;">Back to Chapter List</button>
     </div>
     <?php
@@ -309,6 +364,33 @@ function manga_reader_get_images() {
 }
 add_action('wp_ajax_get_images', 'manga_reader_get_images');
 add_action('wp_ajax_nopriv_get_images', 'manga_reader_get_images');
+
+// ===============================
+// AJAX: CHANGE USER THEME
+// ===============================
+function manga_reader_change_user_theme() {
+    check_ajax_referer('manga_reader_theme_switch', 'nonce');
+
+    // Allow any logged-in user to change their theme
+    if (!is_user_logged_in()) {
+        wp_send_json_error(['message' => 'You must be logged in to change the theme.']);
+    }
+
+    $theme = sanitize_key($_POST['theme'] ?? '');
+    $available_themes = manga_reader_get_available_themes();
+    $available_themes[] = 'default'; // Include default theme
+
+    if (empty($theme) || !in_array($theme, $available_themes)) {
+        wp_send_json_error(['message' => 'Invalid theme selected.']);
+    }
+
+    $user_id = get_current_user_id();
+    update_user_meta($user_id, 'manga_reader_user_theme', $theme);
+
+    wp_send_json_success(['message' => 'Theme changed successfully!']);
+}
+add_action('wp_ajax_manga_reader_change_user_theme', 'manga_reader_change_user_theme');
+add_action('wp_ajax_nopriv_manga_reader_change_user_theme', 'manga_reader_change_user_theme');
 
 // ===============================
 // AJAX: CHECK CHAPTER NAMING CONVENTION
@@ -724,6 +806,10 @@ function manga_reader_register_settings() {
     register_setting('manga_reader_announcement_group', 'announcement_title');
     register_setting('manga_reader_announcement_group', 'announcement_text');
     register_setting('manga_reader_announcement_group', 'announcement_image');
+    register_setting('manga_reader_settings_group', 'manga_reader_theme', [
+        'sanitize_callback' => 'sanitize_key',
+        'default' => 'default',
+    ]);
 }
 add_action('admin_init', 'manga_reader_register_settings');
 
@@ -798,6 +884,9 @@ function manga_reader_settings_page() {
     $total_chapters = $total_db_chapters + $total_fs_chapters;
     $total_pages = ceil($total_chapters / $per_page);
     $paged_chapters = array_slice($all_chapters, $offset, $per_page);
+
+    $available_themes = manga_reader_get_available_themes();
+    $selected_theme = get_option('manga_reader_theme', 'default');
 
     ?>
     <div class="wrap manga-reader-settings">
@@ -1120,6 +1209,28 @@ https://example.com/image2.jpg"></textarea>
                             </div>
                             <div class="form-row">
                                 <button type="submit" class="button button-primary">Save Announcement</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="manga-reader-card">
+                        <h3>Theme Selection</h3>
+                        <p>Select a theme to customize the appearance of the manga reader.</p>
+                        <form method="post" action="options.php" class="manga-reader-form">
+                            <?php settings_fields('manga_reader_settings_group'); ?>
+                            <div class="form-row">
+                                <label for="manga_reader_theme">Select Theme:</label>
+                                <select name="manga_reader_theme" id="manga_reader_theme">
+                                    <option value="default" <?php selected($selected_theme, 'default'); ?>>Default</option>
+                                    <?php foreach ($available_themes as $theme): ?>
+                                        <option value="<?= esc_attr($theme) ?>" <?php selected($selected_theme, $theme); ?>>
+                                            <?= esc_html(ucfirst($theme)) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <button type="submit" class="button button-primary">Save Theme</button>
                             </div>
                         </form>
                     </div>

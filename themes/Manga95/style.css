@@ -1,7 +1,7 @@
 /*
-Theme Name: Manga95 - A retro style mangaviewer
+Theme Name: MangaViewer - Manga95 version
 Author: HaSky
-Version: 1.6
+Version: 1.0
 */
 
 /* Reset & Base */
@@ -197,10 +197,6 @@ a:focus {
   background-color: rgb(128, 128, 128);
 }
 
-.site-header .header-close {
-  /* Incomplete rule in original - assuming it was meant to close the hover style */
-}
-
 /* Navigation (Enhanced Windows 95 Toolbar) */
 .main-navigation,
 .nav-menu,
@@ -279,6 +275,97 @@ a:focus {
   font-size: 10pt;
   color: rgb(0, 0, 0);
   text-align: left;
+}
+
+/* Theme Selector Button */
+body.manga95 .theme-selector {
+  background-color: rgb(192, 192, 192); /* Solid gray for Windows 95 aesthetic */
+  color: rgb(0, 0, 0);
+  padding: 4px 8px;
+  border: 2px outset rgb(255, 255, 255);
+  cursor: pointer;
+  font-size: 10pt;
+  font-family: 'MS Sans Serif', Arial, sans-serif;
+  transition: background-color 0.15s ease;
+}
+
+body.manga95 .theme-selector:hover,
+body.manga95 .theme-selector:focus {
+  background-color: rgb(128, 128, 128); /* Darker gray on hover */
+  outline: none;
+}
+
+body.manga95 .theme-selector:active {
+  border: 2px inset rgb(128, 128, 128);
+  background-color: rgb(128, 128, 128); /* Darker gray when pressed */
+}
+
+/* Theme Selector Dialog */
+body.manga95 #theme-selector-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(192, 192, 192);
+  padding: 10px;
+  border: 2px outset rgb(255, 255, 255);
+  box-shadow: 2px 2px 0 rgb(0, 0, 0);
+  z-index: 1000;
+  font-family: 'MS Sans Serif', Arial, sans-serif;
+  color: rgb(0, 0, 0);
+}
+
+body.manga95 #theme-selector-dialog h3 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+body.manga95 #theme-selector-dialog select {
+  width: 100%;
+  padding: 4px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  border: 2px inset rgb(128, 128, 128);
+  font-size: 10pt;
+  font-family: 'MS Sans Serif', Arial, sans-serif;
+  cursor: pointer;
+}
+
+body.manga95 #theme-selector-dialog select:focus {
+  outline: none;
+}
+
+body.manga95 #theme-selector-dialog button {
+  padding: 4px 12px;
+  border: 2px outset rgb(255, 255, 255);
+  background-color: rgb(192, 192, 192);
+  color: rgb(0, 0, 0);
+  font-size: 10pt;
+  font-family: 'MS Sans Serif', Arial, sans-serif;
+  cursor: pointer;
+  margin: 10px 5px 0 5px;
+}
+
+body.manga95 #theme-selector-dialog #theme-save:hover,
+body.manga95 #theme-selector-dialog #theme-save:focus {
+  background-color: rgb(128, 128, 128);
+  outline: none;
+}
+
+body.manga95 #theme-selector-dialog #theme-save:active {
+  border: 2px inset rgb(128, 128, 128);
+}
+
+body.manga95 #theme-selector-dialog #theme-cancel:hover,
+body.manga95 #theme-selector-dialog #theme-cancel:focus {
+  background-color: rgb(128, 128, 128);
+  outline: none;
+}
+
+body.manga95 #theme-selector-dialog #theme-cancel:active {
+  border: 2px inset rgb(128, 128, 128);
 }
 
 .announcement-image {
@@ -700,5 +787,30 @@ a:focus {
   .start-menu {
     bottom: 100%;
     min-width: 150px;
+  }
+
+  body.manga95 .theme-selector {
+    font-size: 9pt;
+    padding: 3px 6px;
+  }
+
+  body.manga95 #theme-selector-dialog {
+    padding: 8px;
+    width: 90%;
+    max-width: 280px;
+  }
+
+  body.manga95 #theme-selector-dialog h3 {
+    font-size: 11pt;
+  }
+
+  body.manga95 #theme-selector-dialog select {
+    padding: 3px;
+    font-size: 9pt;
+  }
+
+  body.manga95 #theme-selector-dialog button {
+    padding: 3px 10px;
+    font-size: 9pt;
   }
 }

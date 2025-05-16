@@ -21,6 +21,8 @@ jQuery(document).ready(function ($) {
     const $chapterListWrapper = $('#chapter-list-container');
     const $imageWrapper = $('#manga-images-container');
     const mangaName = $('.manga-viewer').data('manga-name');
+    const $toggleButton = $('.sidebar-toggle');
+    const $closeButton = $('.sidebar-close');
 
     // Create global spinner
     const $spinner = $('<div>', {
@@ -35,23 +37,6 @@ jQuery(document).ready(function ($) {
         css: { display: 'none', textAlign: 'center', margin: '20px 0', fontSize: '18px', color: '#333' },
         text: 'Images are loading please wait 3 seconds'
     }).appendTo($imageContainer);
-
-    // Create sidebar toggle button
-    const $toggleButton = $('<button>', {
-        class: 'sidebar-toggle',
-        text: 'Chapters/Settings',
-        css: { display: 'none' }
-    }).appendTo($imageWrapper);
-
-    // Ensure close button exists
-    if (!$sidebar.find('.sidebar-close').length) {
-        $('<button>', {
-            class: 'sidebar-close',
-            text: 'Close',
-            css: { display: 'block' }
-        }).prependTo($sidebar);
-    }
-    const $closeButton = $sidebar.find('.sidebar-close');
 
     // Utility: Detect mobile device
     function isMobileDevice() {
@@ -86,22 +71,17 @@ jQuery(document).ready(function ($) {
     // Toggle sidebar visibility
     function toggleSidebar(show) {
         if (show) {
-            $sidebar.removeClass('sidebar-hidden').css({ display: 'block', opacity: 1, transform: 'translateX(0)' });
+            $sidebar.removeClass('sidebar-hidden').css({ opacity: 1 });
             $imageContainer.removeClass('sidebar-expanded');
             $toggleButton.css('display', 'none');
             $closeButton.css('display', 'block');
             $sidebar.find('.view-toggle').show();
         } else {
-            $sidebar.addClass('sidebar-hidden').css({ opacity: 0, transform: 'translateX(100%)' });
+            $sidebar.addClass('sidebar-hidden').css({ opacity: 0 });
             $imageContainer.addClass('sidebar-expanded');
             $toggleButton.css('display', 'block');
             $closeButton.css('display', 'none');
             $sidebar.find('.view-toggle').hide();
-            // Force layout recalculation on mobile
-            if (isMobileDevice()) {
-                $imageContainer.css('width', '100%');
-                setTimeout(() => $imageContainer.css('width', ''), 0);
-            }
         }
     }
 
@@ -117,11 +97,18 @@ jQuery(document).ready(function ($) {
         $chapterListWrapper.show();
         $coverImage.show();
 
+        if (!mangaAjax || !mangaAjax.ajaxurl) {
+            console.error('mangaAjax.ajaxurl is undefined. Ensure AJAX is properly enqueued.');
+            $heading.text(`${mangaName} - Error: AJAX Not Configured`);
+            return;
+        }
+
         $.post(mangaAjax.ajaxurl, {
             action: 'get_chapters',
             manga: mangaName
         }, function (res) {
-            if (res.success) {
+            console.log('get_chapters response:', res); // Debug response
+            if (res.success && Array.isArray(res.data.chapters)) {
                 allChapters = res.data.chapters.sort((a, b) => {
                     const extractNum = str => {
                         const match = str.match(/Ch\.?\s*(\d+(?:\.\d+)?)/i);
@@ -153,14 +140,6 @@ jQuery(document).ready(function ($) {
                 $chapterListContainer.empty().append(fragment.cloneNode(true));
                 $sidebarList.empty().append(fragment);
 
-                // Add view toggle buttons
-                $sidebar.find('.view-toggle').remove();
-                const $viewToggle = $('<div>', { class: 'view-toggle' }).append(
-                    $('<button>', { text: 'List View', 'data-view': 'list' }),
-                    $('<button>', { text: 'Paged View', 'data-view': 'paged' })
-                );
-                $sidebar.find('.viewer-version').after($viewToggle);
-
                 // Highlight current chapter in sidebar
                 if (currentChapterIndex >= 0) {
                     const $currentChapter = $sidebarList.find(`.chapter-link[data-chapter="${allChapters[currentChapterIndex].name}"]`);
@@ -173,12 +152,13 @@ jQuery(document).ready(function ($) {
                 // Show navigation buttons
                 showBottomNav();
                 toggleSidebar(false);
-                $(window).trigger('resize');
             } else {
+                console.warn('Invalid chapters response:', res);
                 $heading.text(`${mangaName} - No Chapters Available`);
                 $sidebar.find('.view-toggle').hide();
             }
-        }).fail(function () {
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error('get_chapters AJAX failed:', textStatus, errorThrown);
             $heading.text(`${mangaName} - Error Loading Chapters`);
             $sidebar.find('.view-toggle').hide();
         });
@@ -219,7 +199,6 @@ jQuery(document).ready(function ($) {
                 renderImages(() => {
                     updateHeading(chapter);
                     toggleSidebar(true);
-
                     // Highlight current chapter in sidebar
                     $sidebarList.find('.current-chapter').removeClass('current-chapter');
                     const $currentChapter = $sidebarList.find(`.chapter-link[data-chapter="${chapter}"]`);
@@ -269,7 +248,7 @@ jQuery(document).ready(function ($) {
                         $imageContainer.append($imgWrapper);
                     });
                     done();
-                }, 3000);
+                }, 2000);
             } else {
                 currentImages.forEach((src, i) => {
                     const $img = $('<img>', {
@@ -456,7 +435,35 @@ jQuery(document).ready(function ($) {
 
     // Back to home
     $('#back-to-home, #back-to-home-sidebar').on('click', function () {
-        window.location.href = '<?php echo esc_url(home_url()); ?>';
+        window.location.href = '<?php echo esc_url(home_url('/')); ?>';
+    });
+
+    // Header close button redirect to homepage
+    $('.header-close').on('click', function () {
+        window.location.href = '<?php echo esc_url(home_url('/')); ?>';
+    });
+
+    // Start menu toggle
+    $(document).on('click', '[data-start-button]', function (e) {
+        e.preventDefault();
+        const $menu = $(this).siblings('.start-menu');
+        const isVisible = $menu.is(':visible');
+        $('.start-menu').hide(); // Close any open menus
+        if (!isVisible) {
+            $menu.stop().fadeIn(200); // Smooth fade-in
+        }
+    });
+
+    // Close start menu when clicking outside
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.start-menu-wrapper').length) {
+            $('.start-menu').stop().fadeOut(200);
+        }
+    });
+
+    // Close start menu when clicking a manga link
+    $(document).on('click', '.start-menu a', function () {
+        $('.start-menu').stop().fadeOut(200);
     });
 
     // Initial load

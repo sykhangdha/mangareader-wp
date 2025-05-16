@@ -1,7 +1,7 @@
 <?php
 get_header();
 
-$folder = get_query_var('manga_name'); // Get manga name from URL
+$folder = get_query_var('manga_name');
 if (!$folder) {
     echo '<p>Manga name not specified.</p>';
     get_footer();
@@ -26,27 +26,24 @@ $cover_url = file_exists($cover_path) ? site_url("/manga/$actual_folder/cover.jp
         <ul id="mangaview-chapterlist" class="chapter-list">
             <!-- Chapter list will be populated dynamically by JavaScript via AJAX -->
         </ul>
+        <button id="back-to-home">Back to Home</button>
     </div>
 
     <!-- This section will be dynamically updated with the manga images after a chapter is selected -->
-    <div id="manga-images-container" class="manga-images-container" style="display: none;">
-        <div id="manga-images" class="manga-images"></div> <!-- Manga images will be dynamically loaded here -->
+    <div id="manga-images-container" style="display: none;">
+        <div id="manga-images"></div>
 
-        <div class="sidebar">
+        <div id="manga-sidebar" class="sidebar sidebar-hidden">
+            <button class="sidebar-close">Close</button>
+            <p style="color:#bbb; font-size:1em; text-align:center; margin-bottom:15px;">MangaViewer v1.0</p>
             <div class="view-toggle">
-                <button id="list-view-btn">List View</button>
-                <button id="paged-view-btn">Paged View</button>
+                <button id="list-view-btn" data-view="list">List View</button>
+                <button id="paged-view-btn" data-view="paged">Paged View</button>
             </div>
-
-            <!-- Dynamic chapter list in sidebar -->
-            <ul id="mangaview-chapterlist-sidebar">
-                <!-- Chapter list will be populated dynamically by JS -->
-            </ul>
+            <ul id="mangaview-chapterlist-sidebar"></ul>
+            <button id="back-to-home-sidebar">Back to Home</button>
         </div>
     </div>
-
-    <!-- Back to homepage -->
-    <button id="back-to-home" onclick="window.location.href='<?php echo esc_url(home_url()); ?>'">Back to Home</button>
 </div>
 
 <?php get_footer(); ?>

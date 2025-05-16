@@ -14,9 +14,12 @@ $cover_image_url = site_url("/manga/{$manga_folder}/cover.jpg");
         <!-- Manga Images -->
         <div id="manga-images"></div>
 
+        <!-- Sidebar Toggle Button -->
+        <button class="sidebar-toggle" data-toggle-sidebar>Chapters/Settings</button>
+
         <!-- Sidebar -->
         <div id="manga-sidebar" class="sidebar sidebar-hidden">
-            <button class="sidebar-close">Close</button>
+            <button class="sidebar-close" data-toggle-sidebar>X</button>
             <div class="sidebar-content">
                 <p class="viewer-version">MangaViewer v1.0</p>
                 <!-- Chapter List in Sidebar -->

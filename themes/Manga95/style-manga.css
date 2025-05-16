@@ -1,49 +1,48 @@
-/* Windows 11 Fluent Design Theme for Manga Viewer */
+/* Windows 95 Chicago Theme for Manga Viewer */
 
 /* CSS Variables */
 :root {
-    --win11-bg: rgba(32, 32, 32, 0.8); /* Windows 11 Mica */
-    --win11-dark: rgba(40, 40, 40, 0.9); /* Acrylic */
-    --win11-light: rgba(255, 255, 255, 0.1); /* Subtle highlight */
-    --win11-titlebar: rgb(0, 120, 212); /* Windows 11 accent */
-    --win11-titlebar-light: rgb(0, 94, 162); /* Accent hover */
-    --win11-text: rgb(255, 255, 255); /* White text */
-    --win11-text-light: rgb(200, 200, 200); /* Secondary text */
-    --win11-button-bg: rgba(40, 40, 40, 0.9); /* Acrylic */
-    --win11-button-shadow: rgba(0, 0, 0, 0.2);
-    --win11-spacing: 6px;
-    --win11-border: 1px; /* Thinner for modern look */
+    --win95-bg: rgb(192, 192, 192); /* Windows 95 gray */
+    --win95-dark: rgb(128, 128, 128); /* Dark shadow */
+    --win95-light: rgb(255, 255, 255); /* Highlight */
+    --win95-titlebar: rgb(0, 0, 128); /* Title bar blue */
+    --win95-titlebar-light: rgb(0, 0, 255); /* Title bar gradient */
+    --win95-text: rgb(0, 0, 0); /* Black text */
+    --win95-text-light: rgb(255, 255, 255); /* White text for title bar */
+    --win95-button-bg: rgb(192, 192, 192);
+    --win95-button-shadow: rgb(0, 0, 0);
+    --win95-spacing: 6px; /* Slightly larger for retro look */
+    --win95-border: 2px; /* Beveled border width */
 }
 
 /* General Body */
 body {
-    font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
-    background: var(--win11-bg) !important; /* Windows 11 Mica */
+    font-family: 'MS Sans Serif', Arial, sans-serif;
+    background: var(--win95-bg) !important; /* Enforce Windows 95 gray */
     margin: 0;
     padding: 0;
-    font-size: 10pt;
-    color: var(--win11-text);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-size: 10pt; /* Improved readability */
+    color: var(--win95-text);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
     line-height: 1.4;
-    backdrop-filter: blur(20px);
 }
 
 /* Manga Header */
 .manga-header {
     text-align: center;
-    margin: var(--win11-spacing) 0;
+    margin: var(--win95-spacing) 0;
 }
 
 /* Manga Heading */
 #manga-heading {
     font-size: 12pt;
-    font-weight: 600;
-    margin: var(--win11-spacing) auto;
-    color: var(--win11-text);
+    font-weight: bold;
+    margin: var(--win95-spacing) auto;
+    color: var(--win95-text);
     text-align: center;
-    border: none;
-    background: transparent;
+    border: var(--win95-border) outset var(--win95-light);
+    background: var(--win95-bg);
     padding: 6px;
 }
 
@@ -51,34 +50,29 @@ body {
 #manga-images-container {
     max-width: 1600px;
     margin: 0 auto;
-    padding: var(--win11-spacing);
+    padding: var(--win95-spacing);
     width: 100%;
-    border: none;
-    border-radius: 8px;
-    background: var(--win11-bg);
-    box-shadow: 0 2px 8px var(--win11-button-shadow);
-    backdrop-filter: blur(20px);
+    border: var(--win95-border) inset var(--win95-dark);
 }
 
 #manga-images-container.sidebar-expanded {
-    padding: 2px;
+    padding: 2px; /* Minimize padding when sidebar closed */
 }
 
 /* Manga Images Section */
 #manga-images {
     text-align: center;
-    max-width: calc(100% - 220px);
-    padding: var(--win11-spacing);
+    max-width: calc(100% - 220px); /* Leave space for sidebar */
+    padding: var(--win95-spacing);
     position: relative;
-    border: none;
-    background: var(--win11-dark); /* Acrylic */
-    border-radius: 8px;
+    border: var(--win95-border) inset var(--win95-dark);
+    background: rgb(255, 255, 255); /* White panel */
 }
 
 #manga-images.sidebar-expanded {
     max-width: 100%;
     width: 100%;
-    padding: 2px;
+    padding: 2px; /* Minimize padding */
 }
 
 /* Manga Image */
@@ -86,44 +80,39 @@ body {
     width: 50%;
     max-width: 1200px;
     height: auto;
-    margin: var(--win11-spacing) auto;
+    margin: var(--win95-spacing) auto;
     display: block;
-    border: none;
-    border-radius: 4px;
+    border: var(--win95-border) inset var(--win95-dark);
     object-fit: contain;
-    box-shadow: 0 2px 8px var(--win11-button-shadow);
 }
 
 #manga-images.sidebar-expanded .manga-image {
-    width: 75%;
+    width: 75%; /* Larger images when sidebar closed */
 }
 
-/* Manga Cover (Fluent Style) */
+/* Manga Cover (Windows Explorer Style) */
 #manga-cover {
     width: 50%;
     max-width: 100%;
-    margin: var(--win11-spacing) auto;
+    margin: var(--win95-spacing) auto;
     display: block;
     text-align: center;
 }
 
 .manga-cover-window {
-    background-color: var(--win11-dark);
-    border: none;
-    border-radius: 8px;
+    background-color: var(--win95-bg);
+    border: var(--win95-border) outset var(--win95-light);
     padding: 0;
-    box-shadow: 0 2px 8px var(--win11-button-shadow);
 }
 
 /* Manga Cover Title Bar */
 .manga-cover-titlebar {
-    background: var(--win11-titlebar);
-    color: var(--win11-text);
+    background: linear-gradient(to right, var(--win95-titlebar), var(--win95-titlebar-light));
+    color: var(--win95-text-light);
     font-weight: bold;
     font-size: 10pt;
     padding: 4px 6px;
-    border-bottom: none;
-    border-radius: 8px 8px 0 0;
+    border-bottom: var(--win95-border) outset var(--win95-light);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -135,41 +124,35 @@ body {
 
 /* Manga Cover Toolbar */
 .manga-cover-toolbar {
-    background: var(--win11-dark);
+    background: rgb(192, 192, 192);
     padding: 4px;
-    border-bottom: none;
-    border-radius: 0 0 8px 8px;
+    border-bottom: 2px inset rgb(128, 128, 128);
     display: flex;
     gap: 4px;
 }
 
 .manga-cover-toolbar button {
-    background: var(--win11-button-bg);
-    border: none;
+    background: rgb(192, 192, 192);
+    border: 2px outset rgb(255, 255, 255);
     padding: 2px 6px;
     font-size: 10pt;
-    color: var(--win11-text);
+    color: rgb(0, 0, 0);
     cursor: pointer;
-    border-radius: 4px;
-    box-shadow: 0 1px 4px var(--win11-button-shadow);
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .manga-cover-toolbar button:hover {
-    background: var(--win11-titlebar);
-    transform: scale(1.05);
+    background: rgb(128, 128, 128);
 }
 
 .manga-cover-toolbar button:active {
-    transform: scale(0.95);
+    border: 2px inset rgb(128, 128, 128);
 }
 
 /* Manga Cover Content */
 .manga-cover-content {
-    background: var(--win11-dark);
-    border: none;
-    border-radius: 0 0 8px 8px;
-    padding: var(--win11-spacing);
+    background: rgb(255, 255, 255);
+    border: var(--win95-border) inset var(--win95-dark);
+    padding: var(--win95-spacing);
     text-align: center;
 }
 
@@ -179,39 +162,35 @@ body {
     height: auto;
     margin: 0 auto;
     display: block;
-    border: none;
-    border-radius: 4px;
+    border: var(--win95-border) inset var(--win95-dark);
     object-fit: contain;
-    box-shadow: 0 2px 8px var(--win11-button-shadow);
 }
 
 /* Manga Cover Status Bar */
 .manga-cover-statusbar {
-    background: var(--win11-bg);
-    border-top: none;
+    background: rgb(192, 192, 192);
+    border-top: 2px outset rgb(255, 255, 255);
     padding: 4px;
     font-size: 10pt;
-    color: var(--win11-text);
+    color: rgb(0, 0, 0);
     text-align: left;
-    border-radius: 0 0 8px 8px;
 }
 
-/* Sidebar (Fluent Sidebar) */
+/* Sidebar (Floating Menu Bar) */
 #manga-sidebar.sidebar {
     position: fixed;
-    top: var(--win11-spacing);
+    top: var(--win95-spacing);
     right: 0;
     width: 200px;
     max-height: 80vh;
-    background-color: var(--win11-bg);
-    border: none;
-    border-radius: 8px;
-    box-shadow: -2px 0 5px var(--win11-button-shadow);
+    background-color: var(--win95-bg);
+    border: var(--win95-border) outset var(--win95-light);
+    border-radius: 5px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
     z-index: 1000;
     transition: transform 0.3s ease, opacity 0.3s ease;
-    padding: var(--win11-spacing);
-    backdrop-filter: blur(20px);
+    padding: var(--win95-spacing);
 }
 
 #manga-sidebar.sidebar-hidden {
@@ -221,45 +200,42 @@ body {
 
 /* Sidebar Close Button */
 #manga-sidebar .sidebar-close {
-    background-color: transparent;
-    color: var(--win11-text);
+    background-color: var(--win95-button-bg);
+    color: var(--win95-text);
     width: 18px;
     height: 18px;
     padding: 0;
-    border: none;
-    border-radius: 4px;
+    border: var(--win95-border) outset var(--win95-light);
     cursor: pointer;
     font-size: 10pt;
     font-weight: bold;
     text-align: center;
     line-height: 16px;
-    margin-bottom: var(--win11-spacing);
-    transition: background-color 0.2s ease;
+    margin-bottom: var(--win95-spacing);
 }
 
 #manga-sidebar .sidebar-close:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--win95-dark);
 }
 
 #manga-sidebar .sidebar-close:active {
-    background-color: rgba(255, 255, 255, 0.2);
+    border: var(--win95-border) inset var(--win95-dark);
 }
 
 /* Sidebar Content */
 .sidebar-content {
     max-width: 100%;
     overflow-x: hidden;
-    background: var(--win11-dark);
-    border: none;
-    border-radius: 8px;
-    padding: var(--win11-spacing);
+    background: rgb(255, 255, 255);
+    border: var(--win95-border) inset var(--win95-dark);
+    padding: var(--win95-spacing);
 }
 
 .viewer-version {
-    color: var(--win11-text-light);
+    color: var(--win95-text);
     font-size: 10pt;
     text-align: center;
-    margin-bottom: var(--win11-spacing);
+    margin-bottom: var(--win95-spacing);
 }
 
 /* Chapter List */
@@ -286,75 +262,71 @@ body {
 }
 
 #mangaview-chapterlist-sidebar::-webkit-scrollbar-track {
-    background: var(--win11-bg);
-    border: none;
-    border-radius: 4px;
+    background: var(--win95-bg);
+    border: var(--win95-border) inset var(--win95-dark);
 }
 
 #mangaview-chapterlist-sidebar::-webkit-scrollbar-thumb {
-    background: var(--win11-dark);
-    border: none;
-    border-radius: 4px;
+    background: var(--win95-dark);
+    border: var(--win95-border) outset var(--win95-light);
 }
 
 #mangaview-chapterlist li,
 #mangaview-chapterlist-sidebar li {
-    background-color: var(--win11-dark);
+    background-color: rgb(255, 255, 255);
     padding: 4px 6px;
-    border: none;
-    border-radius: 4px;
+    border: 1px solid var(--win95-dark);
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     width: 100%;
-    box-shadow: 0 1px 4px var(--win11-button-shadow);
 }
 
 #mangaview-chapterlist li:hover,
 #mangaview-chapterlist-sidebar li:hover {
-    background-color: var(--win11-titlebar);
-    color: var(--win11-text);
+    background-color: var(--win95-dark);
+    color: var(--win95-text-light);
 }
 
 #mangaview-chapterlist-sidebar li.current-chapter {
-    background-color: var(--win11-titlebar);
-    color: var(--win11-text);
+    background-color: var(--win95-titlebar);
+    color: var(--win95-text-light);
 }
 
 #mangaview-chapterlist-sidebar li.current-chapter a {
-    color: var(--win11-text);
+    color: var(--win95-text-light);
 }
 
 #mangaview-chapterlist-sidebar li.current-chapter .chapter-date {
-    color: var(--win11-text-light);
+    color: var(--win95-text-light);
 }
 
 #mangaview-chapterlist li a,
 #mangaview-chapterlist-sidebar li a {
     text-decoration: none;
-    color: var(--win11-text);
+    color: var(--win95-text);
     font-size: 10pt;
     flex-grow: 1;
 }
 
 .chapter-date {
     font-size: 10pt;
-    color: var(--win11-text-light);
+    color: var(--win95-text);
     margin-left: 6px;
 }
 
 /* Loading and Image Wrapper */
 .manga-loading-message {
     font-size: 10pt;
-    color: var(--win11-text);
+    color: var(--win95-text);
     text-align: center;
-    margin: var(--win11-spacing) 0;
+    margin: var(--win95-spacing) 0;
 }
 
 .manga-image-wrapper {
     position: relative;
-    background-color: transparent;
+    background-color: rgb(255, 255, 255);
     min-height: 100px;
 }
 
@@ -368,8 +340,8 @@ body {
 .spinner-circle {
     width: 16px;
     height: 16px;
-    border: 2px solid var(--win11-light);
-    border-top-color: var(--win11-titlebar);
+    border: 2px solid var(--win95-dark);
+    border-top-color: var(--win95-titlebar);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     display: inline-block;
@@ -384,113 +356,97 @@ body {
 /* Sidebar Toggle Button */
 .sidebar-toggle {
     position: fixed;
-    top: var(--win11-spacing);
-    right: var(--win11-spacing);
-    background: var(--win11-button-bg);
-    color: var(--win11-text);
+    top: var(--win95-spacing);
+    right: var(--win95-spacing);
+    background: var(--win95-button-bg);
+    color: var(--win95-text);
     padding: 4px 8px;
-    border: none;
-    border-radius: 4px;
+    border: var(--win95-border) outset var(--win95-light);
     cursor: pointer;
-    font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
+    font-family: 'MS Sans Serif', Arial, sans-serif;
     font-size: 10pt;
     font-weight: bold;
     z-index: 1000;
-    box-shadow: 0 1px 4px var(--win11-button-shadow);
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .sidebar-toggle:hover {
-    background: var(--win11-titlebar);
-    transform: scale(1.05);
+    background: var(--win95-dark);
 }
 
 .sidebar-toggle:active {
-    transform: scale(0.95);
+    border: var(--win95-border) inset var(--win95-dark);
 }
 
 /* View Toggle Buttons */
 .view-toggle {
     text-align: center;
-    margin-bottom: var(--win11-spacing);
+    margin-bottom: var(--win95-spacing);
 }
 
 .view-toggle button {
-    background-color: var(--win11-button-bg);
-    color: var(--win11-text);
+    background-color: var(--win95-button-bg);
+    color: var(--win95-text);
     padding: 4px 8px;
     font-size: 10pt;
-    border: none;
-    border-radius: 4px;
+    border: var(--win95-border) outset var(--win95-light);
     margin: 0 4px;
     cursor: pointer;
     width: calc(50% - 8px);
-    box-shadow: 0 1px 4px var(--win11-button-shadow);
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .view-toggle button:hover {
-    background-color: var(--win11-titlebar);
-    transform: scale(1.05);
+    background-color: var(--win95-dark);
 }
 
 .view-toggle button:active {
-    transform: scale(0.95);
+    border: var(--win95-border) inset var(--win95-dark);
 }
 
 /* Back to Home Button */
 .back-to-home {
-    background-color: var(--win11-button-bg);
-    color: var(--win11-text);
+    background-color: var(--win95-button-bg);
+    color: var(--win95-text);
     padding: 4px 8px;
     font-size: 10pt;
-    border: none;
-    border-radius: 4px;
-    margin: var(--win11-spacing) auto;
+    border: var(--win95-border) outset var(--win95-light);
+    margin: var(--win95-spacing) auto;
     cursor: pointer;
     display: block;
     width: 100%;
     text-align: center;
-    box-shadow: 0 1px 4px var(--win11-button-shadow);
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .back-to-home:hover {
-    background-color: var(--win11-titlebar);
-    transform: scale(1.05);
+    background-color: var(--win95-dark);
 }
 
 .back-to-home:active {
-    transform: scale(0.95);
+    border: var(--win95-border) inset var(--win95-dark);
 }
 
 /* Pagination Controls */
 .paged-controls {
-    margin-top: var(--win11-spacing);
+    margin-top: var(--win95-spacing);
     text-align: center;
     width: 100%;
 }
 
 .paged-controls button {
-    background-color: var(--win11-button-bg);
-    color: var(--win11-text);
+    background-color: var(--win95-button-bg);
+    color: var(--win95-text);
     padding: 4px 8px;
     font-size: 10pt;
-    border: none;
-    border-radius: 4px;
+    border: var(--win95-border) outset var(--win95-light);
     margin: 4px;
     cursor: pointer;
-    box-shadow: 0 1px 4px var(--win11-button-shadow);
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .paged-controls button:hover {
-    background-color: var(--win11-titlebar);
-    transform: scale(1.05);
+    background-color: var(--win95-dark);
 }
 
 .paged-controls button:active {
-    transform: scale(0.95);
+    border: var(--win95-border) inset var(--win95-dark);
 }
 
 /* Bottom Navigation Buttons */
@@ -503,45 +459,38 @@ body {
 }
 
 .bottom-nav button {
-    background-color: var(--win11-button-bg);
-    color: var(--win11-text);
+    background-color: var(--win95-button-bg);
+    color: var(--win95-text);
     padding: 4px 8px;
-    border: none;
-    border-radius: 4px;
+    border: var(--win95-border) outset var(--win95-light);
     margin: 4px;
     cursor: pointer;
     font-size: 10pt;
-    box-shadow: 0 1px 4px var(--win11-button-shadow);
-    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .bottom-nav button:hover {
-    background-color: var(--win11-titlebar);
-    transform: scale(1.05);
+    background-color: var(--win95-dark);
 }
 
 .bottom-nav button:active {
-    transform: scale(0.95);
+    border: var(--win95-border) inset var(--win95-dark);
 }
 
 /* Footer */
 .site-footer {
-    background-color: var(--win11-bg);
-    padding: var(--win11-spacing);
+    background-color: var(--win95-bg);
+    padding: var(--win95-spacing);
     text-align: center;
-    color: var(--win11-text);
+    color: var(--win95-text);
     font-size: 10pt;
     margin-top: 16px;
-    border: none;
-    border-radius: 8px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 2px 8px var(--win11-button-shadow);
+    border-top: var(--win95-border) outset var(--win95-light);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     #manga-images-container {
-        padding: 2px;
+        padding: 2px; /* Minimize padding */
     }
 
     #manga-images,
@@ -552,14 +501,14 @@ body {
     }
 
     #manga-images.sidebar-expanded .manga-image {
-        width: 100%;
+        width: 100%; /* Full width on mobile */
     }
 
     #manga-sidebar.sidebar {
         width: 80%;
         max-width: 300px;
         right: 0;
-        top: var(--win11-spacing);
+        top: var(--win95-spacing);
         margin: 0;
     }
 
@@ -570,7 +519,7 @@ body {
     .sidebar-toggle {
         position: fixed;
         top: auto;
-        bottom: var(--win11-spacing);
+        bottom: var(--win95-spacing);
         right: 50%;
         transform: translateX(50%);
         margin: 0;

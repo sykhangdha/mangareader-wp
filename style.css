@@ -1,250 +1,899 @@
 /*
-Theme Name: Fluent MangaDex Theme (Glass UI)
+Theme Name: MangaViewer - Fluent version
 Author: HaSky
 Version: 1.0
 */
 
 /* Reset & Base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #1a1a1a;
-    color: #e5e5e5;
-    font-size: 16px;
-    line-height: 1.6;
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+html, body, body.site, body.home {
+  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
+  background-color: rgba(32, 32, 32, 0.8) !important; /* Windows 11 dark Mica */
+  color: rgb(255, 255, 255);
+  font-size: 10pt;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backdrop-filter: blur(20px);
 }
 
+
+/* Links */
 a {
-    color: #57b2ff;
-    text-decoration: none;
-    transition: 0.2s ease-in-out;
+  color: rgb(0, 120, 212); /* Windows 11 accent */
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-a:hover {
-    color: #85d6ff;
-}
-
-/* Header */
-.site-header {
-    background-color: #111;
-    padding: 30px 0;
-    text-align: center;
-    border-bottom: 1px solid #333;
-}
-
-.site-title {
-    font-size: 2.5em;
-    font-weight: 700;
-    color: #fff;
-}
-
-/* Navigation */
-.main-navigation {
-    background-color: #1e1e1e;
-    padding: 12px 0;
-    border-top: 1px solid #222;
-    border-bottom: 1px solid #222;
-}
-
-.main-navigation .menu {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.main-navigation .menu li a {
-    padding: 10px 18px;
-    background-color: #2b2b2b;
-    border-radius: 6px;
-    color: #e0e0e0;
-    font-weight: 500;
-}
-
-.main-navigation .menu li a:hover {
-    background-color: #57b2ff;
-    color: #000;
-}
-
-/* Announcement - Glass Panel */
-.announcement-section {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    max-width: 1100px;
-    margin: 50px auto;
-    padding: 32px;
-    border-radius: 16px;
-    background: rgba(35, 35, 35, 0.5);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    animation: fadeInUp 0.6s ease-in-out;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.announcement-image {
-    flex: 0 0 auto;
-    width: 140px;
-    max-width: 100%;
-    animation: zoomIn 0.6s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.announcement-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-    display: block;
-}
-
-.announcement-text {
-    flex: 1;
-    color: #e5e5e5;
-}
-
-.announcement-text h2 {
-    font-size: 1.9em;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-.announcement-text p {
-    font-size: 1.05em;
-    color: #cfcfcf;
-    line-height: 1.7;
-}
-
-.update-site-btn {
-    display: inline-block;
-    margin-top: 18px;
-    padding: 10px 20px;
-    font-weight: bold;
-    background: rgba(87, 178, 255, 0.85);
-    color: #000;
-    border-radius: 8px;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.update-site-btn:hover {
-    background-color: #85d6ff;
-    transform: scale(1.05);
-}
-
-/* Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes zoomIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+a:hover,
+a:focus {
+  color: rgb(0, 94, 162); /* Accent hover */
+  text-decoration: underline;
+  outline: none;
 }
 
 /* Manga Grid */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-}
-
 .manga-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 10px 0;
 }
 
 .manga-item {
-    background-color: #242424;
-    border: 1px solid #333;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 360px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.manga-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+.manga-item:hover,
+.manga-item:focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  outline: none;
 }
 
-.manga-item img {
-    width: 100%;
-    height: auto;
+.manga-item-titlebar {
+  background: rgb(0, 120, 212); /* Windows 11 accent */
+  color: rgb(255, 255, 255);
+  padding: 4px 8px;
+  font-size: 9pt;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
 }
 
-.manga-item h3 {
-    font-size: 1.1em;
-    color: #fff;
-    margin: 10px 12px 0;
+.manga-item-content {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  border-radius: 0 0 8px 8px;
 }
 
-.manga-item p {
-    font-size: 0.9em;
-    color: #aaa;
-    margin: 6px 12px 12px;
+.manga-item-content a {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
 }
 
-/* Footer */
+.manga-cover-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.manga-cover-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: none;
+  border-radius: 4px;
+  transition: transform 0.2s ease;
+}
+
+.manga-cover-wrapper img:hover {
+  transform: scale(1.05);
+}
+
+.manga-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: rgb(0, 120, 212);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.manga-item-content h3 {
+  font-size: 10pt;
+  margin: 0 0 8px;
+  font-weight: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+  color: rgb(255, 255, 255);
+}
+
+.manga-item-content p {
+  font-size: 10pt;
+  color: rgb(200, 200, 200); /* Secondary text */
+  margin: 2px 0;
+  flex: 0 0 auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Header (Windows 11 Fluent Style) */
+.site-header {
+  background: rgba(32, 32, 32, 0.8); /* Mica */
+  padding: 4px 6px;
+  border: none;
+  border-radius: 8px;
+  user-select: none;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.site-header .site-title {
+  font-size: 12pt;
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+  line-height: 1;
+}
+
+.site-header .header-close {
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10pt;
+  font-weight: bold;
+  text-align: center;
+  line-height: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.site-header .header-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Navigation (Fluent Toolbar) */
+.main-navigation,
+.nav-menu,
+.menu-toggle,
+.navigation-main {
+  background: rgba(32, 32, 32, 0.8) !important; /* Mica */
+  padding: 6px;
+  border: none;
+  border-radius: 8px;
+  user-select: none;
+  margin: 8px 0;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.main-navigation .menu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.main-navigation .menu li a {
+  padding: 4px 10px;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  border: none;
+  border-radius: 4px;
+  color: rgb(255, 255, 255);
+  font-size: 10pt;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.main-navigation .menu li a:hover,
+.main-navigation .menu li a:focus {
+  background-color: rgb(0, 120, 212);
+  color: rgb(255, 255, 255);
+  transform: scale(1.05);
+  outline: none;
+}
+
+.main-navigation .menu li a:active {
+  transform: scale(0.95);
+}
+
+/* Announcement Section (Fluent Window) */
+.announcement-section {
+  max-width: 1100px;
+  margin: 8px auto;
+  border: none;
+  background-color: rgba(32, 32, 32, 0.8); /* Mica */
+  border-radius: 8px;
+  user-select: none;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.announcement-section .announcement-titlebar {
+  background: rgb(0, 120, 212);
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  font-size: 10pt;
+  padding: 4px 6px;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.announcement-section .announcement-content {
+  padding: 6px;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  border-radius: 0 0 8px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.announcement-section .announcement-statusbar {
+  background: rgba(32, 32, 32, 0.8);
+  border-top: none;
+  padding: 4px;
+  font-size: 10pt;
+  color: rgb(255, 255, 255);
+  text-align: left;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Theme Selector Button */
+.theme-selector {
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  color: rgb(255, 255, 255);
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10pt;
+  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.theme-selector:hover,
+.theme-selector:focus {
+  background-color: rgb(0, 120, 212); /* Windows 11 accent */
+  transform: scale(1.05);
+  outline: none;
+}
+
+.theme-selector:active {
+  transform: scale(0.95);
+}
+
+/* Theme Selector Dialog */
+#theme-selector-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  color: rgb(255, 255, 255);
+  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
+  backdrop-filter: blur(20px);
+}
+
+#theme-selector-dialog h3 {
+  margin: 0 0 15px;
+  font-size: 16pt;
+  font-weight: 600;
+}
+
+#theme-selector-dialog select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: rgba(60, 60, 60, 0.9); /* Darker acrylic */
+  color: rgb(255, 255, 255);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 10pt;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+#theme-selector-dialog select:hover,
+#theme-selector-dialog select:focus {
+  border-color: rgb(0, 120, 212);
+  outline: none;
+}
+
+#theme-selector-dialog button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10pt;
+  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#theme-selector-dialog #theme-save {
+  background-color: rgb(0, 120, 212); /* Windows 11 accent */
+  color: rgb(255, 255, 255);
+  margin-right: 10px;
+}
+
+#theme-selector-dialog #theme-save:hover,
+#theme-selector-dialog #theme-save:focus {
+  background-color: rgb(0, 94, 162);
+  transform: scale(1.05);
+  outline: none;
+}
+
+#theme-selector-dialog #theme-save:active {
+  transform: scale(0.95);
+}
+
+#theme-selector-dialog #theme-cancel {
+  background-color: rgba(80, 80, 80, 0.9); /* Neutral acrylic */
+  color: rgb(255, 255, 255);
+}
+
+#theme-selector-dialog #theme-cancel:hover,
+#theme-selector-dialog #theme-cancel:focus {
+  background-color: rgba(100, 100, 100, 0.9);
+  transform: scale(1.05);
+  outline: none;
+}
+
+#theme-selector-dialog #theme-cancel:active {
+  transform: scale(0.95);
+}
+
+.announcement-image {
+  flex: 0 0 auto;
+  width: 100px;
+}
+
+.announcement-image img {
+  width: 100%;
+  height: auto;
+  border: none;
+  border-radius: 4px;
+  display: block;
+}
+
+.announcement-text {
+  flex: 1;
+  color: rgb(255, 255, 255);
+}
+
+.announcement-text h2 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.announcement-text p {
+  font-size: 10pt;
+  line-height: 1.4;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px;
+  background: rgba(32, 32, 32, 0.8); /* Mica */
+  border: none;
+  border-radius: 8px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Manga Viewer */
+.manga-viewer {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: transparent; /* Mica handled by container */
+  border: none;
+  border-radius: 8px;
+}
+
+#manga-heading {
+  font-size: 12pt;
+  margin-bottom: 15px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+}
+
+#chapter-list-container {
+  margin-bottom: 20px;
+}
+
+#chapter-list-container h3 {
+  font-size: 10pt;
+  margin-bottom: 10px;
+  color: rgb(255, 255, 255);
+}
+
+#mangaview-chapterlist li {
+  margin-bottom: 5px;
+}
+
+#mangaview-chapterlist li a {
+  color: rgb(0, 120, 212);
+  padding: 5px;
+  display: block;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+#mangaview-chapterlist li a:hover {
+  background-color: rgb(0, 120, 212);
+  color: rgb(255, 255, 255);
+}
+
+#mangaview-chapterlist li .chapter-date {
+  font-size: 9pt;
+  color: rgb(200, 200, 200);
+  margin-left: 5px;
+}
+
+#manga-images {
+  text-align: center;
+}
+
+.manga-image {
+  width: 65%;
+  height: auto;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 4px;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.manga-spinner {
+  display: none;
+}
+
+.spinner-circle {
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top: 4px solid rgb(0, 120, 212);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+.manga-loading-message {
+  display: none;
+}
+
+.view-toggle {
+  margin-bottom: 10px;
+}
+
+.view-toggle button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10pt;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.view-toggle button:hover {
+  background-color: rgb(0, 120, 212);
+  transform: scale(1.05);
+}
+
+.view-toggle button:active {
+  transform: scale(0.95);
+}
+
+#back-to-chapters {
+  padding: 5px 10px;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10pt;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#back-to-chapters:hover {
+  background-color: rgb(0, 120, 212);
+  transform: scale(1.05);
+}
+
+#back-to-chapters:active {
+  transform: scale(0.95);
+}
+
+/* Paged View Controls */
+.paged-controls {
+  margin: 10px 0;
+}
+
+.paged-controls button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10pt;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.paged-controls button:hover {
+  background-color: rgb(0, 120, 212);
+  transform: scale(1.05);
+}
+
+.paged-controls button:active {
+  transform: scale(0.95);
+}
+
+.paged-controls span {
+  font-size: 10pt;
+  color: rgb(255, 255, 255);
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.bottom-nav button {
+  padding: 5px 15px;
+  margin: 0 5px;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10pt;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.bottom-nav button:hover {
+  background-color: rgb(0, 120, 212);
+  transform: scale(1.05);
+}
+
+.bottom-nav button:active {
+  transform: scale(0.95);
+}
+
+/* Footer (Fluent Taskbar) */
 .site-footer {
-    background-color: #111;
-    color: #aaa;
-    text-align: center;
-    padding: 24px 20px;
-    font-size: 0.9em;
-    border-top: 1px solid #222;
-    margin-top: 60px;
+  background: rgba(32, 32, 32, 0.8); /* Mica */
+  color: rgb(255, 255, 255);
+  font-size: 10pt;
+  border: none;
+  border-radius: 8px;
+  margin-top: 16px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  height: 31px;
+  padding: 0 4px;
+  position: relative;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.site-footer .footer-content {
+  flex: 1;
+  text-align: center;
+  padding: 0 60px;
+}
+
+.site-footer .footer-content span {
+  display: inline-block;
+  font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
+  color: rgb(255, 255, 255);
+}
+
+.start-button {
+  background: rgb(0, 120, 212);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 4px;
+  padding: 2px 10px;
+  font-weight: bold;
+  font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
+  font-size: 10pt;
+  cursor: pointer;
+  height: 23px;
+  line-height: 19px;
+  margin: 0 0 0 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.start-button:hover {
+  background: rgb(0, 94, 162);
+  transform: scale(1.05);
+}
+
+.start-button:active {
+  transform: scale(0.95);
+}
+
+.start-menu-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.start-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 200px;
+  z-index: 1000;
+  list-style: none;
+  padding: 4px;
+  backdrop-filter: blur(20px);
+}
+
+.start-menu li {
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.start-menu li:hover {
+  background-color: rgb(0, 120, 212);
+  color: rgb(255, 255, 255);
+  transform: scale(1.02);
+}
+
+.start-menu li a {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  display: block;
+}
+
+.start-menu li:hover a {
+  color: rgb(255, 255, 255);
+}
+
+/* Style for the current-time span */
+#current-time {
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  padding: 2px 6px;
+  font-size: 10pt;
+  height: 23px;
+  line-height: 19px;
+  margin: 0 2px 0 0;
+  color: rgb(255, 255, 255);
+  position: absolute;
+  right: 4px;
+}
+
+/* Manga Main Images */
+#page #content #manga-main #chapter-list-container #manga-cover img {
+  width: 35% !important;
+  height: auto;
+  display: block;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Masthead */
+#masthead {
+  background-color: rgba(32, 32, 32, 0.8); /* Mica */
+  user-select: none;
+  border: none;
+  border-radius: 8px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Animation Keyframes */
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .announcement-section {
-        flex-direction: column;
-        text-align: center;
-    }
+  .container {
+    padding: 4px;
+  }
 
-    .announcement-image {
-        width: 100%;
-        max-width: 200px;
-    }
+  .manga-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+  }
 
-    .announcement-text {
-        text-align: center;
-    }
+  .manga-item {
+    height: 300px;
+    border-radius: 6px;
+  }
 
-    .main-navigation .menu {
-        flex-direction: column;
-        align-items: center;
-    }
+  .manga-item-titlebar {
+    font-size: 8pt;
+    padding: 3px 6px;
+    line-height: 1.2;
+    -webkit-line-clamp: 3;
+  }
 
-    .container {
-        padding: 20px;
-    }
+  .manga-item-content {
+    padding: 8px;
+  }
 
-    .manga-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    }
+  .manga-item-content h3 {
+    font-size: 9pt;
+    line-height: 1.2;
+    -webkit-line-clamp: 3;
+  }
+
+  .manga-item-content p {
+    font-size: 8pt;
+    line-height: 1.2;
+    -webkit-line-clamp: 2;
+  }
+
+  .manga-cover-wrapper {
+    margin-bottom: 8px;
+  }
+
+  .manga-cover-wrapper img {
+    border-radius: 3px;
+  }
+
+  .manga-spinner {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+  }
+
+  .announcement-section .announcement-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .announcement-image {
+    width: 100%;
+    max-width: 140px;
+  }
+
+  .announcement-text {
+    text-align: center;
+  }
+
+  .main-navigation .menu {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    height: auto;
+    padding: 5px 10px;
+    min-height: 50px;
+  }
+
+  .site-footer .footer-content {
+    padding: 0;
+    margin-bottom: 5px;
+  }
+
+  .start-button {
+    margin-bottom: 5px;
+    width: auto;
+  }
+
+  .start-menu {
+    min-width: 150px;
+  }
+
+  .theme-selector {
+    font-size: 9pt;
+    padding: 3px 6px;
+  }
+
+  #theme-selector-dialog {
+    padding: 15px;
+    width: 90%;
+    max-width: 300px;
+  }
+
+  #theme-selector-dialog h3 {
+    font-size: 14pt;
+  }
+
+  #theme-selector-dialog select {
+    padding: 6px;
+    font-size: 9pt;
+  }
+
+  #theme-selector-dialog button {
+    padding: 6px 12px;
+    font-size: 9pt;
+  }
 }
