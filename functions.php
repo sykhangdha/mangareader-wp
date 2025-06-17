@@ -54,12 +54,20 @@ function manga_reader_enqueue_assets() {
     if (is_admin()) return;
 
     $dir = get_template_directory_uri();
-    // Use user-specific theme if set, otherwise fall back to site-wide theme
+    // Determine selected theme: user meta > cookie > site-wide option
     $user_id = get_current_user_id();
-    $selected_theme = $user_id ? get_user_meta($user_id, 'manga_reader_user_theme', true) : '';
+    $selected_theme = '';
+
+    if ($user_id) {
+        $selected_theme = get_user_meta($user_id, 'manga_reader_user_theme', true);
+    } elseif (isset($_COOKIE['manga_reader_theme'])) {
+        $selected_theme = sanitize_key($_COOKIE['manga_reader_theme']);
+    }
+
     if (!$selected_theme) {
         $selected_theme = get_option('manga_reader_theme', 'default');
     }
+
     $style_path = 'style.css';
     $manga_style_path = 'style-manga.css';
 
@@ -73,6 +81,8 @@ function manga_reader_enqueue_assets() {
             $style_path = "themes/$selected_theme/style.css";
             $manga_style_path = "themes/$selected_theme/style-manga.css";
             $dir = get_template_directory_uri() . '/themes/' . sanitize_key($selected_theme);
+        } else {
+            $selected_theme = 'default'; // Fallback to default if invalid
         }
     }
 
@@ -104,7 +114,7 @@ add_action('wp_enqueue_scripts', 'manga_reader_enqueue_assets');
 // ADMIN ASSETS
 // ===============================
 function manga_reader_admin_assets($hook) {
-    if (!isset($_GET['page']) || $_GET['page'] !== 'manga-reader-settings') return;
+    if (!isset($_GET['page']) || ($_GET['page'] !== 'manga-reader-settings' && $_GET['page'] !== 'mangaviewer-theme-update')) return;
 
     $dir = get_template_directory_uri();
 
@@ -371,11 +381,6 @@ add_action('wp_ajax_nopriv_get_images', 'manga_reader_get_images');
 function manga_reader_change_user_theme() {
     check_ajax_referer('manga_reader_theme_switch', 'nonce');
 
-    // Allow any logged-in user to change their theme
-    if (!is_user_logged_in()) {
-        wp_send_json_error(['message' => 'You must be logged in to change the theme.']);
-    }
-
     $theme = sanitize_key($_POST['theme'] ?? '');
     $available_themes = manga_reader_get_available_themes();
     $available_themes[] = 'default'; // Include default theme
@@ -384,10 +389,17 @@ function manga_reader_change_user_theme() {
         wp_send_json_error(['message' => 'Invalid theme selected.']);
     }
 
-    $user_id = get_current_user_id();
-    update_user_meta($user_id, 'manga_reader_user_theme', $theme);
+    // For logged-in users, update user meta
+    if (is_user_logged_in()) {
+        $user_id = get_current_user_id();
+        update_user_meta($user_id, 'manga_reader_user_theme', $theme);
+    }
 
-    wp_send_json_success(['message' => 'Theme changed successfully!']);
+    // For all users, set a cookie
+    $cookie_expires = time() + 31536000; // 1 year
+    setcookie('manga_reader_theme', $theme, $cookie_expires, COOKIEPATH, COOKIE_DOMAIN, false, true);
+
+    wp_send_json_success(['message' => 'Theme changed successfully! Yare yare daze!']);
 }
 add_action('wp_ajax_manga_reader_change_user_theme', 'manga_reader_change_user_theme');
 add_action('wp_ajax_nopriv_manga_reader_change_user_theme', 'manga_reader_change_user_theme');
@@ -798,6 +810,14 @@ function manga_reader_add_admin_menu() {
         'manga_reader_settings_page',
         'dashicons-book-alt',
         80
+    );
+    // Add Theme Update menu under Settings
+    add_options_page(
+        __('Theme Update', 'manga-reader-theme'),
+        __('Theme Update', 'manga-reader-theme'),
+        'manage_options',
+        'mangaviewer-theme-update',
+        'mangaviewer_theme_update_page'
     );
 }
 add_action('admin_menu', 'manga_reader_add_admin_menu');
@@ -1250,6 +1270,140 @@ https://example.com/image2.jpg"></textarea>
 }
 
 // ===============================
+// THEME UPDATE SECTION
+// ===============================
+function mangaviewer_theme_update_page() {
+    // Check user permissions
+    if (!current_user_can('manage_options')) {
+        wp_die(__('You do not have sufficient permissions to access this page.', 'manga-reader-theme'));
+    }
+
+    // Initialize messages
+    $message = '';
+    $error = '';
+
+    // Handle file upload
+    if (isset($_POST['mangaviewer_upload_zip']) && check_admin_referer('mangaviewer_theme_update', 'mangaviewer_nonce')) {
+        if (isset($_FILES['update_zip']) && $_FILES['update_zip']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['update_zip'];
+            $filename = sanitize_file_name($file['name']);
+            $allowed_types = ['application/zip', 'application/x-zip-compressed'];
+
+            // Validate file
+            if ($filename !== 'update.zip') {
+                $error = __('Error: File must be named "update.zip".', 'manga-reader-theme');
+            } elseif (!in_array($file['type'], $allowed_types, true)) {
+                $error = __('Error: Only ZIP files are allowed.', 'manga-reader-theme');
+            } elseif ($file['size'] > 10 * 1024 * 1024) { // 10MB limit
+                $error = __('Error: File size exceeds 10MB.', 'manga-reader-theme');
+            } else {
+                // Process the ZIP
+                $result = mangaviewer_process_zip($file['tmp_name']);
+                if (is_wp_error($result)) {
+                    $error = $result->get_error_message();
+                } else {
+                    $message = __('Theme files updated successfully! Yare yare daze!', 'manga-reader-theme');
+                }
+            }
+        } else {
+            $error = __('Error: No file uploaded or upload failed.', 'manga-reader-theme');
+        }
+    }
+
+    ?>
+    <div class="wrap">
+        <h1><?php esc_html_e('Theme Update', 'manga-reader-theme'); ?></h1>
+        <?php if ($message) : ?>
+            <div class="notice notice-success is-dismissible">
+                <p><?php echo esc_html($message); ?></p>
+            </div>
+        <?php endif; ?>
+        <?php if ($error) : ?>
+            <div class="notice notice-error is-dismissible">
+                <p><?php echo esc_html($error); ?></p>
+            </div>
+        <?php endif; ?>
+        <form id="theme-update-form" method="post" enctype="multipart/form-data" class="manga-reader-form">
+            <?php wp_nonce_field('mangaviewer_theme_update', 'mangaviewer_nonce'); ?>
+            <div class="form-row">
+                <label for="update_zip"><?php esc_html_e('Upload update.zip file', 'manga-reader-theme'); ?></label>
+                <input type="file" name="update_zip" id="update_zip" accept=".zip" required>
+                <p class="description">
+                    <?php esc_html_e('Upload a ZIP file named "update.zip" containing updated theme files. Files will replace existing ones in the theme directory.', 'manga-reader-theme'); ?>
+                </p>
+            </div>
+            <div class="form-row">
+                <button type="submit" name="mangaviewer_upload_zip" class="button button-primary"><?php esc_html_e('Upload update.zip file', 'manga-reader-theme'); ?></button>
+                <span class="spinner"></span>
+            </div>
+        </form>
+        <div id="theme-update-results" class="form-results"></div>
+    </div>
+    <?php
+}
+
+/**
+ * Process uploaded ZIP file and update theme files
+ *
+ * @return bool|WP_Error True on success, WP_Error on failure
+ */
+function mangaviewer_process_zip($zip_path) {
+    // Load WordPress filesystem
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    WP_Filesystem();
+    global $wp_filesystem;
+
+    if (!$wp_filesystem) {
+        return new WP_Error('filesystem', __('Failed to initialize WordPress filesystem.', 'manga-reader-theme'));
+    }
+
+    // Create temporary directory
+    $temp_dir = wp_upload_dir()['basedir'] . '/mangaviewer-temp-' . wp_generate_uuid4();
+    if (!$wp_filesystem->mkdir($temp_dir)) {
+        return new WP_Error('temp_dir', __('Failed to create temporary directory.', 'manga-reader-theme'));
+    }
+
+    // Unzip file to temporary directory
+    $unzip_result = unzip_file($zip_path, $temp_dir);
+    if (is_wp_error($unzip_result)) {
+        $wp_filesystem->rmdir($temp_dir, true);
+        return $unzip_result;
+    }
+
+    // Get theme directory
+    $theme_dir = get_template_directory();
+
+    // Copy files from temp directory to theme directory
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($temp_dir, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::SELF_FIRST
+    );
+
+    foreach ($iterator as $item) {
+        $source_path = $item->getPathname();
+        $relative_path = str_replace($temp_dir, '', $source_path);
+        $dest_path = $theme_dir . $relative_path;
+
+        if ($item->isDir()) {
+            if (!$wp_filesystem->exists($dest_path)) {
+                $wp_filesystem->mkdir($dest_path);
+            }
+        } else {
+            // Replace or add file
+            if (!$wp_filesystem->copy($source_path, $dest_path, true)) {
+                $wp_filesystem->rmdir($temp_dir, true);
+                return new WP_Error('copy', __('Failed to copy file: ', 'manga-reader-theme') . $relative_path);
+            }
+        }
+    }
+
+    // Clean up temporary directory
+    $wp_filesystem->rmdir($temp_dir, true);
+
+    return true;
+}
+
+// ===============================
 // UTILITIES
 // ===============================
 function manga_reader_get_latest_chapter($manga_name) {
@@ -1380,39 +1534,4 @@ function manga_reader_customize_register($wp_customize) {
     ]));
 }
 add_action('customize_register', 'manga_reader_customize_register');
-
-function manga_reader_dynamic_styles() {
-    ?>
-    <style type="text/css">
-        body {
-            background-color: <?php echo esc_attr(get_theme_mod('background_color_custom', '#1a1a1a')); ?>;
-            color: <?php echo esc_attr(get_theme_mod('body_text_color', '#e5e5e5')); ?>;
-        }
-        a {
-            color: <?php echo esc_attr(get_theme_mod('accent_color', '#57b2ff')); ?>;
-        }
-        a:hover {
-            color: <?php echo esc_attr(get_theme_mod('accent_color', '#57b2ff')); ?>;
-        }
-        .site-header {
-            background-color: <?php echo esc_attr(get_theme_mod('header_background_color', '#111111')); ?>;
-        }
-        .main-navigation {
-            background-color: <?php echo esc_attr(get_theme_mod('menu_background_color', '#1e1e1e')); ?>;
-        }
-        .announcement-section {
-            background: <?php echo esc_attr(get_theme_mod('glass_panel_color', 'rgba(35, 35, 35, 0.5)')); ?>;
-        }
-        .site-footer {
-            color: <?php echo esc_attr(get_theme_mod('footer_text_color', '#aaaaaa')); ?>;
-        }
-        .edit-chapter-form {
-            background: #f9f9f9;
-            padding: 15px;
-            border: 1px solid #ddd;
-        }
-    </style>
-    <?php
-}
-add_action('wp_head', 'manga_reader_dynamic_styles');
 ?>
