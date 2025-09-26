@@ -1,3 +1,7 @@
+## Upcoming Changes:
+- [Fix issue with titling when adding folders with certain titles](https://github.com/sykhangdha/mangareader-wp/issues/1)
+- Layout fixes + more bug fixes
+
 # 🎉 MangaStarter Rewritten [Initial Release] 🎉
 
 **1.0 - Initial Release: 5/15/2025(Uses new retro theme)**  
