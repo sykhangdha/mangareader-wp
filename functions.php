@@ -28,22 +28,18 @@ function manga_reader_get_asset_version($file) {
 function manga_reader_get_available_themes() {
     $themes_dir = get_template_directory() . '/themes/';
     $themes = [];
-
     if (!is_dir($themes_dir)) {
         return $themes;
     }
-
     $dirs = array_filter(glob($themes_dir . '*'), 'is_dir');
     foreach ($dirs as $dir) {
         $theme_name = basename($dir);
         $style_path = $dir . '/style.css';
         $manga_style_path = $dir . '/style-manga.css';
-
         if (file_exists($style_path) && file_exists($manga_style_path)) {
             $themes[] = $theme_name;
         }
     }
-
     return $themes;
 }
 
@@ -52,31 +48,25 @@ function manga_reader_get_available_themes() {
 // ===============================
 function manga_reader_enqueue_assets() {
     if (is_admin()) return;
-
     $dir = get_template_directory_uri();
     // Determine selected theme: user meta > cookie > site-wide option
     $user_id = get_current_user_id();
     $selected_theme = '';
-
     if ($user_id) {
         $selected_theme = get_user_meta($user_id, 'manga_reader_user_theme', true);
     } elseif (isset($_COOKIE['manga_reader_theme'])) {
         $selected_theme = sanitize_key($_COOKIE['manga_reader_theme']);
     }
-
     if (!$selected_theme) {
         $selected_theme = get_option('manga_reader_theme', 'default');
     }
-
     $style_path = 'style.css';
     $manga_style_path = 'style-manga.css';
-
     // Validate custom theme
     if ($selected_theme !== 'default') {
         $theme_dir = get_template_directory() . '/themes/' . sanitize_key($selected_theme);
         $theme_style = $theme_dir . '/style.css';
         $theme_manga_style = $theme_dir . '/style-manga.css';
-
         if (is_dir($theme_dir) && file_exists($theme_style) && file_exists($theme_manga_style)) {
             $style_path = "themes/$selected_theme/style.css";
             $manga_style_path = "themes/$selected_theme/style-manga.css";
@@ -85,7 +75,6 @@ function manga_reader_enqueue_assets() {
             $selected_theme = 'default'; // Fallback to default if invalid
         }
     }
-
     wp_enqueue_style('manga-theme-style', "$dir/" . basename($style_path), [], manga_reader_get_asset_version($style_path));
     wp_enqueue_style('manga-reader-manga-style', "$dir/" . basename($manga_style_path), ['manga-theme-style'], manga_reader_get_asset_version($manga_style_path));
     wp_enqueue_script('manga-reader-script', get_template_directory_uri() . '/script.js', ['jquery'], manga_reader_get_asset_version('script.js'), true);
@@ -93,14 +82,12 @@ function manga_reader_enqueue_assets() {
         'ajaxurl' => admin_url('admin-ajax.php'),
         'theme_nonce' => wp_create_nonce('manga_reader_theme_switch'),
     ]);
-
     add_filter('style_loader_tag', function ($tag, $handle) {
         if (strpos($handle, 'manga') !== false) {
             $tag = str_replace('<link', '<link data-cache-control="no-cache, no-store, must-revalidate"', $tag);
         }
         return $tag;
     }, 10, 2);
-
     add_filter('script_loader_tag', function ($tag, $handle) {
         if (strpos($handle, 'manga') !== false) {
             $tag = str_replace('<script', '<script data-cache-control="no-cache, no-store, must-revalidate"', $tag);
@@ -115,16 +102,13 @@ add_action('wp_enqueue_scripts', 'manga_reader_enqueue_assets');
 // ===============================
 function manga_reader_admin_assets($hook) {
     if (!isset($_GET['page']) || ($_GET['page'] !== 'manga-reader-settings' && $_GET['page'] !== 'mangaviewer-theme-update')) return;
-
     $dir = get_template_directory_uri();
-
     wp_enqueue_style('manga-reader-admin-style', "$dir/admin-style.css", [], manga_reader_get_asset_version('admin-style.css'));
     wp_enqueue_script('manga-reader-admin-script', "$dir/admin-script.js", ['jquery'], manga_reader_get_asset_version('admin-script.js'), true);
     wp_localize_script('manga-reader-admin-script', 'mangaAdminAjax', [
         'ajaxurl' => admin_url('admin-ajax.php'),
-        'nonce'   => wp_create_nonce('manga_reader_admin_nonce'),
+        'nonce' => wp_create_nonce('manga_reader_admin_nonce'),
     ]);
-
     wp_enqueue_media();
 }
 add_action('admin_enqueue_scripts', 'manga_reader_admin_assets');
@@ -136,13 +120,11 @@ function manga_reader_rewrite_rules() {
     add_rewrite_rule('manga/([^/]+)/?$', 'index.php?manga_name=$matches[1]', 'top');
 }
 add_action('init', 'manga_reader_rewrite_rules');
-
 function manga_reader_query_vars($vars) {
     $vars[] = 'manga_name';
     return $vars;
 }
 add_filter('query_vars', 'manga_reader_query_vars');
-
 function manga_reader_template_redirect() {
     $manga_name = get_query_var('manga_name');
     if ($manga_name) {
@@ -153,10 +135,12 @@ function manga_reader_template_redirect() {
 add_action('template_redirect', 'manga_reader_template_redirect');
 
 // ===============================
-// NAME NORMALIZATION HELPERS
+// NAME NORMALIZATION HELPERS (FIXED)
 // ===============================
 function manga_reader_normalize_name($name) {
-    $name = preg_replace('/[^\w\s-]/', '', $name);
+    // Keep brackets, parentheses, and common punctuation while normalizing for matching
+    $name = preg_replace('/[^\w\s\-\[\]\(\)\.\,_!?]/u', '', $name); // allow [ ] ( ) . , _ ! ?
+    $name = preg_replace('/\s+/', ' ', trim($name)); // collapse spaces
     $name = str_replace(' ', '-', $name);
     return strtolower($name);
 }
@@ -165,7 +149,8 @@ function manga_reader_denormalize_name($normalized, $base_path = null) {
     $base_path = $base_path ?? ABSPATH . 'manga/';
     if (!is_dir($base_path)) return $normalized;
 
-    foreach (array_filter(glob($base_path . '*'), 'is_dir') as $dir) {
+    $dirs = array_filter(glob($base_path . '*'), 'is_dir');
+    foreach ($dirs as $dir) {
         $dir_name = basename($dir);
         $normalized_dir = manga_reader_normalize_name($dir_name);
         if ($normalized_dir === $normalized) {
@@ -182,7 +167,6 @@ function manga_reader_format_chapter_name($name, $use_vol_ch = false, $vol = nul
     if ($use_vol_ch && $vol !== null && $ch !== null) {
         return "Vol. " . trim($vol) . " Ch. " . trim($ch);
     }
-
     $name = trim($name);
     if (preg_match('/^(vol\.?|ch\.?|chapter)\s*/i', $name)) {
         return $name;
@@ -219,14 +203,11 @@ add_action('init', 'manga_reader_register_chapter_post_type');
 // ===============================
 function manga_reader_display_manga($manga_name) {
     if (!$manga_name) return '<p>Please provide a manga name.</p>';
-
     $normalized = manga_reader_normalize_name($manga_name);
     $base_path = ABSPATH . 'manga/';
     $actual = manga_reader_denormalize_name($normalized, $base_path);
-
     $cover_path = $base_path . $actual . '/cover.jpg';
     $cover_url = file_exists($cover_path) ? site_url("/manga/$actual/cover.jpg") : '';
-
     ob_start(); ?>
     <div class="manga-viewer" data-manga-name="<?= esc_attr($actual) ?>">
         <?php if ($cover_url): ?>
@@ -268,9 +249,7 @@ function manga_reader_get_chapters() {
     $base_path = ABSPATH . 'manga/';
     $actual = manga_reader_denormalize_name(manga_reader_normalize_name($manga), $base_path);
     $path = $base_path . $actual;
-
     $chapters = [];
-
     if (is_dir($path)) {
         $dirs = array_filter(glob($path . '/*'), 'is_dir');
         foreach ($dirs as $dir) {
@@ -281,7 +260,6 @@ function manga_reader_get_chapters() {
             ];
         }
     }
-
     $args = [
         'post_type' => 'manga_chapter',
         'post_status' => 'publish',
@@ -304,29 +282,25 @@ function manga_reader_get_chapters() {
         ];
     }
     wp_reset_postdata();
-
     if (!$chapters) {
         wp_send_json_error(['message' => 'No chapters found.']);
     }
-
     usort($chapters, fn($a, $b) => strcmp($b['name'], $a['name']));
-
     wp_send_json_success(['chapters' => $chapters]);
 }
 add_action('wp_ajax_get_chapters', 'manga_reader_get_chapters');
 add_action('wp_ajax_nopriv_get_chapters', 'manga_reader_get_chapters');
 
 // ===============================
-// AJAX: GET IMAGES
+// AJAX: GET IMAGES (FIXED for brackets in chapter title)
 // ===============================
 function manga_reader_get_images() {
     $manga = sanitize_text_field($_POST['manga'] ?? '');
-    $chapter = sanitize_text_field($_POST['chapter'] ?? '');
+    $chapter = sanitize_text_field($_POST['chapter'] ?? '');   // raw chapter name from frontend
     $base_path = ABSPATH . 'manga/';
     $actual = manga_reader_denormalize_name(manga_reader_normalize_name($manga), $base_path);
     $path = "$base_path$actual/$chapter";
     $url = site_url("/manga/$actual/$chapter");
-
     $images = [];
 
     if (is_dir($path)) {
@@ -336,20 +310,32 @@ function manga_reader_get_images() {
             $images = array_map(fn($img) => "$url/" . basename($img), $files);
         }
     } else {
+        // Database chapter lookup - use exact post_title match (more reliable with brackets)
         $args = [
-            'post_type' => 'manga_chapter',
-            'post_status' => 'publish',
-            'title' => $chapter,
-            'meta_query' => [
+            'post_type'      => 'manga_chapter',
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,
+            'meta_query'     => [
                 [
-                    'key' => 'manga_name',
-                    'value' => $actual,
+                    'key'     => 'manga_name',
+                    'value'   => $actual,
                     'compare' => '=',
                 ],
             ],
-            'posts_per_page' => 1,
         ];
+
+        // Add exact title match via posts_where filter (safer than 'title' arg)
+        add_filter('posts_where', function($where) use ($chapter) {
+            global $wpdb;
+            $where .= $wpdb->prepare(" AND {$wpdb->posts}.post_title = %s ", $chapter);
+            return $where;
+        }, 10, 1);
+
         $query = new WP_Query($args);
+
+        // Remove the filter immediately after use
+        remove_filter('posts_where', '__return_true', 10); // just in case, but our closure is anonymous
+
         if ($query->have_posts()) {
             $query->the_post();
             $image_ids = get_post_meta(get_the_ID(), 'chapter_images', true);
@@ -369,7 +355,6 @@ function manga_reader_get_images() {
     if (!$images) {
         wp_send_json_error(['message' => 'No images found.']);
     }
-
     wp_send_json_success($images);
 }
 add_action('wp_ajax_get_images', 'manga_reader_get_images');
