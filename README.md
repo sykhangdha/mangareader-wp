@@ -1,5 +1,7 @@
 ## Upcoming Rework
 
+THEME PREVIEW: [Homepage](https://skymanga.42web.io/)
+
 - Full theme rework, no ETA of full release, users can try the pre-release [HERE](https://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/AlphaWP)
    - Adds custom taxonomy to create mangas and add chapters all through wordpress(removed FTP function as it was causing too many issues)
    - Improved the way mangas grab chapters and better manga info page. You can now add genres, set status of manga, and a new manga archive section
