@@ -12,6 +12,9 @@ THEME PREVIEW: [Homepage](https://skymanga.42web.io/)
    Homepage changes:
    <img width="1468" height="924" alt="image" src="https://github.com/user-attachments/assets/992636dd-a0f7-4d83-9b65-5afcdec9c8d9" />
 
+   Mango Info page:
+   <img width="995" height="930" alt="image" src="https://github.com/user-attachments/assets/d14f5ab1-7d9a-4166-ae42-cc8e76536ba8" />
+
 
   Reader new page layout:
   <img width="1896" height="934" alt="image" src="https://github.com/user-attachments/assets/2291fe23-c035-45f9-81b9-c93caebd4a51" />
