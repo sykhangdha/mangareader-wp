@@ -25,5 +25,13 @@ THEME PREVIEW: [Homepage](https://skymanga.42web.io/)
    Keyboard Shortcuts
    <img width="286" height="225" alt="image" src="https://github.com/user-attachments/assets/e49d1ae3-eb47-4324-aba7-716f0e664df1" />
 
+   
+Manga List:
+<img width="1429" height="883" alt="image" src="https://github.com/user-attachments/assets/fbcad9ac-6b33-4d39-9ba7-04c3d2e38ce3" />
+
+Import chapters/manga:
+<img width="1724" height="624" alt="image" src="https://github.com/user-attachments/assets/0d609fb5-f430-4746-8cfd-b40c948465eb" />
+
+
 
    
