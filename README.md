@@ -10,24 +10,28 @@ THEME PREVIEW: [Homepage](https://skymanga.42web.io/)
 * Note: The pre-release does not have all settings/changes available yet
 
    Homepage changes:
-   <img width="1468" height="924" alt="image" src="https://github.com/user-attachments/assets/992636dd-a0f7-4d83-9b65-5afcdec9c8d9" />
+   <img width="1232" height="920" alt="image" src="https://github.com/user-attachments/assets/cd819780-f5da-4cdd-b2c7-5f90e02ea06f" />
+
 
    Mango Info page:
-   <img width="995" height="930" alt="image" src="https://github.com/user-attachments/assets/d14f5ab1-7d9a-4166-ae42-cc8e76536ba8" />
+   <img width="994" height="860" alt="image" src="https://github.com/user-attachments/assets/2e612894-0f7e-4aa5-843e-be21d7fee1bb" />
+ 
 
 
   Reader new page layout:
-  <img width="1896" height="934" alt="image" src="https://github.com/user-attachments/assets/2291fe23-c035-45f9-81b9-c93caebd4a51" />
+  <img width="1901" height="1076" alt="image" src="https://github.com/user-attachments/assets/226e8e58-58c3-4e6a-a4e9-ecc84649dca6" />
+
 
 
    Reader Settings:
-   <img width="286" height="536" alt="image" src="https://github.com/user-attachments/assets/2e3bafb1-eb7c-428c-8a37-9878fee9403e" />
-   Keyboard Shortcuts
-   <img width="286" height="225" alt="image" src="https://github.com/user-attachments/assets/e49d1ae3-eb47-4324-aba7-716f0e664df1" />
+  <img width="283" height="632" alt="image" src="https://github.com/user-attachments/assets/a8616055-d4ac-4df9-84d6-557b93d4d16e" />
+
+
 
    
 Manga List:
-<img width="1429" height="883" alt="image" src="https://github.com/user-attachments/assets/fbcad9ac-6b33-4d39-9ba7-04c3d2e38ce3" />
+<img width="1356" height="830" alt="image" src="https://github.com/user-attachments/assets/d6ac3e12-6332-4eb2-b539-11d6b4584823" />
+
 
 Import chapters/manga:
 <img width="1724" height="624" alt="image" src="https://github.com/user-attachments/assets/0d609fb5-f430-4746-8cfd-b40c948465eb" />
