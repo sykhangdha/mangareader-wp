@@ -1,6 +1,7 @@
 ## Upcoming Rework
 
 THEME PREVIEW: [Homepage](https://skymanga.42web.io/)
+DOWNLOAD(Expect bugs if you do use): MangaStarter AlphaV2
 
 - Full theme rework, no ETA of full release, users can try the pre-release [HERE](https://github.com/sykhangdha/wp-mangareader-plugin/releases/tag/AlphaWP)
    - Adds custom taxonomy to create mangas and add chapters all through wordpress(removed FTP function as it was causing too many issues)
