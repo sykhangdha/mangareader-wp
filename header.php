@@ -9,6 +9,28 @@
         .dark-mode-transition {
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+        
+        /* Toggle ripple effect */
+        .toggle-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: rippleAnimation 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes rippleAnimation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .dark-mode-toggle {
+            position: relative;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body <?php body_class(); ?>>
@@ -63,36 +85,6 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Search Modal -->
-        <div class="search-modal" id="searchModal">
-            <div class="search-modal-overlay"></div>
-            <div class="search-modal-content">
-                <button class="search-modal-close" id="searchModalClose">×</button>
-                <h3>Search Manga</h3>
-                <form role="search" method="get" class="search-form-modal" action="<?php echo home_url('/'); ?>">
-                    <input type="search" class="search-input-modal" placeholder="Search by manga title..." value="<?php echo get_search_query(); ?>" name="s">
-                    <input type="hidden" name="post_type" value="manga">
-                    <button type="submit" class="search-button-modal">Search</button>
-                </form>
-                <div class="search-suggestions">
-                    <p>Popular Manga:</p>
-                    <div class="popular-manga-list">
-                        <?php
-                        $popular_manga = get_posts(array(
-                            'post_type' => 'manga',
-                            'posts_per_page' => 6,
-                            'orderby' => 'comment_count',
-                            'order' => 'DESC'
-                        ));
-                        foreach ($popular_manga as $manga) {
-                            echo '<a href="' . get_permalink($manga->ID) . '">' . esc_html($manga->post_title) . '</a>';
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-        </div>
     </header>
     
     <nav class="main-nav">
@@ -111,6 +103,35 @@
     
     <main id="main" class="site-main">
         <div class="container">
+
+<!-- Search Modal - Moved outside header for better positioning -->
+<div class="search-modal" id="searchModal">
+    <div class="search-modal-content">
+        <button class="search-modal-close" id="searchModalClose">×</button>
+        <h3>Search Manga</h3>
+        <form role="search" method="get" class="search-form-modal" action="<?php echo home_url('/'); ?>">
+            <input type="search" class="search-input-modal" placeholder="Search by manga title..." value="<?php echo get_search_query(); ?>" name="s">
+            <input type="hidden" name="post_type" value="manga">
+            <button type="submit" class="search-button-modal">Search</button>
+        </form>
+        <div class="search-suggestions">
+            <p>Popular Manga:</p>
+            <div class="popular-manga-list">
+                <?php
+                $popular_manga = get_posts(array(
+                    'post_type' => 'manga',
+                    'posts_per_page' => 6,
+                    'orderby' => 'comment_count',
+                    'order' => 'DESC'
+                ));
+                foreach ($popular_manga as $manga) {
+                    echo '<a href="' . get_permalink($manga->ID) . '">' . esc_html($manga->post_title) . '</a>';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 // Animated Dark Mode Toggle
@@ -150,6 +171,79 @@
                 localStorage.setItem('theme', 'dark');
             } else {
                 localStorage.setItem('theme', 'light');
+            }
+        });
+    }
+})();
+
+// Search Modal Functionality
+(function() {
+    const searchModal = document.getElementById('searchModal');
+    const searchToggle = document.getElementById('searchToggle');
+    const searchModalClose = document.getElementById('searchModalClose');
+    
+    // Open search modal
+    if (searchToggle && searchModal) {
+        searchToggle.addEventListener('click', function() {
+            searchModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Focus on input after animation
+            setTimeout(() => {
+                const searchInput = searchModal.querySelector('.search-input-modal');
+                if (searchInput) searchInput.focus();
+            }, 100);
+        });
+    }
+    
+    // Close search modal
+    function closeSearchModal() {
+        if (searchModal) {
+            searchModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+    
+    if (searchModalClose) {
+        searchModalClose.addEventListener('click', closeSearchModal);
+    }
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && searchModal && searchModal.classList.contains('active')) {
+            closeSearchModal();
+        }
+    });
+    
+    // Close on overlay click (click outside content)
+    if (searchModal) {
+        searchModal.addEventListener('click', function(e) {
+            if (e.target === searchModal) {
+                closeSearchModal();
+            }
+        });
+    }
+})();
+
+// Mobile Menu Toggle
+(function() {
+    const mobileToggle = document.getElementById('mobileMenuToggle');
+    const mainNav = document.querySelector('.main-nav');
+    
+    if (mobileToggle && mainNav) {
+        mobileToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+            this.classList.toggle('active');
+            
+            // Animate hamburger to X
+            const spans = this.querySelectorAll('span');
+            if (mainNav.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
             }
         });
     }
