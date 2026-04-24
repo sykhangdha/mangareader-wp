@@ -216,8 +216,8 @@
         </svg>
     </div>
     
-    <!-- Page Indicator -->
-    <div class="page-indicator" id="pageIndicator">
+    <!-- Page Indicator (hidden by default, shown only in paged mode) -->
+    <div class="page-indicator" id="pageIndicator" style="display: none;">
         <span id="currentPageDisplay">1</span> / <span id="totalPagesDisplay"><?php echo $total_pages; ?></span>
     </div>
     
@@ -256,19 +256,19 @@
             </div>
             
             <div class="settings-section">
-    <label>Scale</label>
-    <div class="settings-buttons-group">
-        <button class="settings-btn" data-setting="scale" data-value="100">
-            <span class="btn-icon">📏</span> 100%
-        </button>
-        <button class="settings-btn active" data-setting="scale" data-value="auto">
-            <span class="btn-icon">🔄</span> Auto
-        </button>
-        <button class="settings-btn" data-setting="scale" data-value="width">
-            <span class="btn-icon">📐</span> Fit to Width
-        </button>
-    </div>
-</div>
+                <label>Scale</label>
+                <div class="settings-buttons-group">
+                    <button class="settings-btn" data-setting="scale" data-value="100">
+                        <span class="btn-icon">📏</span> 100%
+                    </button>
+                    <button class="settings-btn active" data-setting="scale" data-value="auto">
+                        <span class="btn-icon">🔄</span> Auto
+                    </button>
+                    <button class="settings-btn" data-setting="scale" data-value="width">
+                        <span class="btn-icon">📐</span> Fit to Width
+                    </button>
+                </div>
+            </div>
             
             <div class="settings-section">
                 <label>Background</label>
@@ -366,12 +366,6 @@
     color: white;
 }
 
-.manga-reader-container[data-current-bg="dark"] .reader-nav-btn:hover,
-.manga-reader-container[data-current-bg="dark"] .reader-settings-btn:hover,
-.manga-reader-container[data-current-bg="dark"] .reader-fullscreen-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
 .manga-reader-container[data-current-bg="dark"] .compact-title,
 .manga-reader-container[data-current-bg="dark"] .chapter-info-compact span {
     color: white;
@@ -381,18 +375,9 @@
     color: rgba(255, 255, 255, 0.6);
 }
 
-.manga-reader-container[data-current-bg="dark"] .chapter-selector option {
-    background: #1a1a2e;
-    color: white;
-}
-
 .manga-reader-container[data-current-bg="dark"] .reader-settings-panel {
     background: rgba(20, 20, 30, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.manga-reader-container[data-current-bg="dark"] .settings-panel-header {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .manga-reader-container[data-current-bg="dark"] .settings-panel-header h3 {
@@ -408,29 +393,8 @@
     color: rgba(255, 255, 255, 0.9);
 }
 
-.manga-reader-container[data-current-bg="dark"] .settings-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.manga-reader-container[data-current-bg="dark"] .no-images-message {
-    color: white;
-}
-
 .manga-reader-container[data-current-bg="dark"] .page-indicator {
     background: rgba(0, 0, 0, 0.7);
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="dark"] .reader-zoom-controls {
-    background: rgba(0, 0, 0, 0.7);
-}
-
-.manga-reader-container[data-current-bg="dark"] .zoom-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="dark"] .zoom-level {
     color: white;
 }
 
@@ -454,12 +418,6 @@
     color: #333;
 }
 
-.manga-reader-container[data-current-bg="light"] .reader-nav-btn:hover,
-.manga-reader-container[data-current-bg="light"] .reader-settings-btn:hover,
-.manga-reader-container[data-current-bg="light"] .reader-fullscreen-btn:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
 .manga-reader-container[data-current-bg="light"] .compact-title,
 .manga-reader-container[data-current-bg="light"] .chapter-info-compact span {
     color: #333;
@@ -469,18 +427,9 @@
     color: #666;
 }
 
-.manga-reader-container[data-current-bg="light"] .chapter-selector option {
-    background: white;
-    color: #333;
-}
-
 .manga-reader-container[data-current-bg="light"] .reader-settings-panel {
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.manga-reader-container[data-current-bg="light"] .settings-panel-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .manga-reader-container[data-current-bg="light"] .settings-panel-header h3 {
@@ -496,55 +445,8 @@
     color: #333;
 }
 
-.manga-reader-container[data-current-bg="light"] .settings-btn:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.manga-reader-container[data-current-bg="light"] .no-images-message {
-    color: #333;
-}
-
-.manga-reader-container[data-current-bg="light"] .no-images-message a {
-    background: #0078d4;
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="light"] .reader-progress-bar {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.manga-reader-container[data-current-bg="light"] .reader-progress-fill {
-    background: #0078d4;
-}
-
-.manga-reader-container[data-current-bg="light"] .nav-arrow {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="light"] .nav-arrow:hover {
-    background: #0078d4;
-}
-
 .manga-reader-container[data-current-bg="light"] .page-indicator {
     background: rgba(0, 0, 0, 0.7);
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="light"] .reader-zoom-controls {
-    background: rgba(0, 0, 0, 0.7);
-}
-
-.manga-reader-container[data-current-bg="light"] .zoom-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="light"] .zoom-btn:hover {
-    background: #0078d4;
-}
-
-.manga-reader-container[data-current-bg="light"] .zoom-level {
     color: white;
 }
 
@@ -568,12 +470,6 @@
     color: #5b4636;
 }
 
-.manga-reader-container[data-current-bg="sepia"] .reader-nav-btn:hover,
-.manga-reader-container[data-current-bg="sepia"] .reader-settings-btn:hover,
-.manga-reader-container[data-current-bg="sepia"] .reader-fullscreen-btn:hover {
-    background: rgba(0, 0, 0, 0.12);
-}
-
 .manga-reader-container[data-current-bg="sepia"] .compact-title,
 .manga-reader-container[data-current-bg="sepia"] .chapter-info-compact span {
     color: #5b4636;
@@ -583,18 +479,9 @@
     color: #8b7355;
 }
 
-.manga-reader-container[data-current-bg="sepia"] .chapter-selector option {
-    background: #f4ecd8;
-    color: #5b4636;
-}
-
 .manga-reader-container[data-current-bg="sepia"] .reader-settings-panel {
     background: rgba(244, 236, 216, 0.95);
     border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.manga-reader-container[data-current-bg="sepia"] .settings-panel-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .manga-reader-container[data-current-bg="sepia"] .settings-panel-header h3 {
@@ -610,55 +497,8 @@
     color: #5b4636;
 }
 
-.manga-reader-container[data-current-bg="sepia"] .settings-btn:hover {
-    background: rgba(0, 0, 0, 0.12);
-}
-
-.manga-reader-container[data-current-bg="sepia"] .no-images-message {
-    color: #5b4636;
-}
-
-.manga-reader-container[data-current-bg="sepia"] .reader-progress-bar {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.manga-reader-container[data-current-bg="sepia"] .reader-progress-fill {
-    background: #0078d4;
-}
-
-.manga-reader-container[data-current-bg="sepia"] .nav-arrow {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="sepia"] .nav-arrow:hover {
-    background: #0078d4;
-}
-
-.manga-reader-container[data-current-bg="sepia"] .page-indicator {
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="sepia"] .reader-zoom-controls {
-    background: rgba(0, 0, 0, 0.7);
-}
-
-.manga-reader-container[data-current-bg="sepia"] .zoom-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.manga-reader-container[data-current-bg="sepia"] .zoom-btn:hover {
-    background: #0078d4;
-}
-
-.manga-reader-container[data-current-bg="sepia"] .zoom-level {
-    color: white;
-}
-
 /* ============================================
-   SETTINGS BUTTON STYLES (All Modes)
+   SETTINGS BUTTON STYLES
    ============================================ */
 .settings-btn {
     position: relative;
@@ -682,7 +522,6 @@
     background: #0078d4 !important;
     color: white !important;
     box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
-    transform: scale(1.02);
 }
 
 .settings-btn.active::after {
@@ -743,6 +582,7 @@
 .reader-progress-fill {
     width: 0%;
     height: 100%;
+    background: #0078d4;
     transition: width 0.3s;
 }
 
@@ -772,9 +612,9 @@
     display: block;
     margin: 0 auto;
     border-radius: 4px;
-    transition: transform 0.2s;
 }
 
+/* Navigation Arrows - Hidden on mobile */
 .nav-arrow {
     position: fixed;
     top: 50%;
@@ -798,6 +638,15 @@
 
 .nav-arrow-right {
     right: 20px;
+}
+
+/* Hide navigation arrows on mobile devices */
+@media (max-width: 768px) {
+    .nav-arrow {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
 }
 
 .page-indicator {
@@ -835,6 +684,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .settings-panel-header h3 {
@@ -885,6 +735,7 @@
     flex-wrap: wrap;
 }
 
+/* Zoom Controls */
 .reader-zoom-controls {
     position: fixed;
     bottom: 20px;
@@ -895,9 +746,19 @@
     display: flex;
     gap: 8px;
     z-index: 100;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Hide zoom controls on mobile devices */
+@media (max-width: 768px) {
+    .reader-zoom-controls {
+        display: none !important;
+        visibility: hidden !important;
+    }
 }
 
 .zoom-btn {
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     padding: 8px;
     border-radius: 50%;
@@ -906,13 +767,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: white;
 }
 
 .zoom-btn:hover {
+    background: #0078d4;
     transform: scale(1.05);
 }
 
 .zoom-level {
+    color: white;
     font-size: 12px;
     padding: 0 8px;
     display: flex;
@@ -943,18 +807,9 @@
         font-size: 11px;
     }
     
-    .nav-arrow {
-        opacity: 1;
-        padding: 8px;
-    }
-    
     .reader-settings-panel.open {
         right: 10px;
         width: 280px;
-    }
-    
-    .reader-zoom-controls {
-        bottom: 70px;
     }
     
     .settings-btn {
@@ -988,6 +843,7 @@ jQuery(document).ready(function($) {
     const progressFill = document.getElementById('readerProgressFill');
     const currentPageDisplay = document.getElementById('currentPageDisplay');
     const totalPagesDisplay = document.getElementById('totalPagesDisplay');
+    const pageIndicator = document.getElementById('pageIndicator');
     const prevArrow = document.getElementById('navArrowLeft');
     const nextArrow = document.getElementById('navArrowRight');
     const settingsPanel = document.getElementById('readerSettingsPanel');
@@ -1009,29 +865,43 @@ jQuery(document).ready(function($) {
     let scaleMode = 'auto';
     let navMode = 'click';
     let currentBgMode = 'dark';
-    let scrollTimeout = null;
+    let isScrolling = false;
+    
+    // Check if mobile view
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
     
     // Update total pages display
     if (totalPagesDisplay && totalPages > 0) {
         totalPagesDisplay.textContent = totalPages;
     }
     
-    // Apply background mode - FULLY FIXED
+    // Show/hide page indicator based on reading mode
+    function updatePageIndicatorVisibility() {
+        if (pageIndicator) {
+            if (readingMode === 'paged') {
+                pageIndicator.style.display = 'block';
+            } else {
+                pageIndicator.style.display = 'none';
+            }
+        }
+    }
+    
+    // Apply background mode
     function applyBackgroundMode(mode) {
         currentBgMode = mode;
         if (container) {
             container.setAttribute('data-current-bg', mode);
         }
         
-        // Also update body class for consistent theming if needed
         if (mode === 'light') {
             document.body.classList.remove('dark-mode', 'sepia-mode');
-            document.body.classList.add('light-mode');
         } else if (mode === 'sepia') {
-            document.body.classList.remove('dark-mode', 'light-mode');
+            document.body.classList.remove('dark-mode');
             document.body.classList.add('sepia-mode');
         } else {
-            document.body.classList.remove('light-mode', 'sepia-mode');
+            document.body.classList.remove('sepia-mode');
             document.body.classList.add('dark-mode');
         }
         
@@ -1047,7 +917,6 @@ jQuery(document).ready(function($) {
                     img.style.objectFit = 'contain';
                     img.style.width = '100%';
                     img.style.height = 'auto';
-                    img.style.maxWidth = '100%';
                 } else if (imageFit === 'cover') {
                     img.style.objectFit = 'cover';
                     img.style.width = '100%';
@@ -1091,19 +960,27 @@ jQuery(document).ready(function($) {
         }
     }
     
-    // Update page display based on mode
+    // Update page display based on mode (PAGED MODE)
     function updatePageDisplay() {
         if (readingMode === 'longstrip') {
             pages.forEach(page => {
                 page.style.display = 'flex';
             });
             updateProgress();
+            updatePageIndicatorVisibility();
         } else {
+            // Paged mode - only show current page
             pages.forEach((page, index) => {
                 page.style.display = index === currentPage ? 'flex' : 'none';
             });
             updateProgress();
             updatePageIndicator();
+            updatePageIndicatorVisibility();
+            
+            // Scroll to top of current page
+            if (pages[currentPage]) {
+                pages[currentPage].scrollIntoView({ behavior: 'instant', block: 'start' });
+            }
         }
     }
     
@@ -1136,7 +1013,6 @@ jQuery(document).ready(function($) {
         if (currentPage < totalPages - 1) {
             currentPage++;
             updatePageDisplay();
-            scrollToPage(currentPage);
         }
     }
     
@@ -1147,22 +1023,13 @@ jQuery(document).ready(function($) {
         if (currentPage > 0) {
             currentPage--;
             updatePageDisplay();
-            scrollToPage(currentPage);
-        }
-    }
-    
-    // Scroll to specific page
-    function scrollToPage(pageIndex) {
-        const page = pages[pageIndex];
-        if (page && scrollContainer) {
-            const pageTop = page.offsetTop - 100;
-            scrollContainer.scrollTo({ top: pageTop, behavior: 'smooth' });
         }
     }
     
     // Track current page on scroll (Paged mode only)
     function trackCurrentPage() {
         if (readingMode === 'longstrip') return;
+        if (isScrolling) return;
         
         let closestPage = 0;
         let closestDistance = Infinity;
@@ -1188,14 +1055,11 @@ jQuery(document).ready(function($) {
     function longStripNextImage(clickedPage) {
         if (readingMode !== 'longstrip') return;
         
-        // Get all pages in order
         const allPages = Array.from(pages);
         const currentIndex = allPages.indexOf(clickedPage);
         
-        // Check if there's a next page
         if (currentIndex < allPages.length - 1) {
             const nextPage = allPages[currentIndex + 1];
-            // Smooth scroll to the next page
             nextPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }
@@ -1205,25 +1069,21 @@ jQuery(document).ready(function($) {
         readingMode = mode;
         
         if (mode === 'longstrip') {
-            // Show all pages
             pages.forEach(page => {
                 page.style.display = 'flex';
             });
-            
-            // Update scroll tracking for progress
             if (scrollContainer) {
                 scrollContainer.removeEventListener('scroll', trackCurrentPage);
                 scrollContainer.addEventListener('scroll', updateProgress);
             }
+            updatePageIndicatorVisibility();
         } else {
-            // Paged mode - show only current page
             updatePageDisplay();
-            
-            // Update scroll tracking
             if (scrollContainer) {
                 scrollContainer.removeEventListener('scroll', updateProgress);
                 scrollContainer.addEventListener('scroll', trackCurrentPage);
             }
+            updatePageIndicatorVisibility();
         }
         
         localStorage.setItem('readerReadingMode', mode);
@@ -1239,20 +1099,16 @@ jQuery(document).ready(function($) {
     // Set scale mode
     function setScaleMode(mode) {
         scaleMode = mode;
-        if (mode === 'auto') {
-            currentZoom = 1;
-        }
-        if (mode === '100') {
+        if (mode === 'auto' || mode === '100') {
             currentZoom = 1;
         }
         applyScale();
         localStorage.setItem('readerScaleMode', mode);
     }
     
-    // Zoom functions (only affect when scale mode is auto)
+    // Zoom functions
     function zoomIn() {
         if (scaleMode !== 'auto') {
-            // Switch to auto mode first
             setScaleMode('auto');
             document.querySelectorAll('[data-setting="scale"]').forEach(btn => {
                 btn.classList.remove('active');
@@ -1295,12 +1151,16 @@ jQuery(document).ready(function($) {
         });
     }
     
-    // Event Listeners
-    if (prevArrow) prevArrow.addEventListener('click', prevPage);
-    if (nextArrow) nextArrow.addEventListener('click', nextPage);
+    // Event Listeners - Only add if not on mobile
+    if (!isMobile()) {
+        if (prevArrow) prevArrow.addEventListener('click', prevPage);
+        if (nextArrow) nextArrow.addEventListener('click', nextPage);
+    }
     
     // Keyboard navigation
     document.addEventListener('keydown', function(e) {
+        if (isMobile()) return; // Disable keyboard navigation on mobile
+        
         if (readingMode !== 'longstrip') {
             if (e.key === 'ArrowLeft') {
                 prevPage();
@@ -1310,7 +1170,6 @@ jQuery(document).ready(function($) {
                 e.preventDefault();
             }
         } else {
-            // For long strip mode, arrow keys scroll
             if (e.key === 'ArrowDown' && scrollContainer) {
                 scrollContainer.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
                 e.preventDefault();
@@ -1376,36 +1235,54 @@ jQuery(document).ready(function($) {
         });
     }
     
-    // Zoom controls
-    if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
-    if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
-    if (resetZoomBtn) resetZoomBtn.addEventListener('click', resetZoom);
+    // Zoom controls - Only add if not on mobile
+    if (!isMobile()) {
+        if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
+        if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
+        if (resetZoomBtn) resetZoomBtn.addEventListener('click', resetZoom);
+    }
     
-    // Image click handling - WORKS FOR BOTH MODES
+    // IMAGE CLICK HANDLING - Works for both modes
     pages.forEach(page => {
         page.addEventListener('click', function(e) {
-            // Only advance in click navigation mode
+            // Only handle clicks when navMode is 'click'
             if (navMode === 'click') {
+                e.stopPropagation();
+                
                 if (readingMode === 'longstrip') {
                     // Long strip mode: scroll to next image
-                    longStripNextImage(this);
+                    const allPages = Array.from(pages);
+                    const currentIdx = allPages.indexOf(this);
+                    if (currentIdx < allPages.length - 1) {
+                        allPages[currentIdx + 1].scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }
                 } else {
                     // Paged mode: go to next page
-                    nextPage();
+                    if (currentPage < totalPages - 1) {
+                        currentPage++;
+                        updatePageDisplay();
+                    }
                 }
             }
         });
     });
     
-    // Scroll tracking
+    // Scroll tracking with debounce
     if (scrollContainer) {
         scrollContainer.addEventListener('scroll', function() {
             if (readingMode === 'longstrip') {
                 updateProgress();
             } else {
-                // Debounce for better performance
-                if (scrollTimeout) clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(trackCurrentPage, 100);
+                if (!isScrolling) {
+                    isScrolling = true;
+                    requestAnimationFrame(() => {
+                        trackCurrentPage();
+                        isScrolling = false;
+                    });
+                }
             }
         });
     }
@@ -1416,13 +1293,11 @@ jQuery(document).ready(function($) {
             const setting = this.dataset.setting;
             const value = this.dataset.value;
             
-            // Update active state
             document.querySelectorAll(`[data-setting="${setting}"]`).forEach(b => {
                 b.classList.remove('active');
             });
             this.classList.add('active');
             
-            // Apply setting
             switch(setting) {
                 case 'mode':
                     setReadingMode(value);
@@ -1432,15 +1307,6 @@ jQuery(document).ready(function($) {
                     break;
                 case 'scale':
                     setScaleMode(value);
-                    if (value === 'auto') {
-                        currentZoom = 1;
-                        applyScale();
-                    } else if (value === '100') {
-                        currentZoom = 1;
-                        applyScale();
-                    } else if (value === 'width') {
-                        applyScale();
-                    }
                     break;
                 case 'bg':
                     applyBackgroundMode(value);
@@ -1482,7 +1348,6 @@ jQuery(document).ready(function($) {
         applyScale();
     }
     
-    // Apply saved background mode or default to dark
     if (savedBgMode && savedBgMode !== 'dark') {
         applyBackgroundMode(savedBgMode);
         document.querySelector(`[data-setting="bg"][data-value="${savedBgMode}"]`)?.classList.add('active');
@@ -1501,6 +1366,51 @@ jQuery(document).ready(function($) {
     if (pages.length > 0) {
         updatePageDisplay();
     }
+    
+    // Handle window resize to adjust arrow visibility
+    window.addEventListener('resize', function() {
+        const mobile = isMobile();
+        if (mobile) {
+            // Remove event listeners if on mobile
+            if (prevArrow) {
+                prevArrow.removeEventListener('click', prevPage);
+            }
+            if (nextArrow) {
+                nextArrow.removeEventListener('click', nextPage);
+            }
+            if (zoomInBtn) {
+                zoomInBtn.removeEventListener('click', zoomIn);
+            }
+            if (zoomOutBtn) {
+                zoomOutBtn.removeEventListener('click', zoomOut);
+            }
+            if (resetZoomBtn) {
+                resetZoomBtn.removeEventListener('click', resetZoom);
+            }
+        } else {
+            // Re-add event listeners if not on mobile and not already added
+            if (prevArrow && !prevArrow.hasEventListener) {
+                prevArrow.addEventListener('click', prevPage);
+                prevArrow.hasEventListener = true;
+            }
+            if (nextArrow && !nextArrow.hasEventListener) {
+                nextArrow.addEventListener('click', nextPage);
+                nextArrow.hasEventListener = true;
+            }
+            if (zoomInBtn && !zoomInBtn.hasEventListener) {
+                zoomInBtn.addEventListener('click', zoomIn);
+                zoomInBtn.hasEventListener = true;
+            }
+            if (zoomOutBtn && !zoomOutBtn.hasEventListener) {
+                zoomOutBtn.addEventListener('click', zoomOut);
+                zoomOutBtn.hasEventListener = true;
+            }
+            if (resetZoomBtn && !resetZoomBtn.hasEventListener) {
+                resetZoomBtn.addEventListener('click', resetZoom);
+                resetZoomBtn.hasEventListener = true;
+            }
+        }
+    });
     
     // Hide body overflow
     document.body.style.overflow = 'hidden';
