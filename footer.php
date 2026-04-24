@@ -1,79 +1,100 @@
-<?php
-// Fetch mangas for the Start menu
-$manga_base_path = ABSPATH . 'manga/';
-$mangas = is_dir($manga_base_path) ? array_filter(glob($manga_base_path . '*'), 'is_dir') : [];
-
-// Get the server's timezone (optional, for reference)
-$timezone = wp_timezone_string();
-
-// Get server-side Pacific Time as a fallback
-date_default_timezone_set('America/Los_Angeles');
-$pacific_time = date('g:i A'); // e.g., "2:50 AM"
-?>
-
-<footer id="colophon" class="site-footer">
-    <div class="start-menu-wrapper">
-        <button class="start-button" data-start-button>Start</button>
-        <div class="start-menu" style="display: none;">
-            <ul>
-                <?php if (empty($mangas)) : ?>
-                    <li>No manga found</li>
-                <?php else : ?>
-                    <?php foreach ($mangas as $manga_path) : 
-                        $manga_name = basename($manga_path);
-                        $normalized_manga_name = manga_reader_normalize_name($manga_name);
-                    ?>
-                        <li>
-                            <a href="<?php echo esc_url(site_url('/manga/' . $normalized_manga_name)); ?>">
-                                <?php echo esc_html($manga_name); ?>
-                            </a>
-                        </li>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </ul>
         </div>
-    </div>
-    <div class="footer-content">
-        <span>Powered by MangaViewer. Theme Applied: Manga95 - A retro style mangaviewer</span>
-    </div>
-    <span id="current-time" class="current-time"><?php echo esc_html($pacific_time); ?></span>
-</footer><!-- #colophon -->
-</div><!-- #page -->
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About</h3>
+                    <p><?php bloginfo('description'); ?></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <?php
+                    wp_nav_menu(array(
+                        'theme_location' => 'footer',
+                        'menu_class' => 'footer-menu',
+                        'container' => false,
+                        'depth' => 1,
+                        'fallback_cb' => false
+                    ));
+                    ?>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Browse</h3>
+                    <ul>
+                        <li><a href="<?php echo get_post_type_archive_link('manga'); ?>">All Manga</a></li>
+                        <li><a href="<?php echo home_url('/'); ?>">Latest Chapters</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</div>
 
-<script type="text/javascript">
-    // Pass the server's timezone and Pacific timezone to JavaScript
-    const serverTimezone = <?php echo json_encode($timezone); ?>;
-    const pacificTimezone = 'America/Los_Angeles';
-
-    // Function to update the current time in Pacific Time
-    function updatePacificTime() {
-        const timeElement = document.getElementById('current-time');
-        if (!timeElement) {
-            console.error('Element #current-time not found');
-            return;
+<script>
+jQuery(document).ready(function($) {
+    // Mobile menu toggle
+    $('#mobileMenuToggle').on('click', function() {
+        $(this).toggleClass('active');
+        $('.main-nav').toggleClass('active');
+        $('body').toggleClass('menu-open');
+    });
+    
+    // Close menu when clicking on a link (mobile)
+    $('.main-nav a').on('click', function() {
+        if ($(window).width() <= 768) {
+            $('#mobileMenuToggle').removeClass('active');
+            $('.main-nav').removeClass('active');
+            $('body').removeClass('menu-open');
         }
-        const options = {
-            timeZone: pacificTimezone,
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        };
-        const formatter = new Intl.DateTimeFormat('en-US', options);
-        const timeString = formatter.format(new Date()); // e.g., "2:50 AM"
-        timeElement.textContent = timeString; // e.g., "2:50 AM"
-        console.log('Updated time:', timeString); // Debug log
+    });
+    
+    // Search modal functionality
+    $('#searchToggle').on('click', function() {
+        $('#searchModal').addClass('active');
+        $('body').css('overflow', 'hidden');
+        setTimeout(function() {
+            $('.search-input-modal').focus();
+        }, 100);
+    });
+    
+    $('#searchModalClose, .search-modal-overlay').on('click', function() {
+        $('#searchModal').removeClass('active');
+        $('body').css('overflow', '');
+    });
+    
+    // Close modal with ESC key
+    $(document).on('keydown', function(e) {
+        if (e.key === 'Escape' && $('#searchModal').hasClass('active')) {
+            $('#searchModal').removeClass('active');
+            $('body').css('overflow', '');
+        }
+    });
+    
+    // Mobile submenu toggle
+    if ($(window).width() <= 768) {
+        $('.primary-menu .menu-item-has-children > a').on('click', function(e) {
+            e.preventDefault();
+            $(this).parent().toggleClass('active');
+        });
     }
-
-    // Run on page load
-    try {
-        // Update time immediately and every minute (less frequent than seconds for performance)
-        updatePacificTime();
-        const intervalId = setInterval(updatePacificTime, 60000); // Update every minute
-        // Clean up interval on page unload
-        window.addEventListener('unload', () => clearInterval(intervalId));
-    } catch (error) {
-        console.error('Failed to initialize time update:', error);
-    }
+    
+    // Handle window resize
+    $(window).on('resize', function() {
+        if ($(window).width() > 768) {
+            $('.main-nav').removeClass('active');
+            $('#mobileMenuToggle').removeClass('active');
+            $('body').removeClass('menu-open');
+        }
+    });
+});
 </script>
 
 <?php wp_footer(); ?>

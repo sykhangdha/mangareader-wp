@@ -1,280 +1,399 @@
-<?php
-get_header();
+<?php get_header(); ?>
 
-// Define get_chapters_for_manga function for reusability
-function get_chapters_for_manga($manga_name) {
-    $base_path = ABSPATH . 'manga/';
-    $manga_name = manga_reader_denormalize_name(manga_reader_normalize_name($manga_name), $base_path);
-    $manga_path = $base_path . $manga_name;
-
-    $chapters = [];
-
-    // Fetch chapters from file system
-    if (is_dir($manga_path)) {
-        $chapter_dirs = array_filter(glob($manga_path . '/*'), 'is_dir');
-        foreach ($chapter_dirs as $chapter_dir) {
-            $chapter_name = basename($chapter_dir);
-            $chapters[] = [
-                'id' => 'fs-' . md5($chapter_name), // Pseudo-ID for file system chapters
-                'name' => $chapter_name,
-                'date' => date('Y-m-d', filemtime($chapter_dir)),
-                'source' => 'filesystem'
-            ];
-        }
-    }
-
-    // Fetch chapters from database (manga_chapter post type)
-    $args = [
-        'post_type' => 'manga_chapter',
-        'post_status' => 'publish',
-        'meta_query' => [
-            [
-                'key' => 'manga_name',
-                'value' => $manga_name,
-                'compare' => '=',
-            ],
-        ],
-        'posts_per_page' => -1,
-    ];
-    $query = new WP_Query($args);
-    while ($query->have_posts()) {
-        $query->the_post();
-        $chapters[] = [
-            'id' => get_the_ID(),
-            'name' => get_the_title(),
-            'date' => get_the_date('Y-m-d'),
-            'source' => 'database'
-        ];
-    }
-    wp_reset_postdata();
-
-    // Sort chapters by volume and chapter number
-    usort($chapters, function ($a, $b) {
-        $parse = function ($name) {
-            $vol = 0;
-            $ch = 0;
-            if (preg_match('/Vol\.?\s*(\d+(?:\.\d+)?)/i', $name, $volMatch)) {
-                $vol = floatval($volMatch[1]);
-            }
-            if (preg_match('/Ch\.?\s*(\d+(?:\.\d+)?)/i', $name, $chMatch)) {
-                $ch = floatval($chMatch[1]);
-            }
-            return [$vol, $ch];
-        };
-
-        [$volA, $chA] = $parse($a['name']);
-        [$volB, $chB] = $parse($b['name']);
-
-        return ($volB <=> $volA) ?: ($chB <=> $chA);
-    });
-
-    return $chapters;
-}
-?>
-
-<!-- Announcement Section -->
-<div class="announcement-section">
-    <div class="announcement-titlebar">Announcement</div>
-    <div class="announcement-content">
-        <div class="announcement-image">
-            <?php
-            $announcement_image = get_option('announcement_image');
-            if ($announcement_image) :
-            ?>
-                <img src="<?php echo esc_url($announcement_image); ?>" alt="Announcement Image" class="announcement-image-flip">
-            <?php else : ?>
-                <img src="https://via.placeholder.com/200x200?text=No+Image" alt="No Announcement Image" class="announcement-image-flip">
-            <?php endif; ?>
+<div class="homepage-content">
+    <!-- Featured Manga Section -->
+    <div class="featured-section">
+        <div class="featured-header">
+            <h2>Popular New Titles</h2>
+            <div class="featured-nav">
+                <button class="featured-prev" id="featuredPrev">◀</button>
+                <button class="featured-next" id="featuredNext">▶</button>
+            </div>
         </div>
-        <div class="announcement-text">
-            <?php
-            $announcement_title = get_option('announcement_title', 'Welcome to the new and improved site!');
-            $announcement_text  = get_option('announcement_text', 'Monthly chapter resets happen at the start of each month. Only the 3 latest chapters will be available at first.');
-            ?>
-            <h2><?php echo esc_html($announcement_title); ?></h2>
-            <p><?php echo esc_html($announcement_text); ?></p>
+        
+        <div class="featured-container">
+            <div class="featured-slider" id="featuredSlider">
+                <?php
+                // Get popular manga
+                $popular_manga = get_posts(array(
+                    'post_type' => 'manga',
+                    'posts_per_page' => 5,
+                    'orderby' => 'comment_count',
+                    'order' => 'DESC'
+                ));
+                
+                if (empty($popular_manga)) {
+                    $popular_manga = get_posts(array(
+                        'post_type' => 'manga',
+                        'posts_per_page' => 5,
+                        'orderby' => 'date',
+                        'order' => 'DESC'
+                    ));
+                }
+                
+                foreach ($popular_manga as $index => $manga):
+                    $manga_id = $manga->ID;
+                    $manga_title = get_the_title($manga_id);
+                    $manga_cover = has_post_thumbnail($manga_id) ? get_the_post_thumbnail_url($manga_id, 'medium') : 'https://via.placeholder.com/200x280?text=No+Cover';
+                    
+                    // Get genres
+                    $genres = wp_get_post_terms($manga_id, 'genre');
+                    $primary_genre = !empty($genres) ? strtoupper($genres[0]->name) : 'MANGA';
+                    $all_genres = array();
+                    foreach ($genres as $genre) {
+                        $all_genres[] = $genre->name;
+                    }
+                    
+                    // Get description
+                    $description = $manga->post_excerpt ?: wp_trim_words($manga->post_content, 60, '...');
+                    
+                    // Get chapter count
+                    $chapters = get_posts(array(
+                        'post_type' => 'chapter',
+                        'meta_key' => 'connected_manga_id',
+                        'meta_value' => $manga_id,
+                        'post_status' => 'publish',
+                        'posts_per_page' => -1,
+                        'orderby' => 'date',
+                        'order' => 'DESC'
+                    ));
+                    $chapter_count = count($chapters);
+                    $latest_chapter = !empty($chapters) ? $chapters[0] : null;
+                    
+                    // Get formatted latest chapter display
+                    $latest_display = '';
+                    if ($latest_chapter) {
+                        $vol_num = get_post_meta($latest_chapter->ID, 'volume_number', true);
+                        $chap_num = get_post_meta($latest_chapter->ID, 'chapter_number', true);
+                        if ($vol_num) {
+                            $latest_display = "Vol. {$vol_num} Ch. {$chap_num}";
+                        } else {
+                            $latest_display = "Ch. {$chap_num}";
+                        }
+                    }
+                    ?>
+                    <div class="featured-item">
+                        <div class="featured-cover">
+                            <img src="<?php echo esc_url($manga_cover); ?>" alt="<?php echo esc_attr($manga_title); ?>">
+                            <div class="featured-overlay">
+                                <a href="<?php echo get_permalink($manga_id); ?>" class="featured-btn">View Details</a>
+                            </div>
+                        </div>
+                        <div class="featured-info">
+                            <h3 class="featured-title"><?php echo esc_html($manga_title); ?></h3>
+                            <div class="featured-genre"><?php echo esc_html($primary_genre); ?></div>
+                            <div class="featured-stats">
+                                <span>★ <?php echo $chapter_count; ?> Chapters</span>
+                            </div>
+                            <p class="featured-description"><?php echo esc_html($description); ?></p>
+                            <?php if (!empty($all_genres)): ?>
+                                <div class="featured-tags">
+                                    <?php foreach (array_slice($all_genres, 0, 3) as $genre): ?>
+                                        <span class="featured-tag"><?php echo esc_html($genre); ?></span>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="featured-footer">
+                                <span class="featured-chapter"><?php echo $latest_display ?: 'Coming Soon'; ?></span>
+                                <a href="<?php echo $latest_chapter ? get_permalink($latest_chapter->ID) : get_permalink($manga_id); ?>" class="featured-read">Read →</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
+        
+        <!-- Slider Indicators -->
+        <div class="featured-dots" id="featuredDots"></div>
     </div>
-    <div class="announcement-statusbar">
-        <button id="select-theme-button" class="theme-selector">Select Theme</button>
+
+    <div class="content-wrapper">
+        <div class="main-content">
+            <div class="section-header">
+                <h2>Latest Updates</h2>
+                <div class="sort-options">
+                    <button class="sort-btn active" data-sort="recent">Recently Updated</button>
+                    <button class="sort-btn" data-sort="alphabetical">A-Z</button>
+                </div>
+            </div>
+            
+            <div id="manga-container">
+                <?php
+                $manga_query = new WP_Query(array(
+                    'post_type' => 'manga',
+                    'posts_per_page' => -1,
+                    'orderby' => 'modified',
+                    'order' => 'DESC'
+                ));
+                
+                if ($manga_query->have_posts()) :
+                    echo '<div class="manga-grid">';
+                    while ($manga_query->have_posts()) : $manga_query->the_post();
+                        $manga_id = get_the_ID();
+                        $manga_title = get_the_title();
+                        $manga_cover = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'manga-cover-small') : 'https://via.placeholder.com/180x252?text=No+Cover';
+                        
+                        // Get chapters sorted by volume and chapter number
+                        $all_chapters = get_sorted_chapters_for_manga($manga_id);
+                        $recent_chapters = array_slice($all_chapters, 0, 3);
+                        ?>
+                        <div class="manga-item">
+                            <div class="manga-item-cover">
+                                <a href="<?php the_permalink(); ?>">
+                                    <img src="<?php echo esc_url($manga_cover); ?>" alt="<?php echo esc_attr($manga_title); ?>">
+                                    <div class="manga-item-overlay">
+                                        <span class="view-details">View Details</span>
+                                    </div>
+                                </a>
+                                <?php if (!empty($recent_chapters)): 
+                                    $latest = $recent_chapters[0];
+                                    $vol_num = get_post_meta($latest->ID, 'volume_number', true);
+                                    $chap_num = get_post_meta($latest->ID, 'chapter_number', true);
+                                    $badge_text = $vol_num ? "Vol. {$vol_num} Ch. {$chap_num}" : "Ch. {$chap_num}";
+                                ?>
+                                    <div class="latest-chapter-badge">
+                                        <?php echo esc_html($badge_text); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="manga-item-info">
+                                <h3 class="manga-item-title">
+                                    <a href="<?php the_permalink(); ?>"><?php echo esc_html($manga_title); ?></a>
+                                </h3>
+                                <?php if (!empty($recent_chapters)) : ?>
+                                    <div class="manga-item-chapters">
+                                        <?php foreach ($recent_chapters as $chapter) : 
+                                            $vol_num = get_post_meta($chapter->ID, 'volume_number', true);
+                                            $chap_num = get_post_meta($chapter->ID, 'chapter_number', true);
+                                            $display_text = $vol_num ? "Vol. {$vol_num} Ch. {$chap_num}" : "Ch. {$chap_num}";
+                                            $chapter_date = get_the_date('M j, Y', $chapter->ID);
+                                        ?>
+                                            <a href="<?php echo get_permalink($chapter->ID); ?>" class="chapter-link">
+                                                <span class="chapter-num"><?php echo esc_html($display_text); ?></span>
+                                                <span class="chapter-date"><?php echo esc_html($chapter_date); ?></span>
+                                            </a>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php else : ?>
+                                    <div class="no-chapters">No chapters yet</div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php
+                    endwhile;
+                    echo '</div>';
+                    wp_reset_postdata();
+                else :
+                    echo '<p class="no-results">No manga found. Create your first manga series!</p>';
+                endif;
+                ?>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="widget">
+                <h3>Popular Genres</h3>
+                <div class="genre-list">
+                    <?php
+                    $genres = get_terms(array(
+                        'taxonomy' => 'genre',
+                        'hide_empty' => true,
+                        'number' => 10
+                    ));
+                    if (!empty($genres) && !is_wp_error($genres)) {
+                        foreach ($genres as $genre) {
+                            echo '<a href="' . get_term_link($genre) . '" class="genre-item" data-genre="' . esc_attr($genre->slug) . '">' . esc_html($genre->name) . '</a>';
+                        }
+                    } else {
+                        echo '<p>No genres found.</p>';
+                    }
+                    ?>
+                </div>
+            </div>
+            
+            <div class="widget">
+                <h3>Reading Status</h3>
+                <div class="status-list" id="statusList">
+                    <?php
+                    $statuses = get_terms(array(
+                        'taxonomy' => 'manga_status',
+                        'hide_empty' => false
+                    ));
+                    if (!empty($statuses) && !is_wp_error($statuses)) {
+                        echo '<div class="status-filter active" data-status="all">All</div>';
+                        foreach ($statuses as $status) {
+                            $count = $status->count;
+                            echo '<div class="status-filter" data-status="' . esc_attr($status->slug) . '">';
+                            echo '<span class="status-name">' . esc_html($status->name) . '</span>';
+                            echo '<span class="status-count">' . $count . '</span>';
+                            echo '</div>';
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Theme Selection Script -->
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Ensure jQuery is available (already enqueued in functions.php)
-    jQuery(function($) {
-        // Hardcoded themes for simplicity (can be fetched via AJAX if needed)
-        const themes = ['default', 'manga95']; // Adjust based on available themes in /themes/
-
-        // Handle click on Select Theme button
-        $('#select-theme-button').on('click', function() {
-            // Prevent multiple dialogs
-            if ($('#theme-selector-dialog').length) return;
-
-            // Create dialog HTML
-            let selectHtml = '<div id="theme-selector-dialog" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(40,40,40,0.9); padding:20px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.3); z-index:1000; color:#e5e5e5; font-family:Arial,sans-serif;">';
-            selectHtml += '<h3 style="margin:0 0 15px; font-size:16pt;">Select Theme</h3>';
-            selectHtml += '<select id="theme-select" style="width:100%; padding:8px; border-radius:4px; background:#333; color:#e5e5e5; border:1px solid #555;">';
-            themes.forEach(theme => {
-                selectHtml += `<option value="${theme}">${theme.charAt(0).toUpperCase() + theme.slice(1)}</option>`;
-            });
-            selectHtml += '</select>';
-            selectHtml += '<div style="margin-top:15px; text-align:right;">';
-            selectHtml += '<button id="theme-save" style="background:#0078d4; color:#fff; padding:8px 16px; border:none; border-radius:4px; cursor:pointer; margin-right:10px;">Apply</button>';
-            selectHtml += '<button id="theme-cancel" style="background:#555; color:#fff; padding:8px 16px; border:none; border-radius:4px; cursor:pointer;">Cancel</button>';
-            selectHtml += '</div></div>';
-
-            $('body').append(selectHtml);
-
-            // Handle Apply button
-            $('#theme-save').on('click', function() {
-                const selectedTheme = $('#theme-select').val();
-                $.ajax({
-                    url: mangaAjax.ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'manga_reader_change_user_theme',
-                        theme: selectedTheme,
-                        nonce: mangaAjax.theme_nonce
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#theme-selector-dialog').remove();
-                            alert('Theme changed successfully! Reloading...');
-                            location.reload();
-                        } else {
-                            alert('Error: ' + (response.data.message || 'Failed to change theme.'));
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred while changing the theme.');
-                    }
-                });
-            });
-
-            // Handle Cancel button
-            $('#theme-cancel').on('click', function() {
-                $('#theme-selector-dialog').remove();
-            });
-        });
-
-        // Optional: Add hover effects for Fluent Design
-        $('#select-theme-button').hover(
-            function() {
-                $(this).css({
-                    'background-color': '#0078d4',
-                    'transform': 'scale(1.05)'
-                });
+jQuery(document).ready(function($) {
+    // Featured Slider
+    var currentSlide = 0;
+    var totalSlides = $('.featured-item').length;
+    
+    function updateSlider() {
+        var newTransform = -currentSlide * 100 + '%';
+        $('.featured-slider').css('transform', 'translateX(' + newTransform + ')');
+        
+        $('.featured-dot').removeClass('active');
+        $('.featured-dot[data-slide="' + currentSlide + '"]').addClass('active');
+    }
+    
+    function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            updateSlider();
+        } else {
+            currentSlide = 0;
+            updateSlider();
+        }
+    }
+    
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlider();
+        } else {
+            currentSlide = totalSlides - 1;
+            updateSlider();
+        }
+    }
+    
+    // Create dots
+    for (var i = 0; i < totalSlides; i++) {
+        var dotClass = i === 0 ? 'featured-dot active' : 'featured-dot';
+        $('#featuredDots').append('<div class="' + dotClass + '" data-slide="' + i + '"></div>');
+    }
+    
+    $('#featuredNext').on('click', nextSlide);
+    $('#featuredPrev').on('click', prevSlide);
+    
+    $(document).on('click', '.featured-dot', function() {
+        currentSlide = parseInt($(this).data('slide'));
+        updateSlider();
+    });
+    
+    // Auto-play
+    var autoPlay = setInterval(nextSlide, 6000);
+    $('.featured-section').hover(function() {
+        clearInterval(autoPlay);
+    }, function() {
+        autoPlay = setInterval(nextSlide, 6000);
+    });
+    
+    // Status Filter Functionality
+    var currentStatus = 'all';
+    
+    function filterByStatus(status) {
+        currentStatus = status;
+        
+        // Update active class on status filters
+        $('.status-filter').removeClass('active');
+        $('.status-filter[data-status="' + status + '"]').addClass('active');
+        
+        $.ajax({
+            url: '<?php echo admin_url('admin-ajax.php'); ?>',
+            type: 'POST',
+            data: {
+                action: 'filter_manga_by_status',
+                status: status,
+                nonce: '<?php echo wp_create_nonce("manga_status_filter_nonce"); ?>'
             },
-            function() {
-                $(this).css({
-                    'background-color': 'rgba(40, 40, 40, 0.9)',
-                    'transform': 'scale(1)'
-                });
+            beforeSend: function() {
+                $('#manga-container').html('<div class="loading-container"><div class="spinner"></div></div>');
+            },
+            success: function(response) {
+                $('#manga-container').html(response);
+                // Add clear filter indicator if not showing all
+                if (status !== 'all') {
+                    var statusName = $('.status-filter[data-status="' + status + '"] .status-name').text();
+                    $('#manga-container').prepend('<div class="filter-active-badge">Showing: ' + statusName + ' <button class="clear-filter-btn" id="clearFilter">✕ Clear</button></div>');
+                    
+                    $('#clearFilter').on('click', function() {
+                        filterByStatus('all');
+                    });
+                }
+            },
+            error: function() {
+                $('#manga-container').html('<p class="no-results">Error loading manga. Please refresh the page.</p>');
             }
-        );
+        });
+    }
+    
+    $('.status-filter').click(function() {
+        var status = $(this).data('status');
+        filterByStatus(status);
+    });
+    
+    // Genre Filter Functionality
+    $('.genre-item').click(function(e) {
+        e.preventDefault();
+        var genreSlug = $(this).data('genre');
+        
+        $.ajax({
+            url: '<?php echo admin_url('admin-ajax.php'); ?>',
+            type: 'POST',
+            data: {
+                action: 'filter_manga_by_genre',
+                genre: genreSlug,
+                nonce: '<?php echo wp_create_nonce("manga_genre_filter_nonce"); ?>'
+            },
+            beforeSend: function() {
+                $('#manga-container').html('<div class="loading-container"><div class="spinner"></div></div>');
+            },
+            success: function(response) {
+                $('#manga-container').html(response);
+                var genreName = $(this).text();
+                $('#manga-container').prepend('<div class="filter-active-badge">Showing: ' + genreName + ' <button class="clear-filter-btn" id="clearGenreFilter">✕ Clear</button></div>');
+                
+                $('#clearGenreFilter').on('click', function() {
+                    location.reload();
+                });
+            }.bind(this),
+            error: function() {
+                $('#manga-container').html('<p class="no-results">Error loading manga. Please refresh the page.</p>');
+            }
+        });
+    });
+    
+    $('.sort-btn').click(function() {
+        $('.sort-btn').removeClass('active');
+        $(this).addClass('active');
+        
+        var sortBy = $(this).data('sort');
+        
+        $.ajax({
+            url: '<?php echo admin_url('admin-ajax.php'); ?>',
+            type: 'POST',
+            data: {
+                action: 'filter_manga_home',
+                sort_by: sortBy,
+                nonce: '<?php echo wp_create_nonce("manga_home_filter_nonce"); ?>'
+            },
+            beforeSend: function() {
+                $('#manga-container').html('<div class="loading-container"><div class="spinner"></div></div>');
+            },
+            success: function(response) {
+                $('#manga-container').html(response);
+            },
+            error: function() {
+                $('#manga-container').html('<p class="no-results">Error loading manga. Please refresh the page.</p>');
+            }
+        });
     });
 });
 </script>
-
-<!-- Manga Library -->
-<div class="container">
-    <h1>Library</h1>
-    <div class="manga-grid">
-        <?php
-        $manga_base_path = ABSPATH . 'manga/';
-        if (!is_dir($manga_base_path)) {
-            echo '<p>Manga directory not found. Please ensure the /manga/ directory exists in your WordPress root.</p>';
-        } else {
-            $mangas = array_filter(glob($manga_base_path . '*'), 'is_dir');
-
-            if (empty($mangas)) {
-                echo '<p>No manga found in the /manga/ directory.</p>';
-            } else {
-                // Preload cover images
-                ?>
-                <script>
-                    (function() {
-                        const images = [
-                            <?php
-                            foreach ($mangas as $manga_path) {
-                                $manga_name = basename($manga_path);
-                                $cover_path = $manga_path . '/cover.jpg';
-                                $cover_url = file_exists($cover_path)
-                                    ? site_url('/manga/' . rawurlencode($manga_name) . '/cover.jpg')
-                                    : 'https://via.placeholder.com/200x300?text=No+Cover';
-                                echo "'" . esc_url($cover_url) . "',";
-                            }
-                            ?>
-                        ];
-                        images.forEach(url => {
-                            const img = new Image();
-                            img.src = url;
-                        });
-                    })();
-                </script>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        document.querySelectorAll('.manga-cover-wrapper img').forEach(img => {
-                            if (img.complete && img.naturalWidth !== 0) {
-                                img.parentNode.querySelector('.manga-spinner').style.display = 'none';
-                            } else {
-                                img.addEventListener('load', function() {
-                                    this.parentNode.querySelector('.manga-spinner').style.display = 'none';
-                                });
-                                img.addEventListener('error', function() {
-                                    this.parentNode.querySelector('.manga-spinner').style.display = 'none';
-                                });
-                            }
-                        });
-                    });
-                </script>
-                <?php
-
-                foreach ($mangas as $manga_path) {
-                    $manga_name            = basename($manga_path);
-                    $normalized_manga_name = manga_reader_normalize_name($manga_name);
-                    $cover_path            = $manga_path . '/cover.jpg';
-                    $cover_url             = site_url('/manga/' . rawurlencode($manga_name) . '/cover.jpg');
-                    $cover_image           = file_exists($cover_path)
-                        ? $cover_url
-                        : 'https://via.placeholder.com/200x300?text=No+Cover';
-
-                    // Fetch chapters using the new function
-                    $all_chapters = get_chapters_for_manga($manga_name);
-
-                    $latest_chapter = 'No chapters found';
-                    $chapter_date   = 'Unknown';
-
-                    if (!empty($all_chapters)) {
-                        // Latest chapter is already sorted by the function (highest vol/ch)
-                        $latest = $all_chapters[0];
-                        $latest_chapter = $latest['name'];
-                        $chapter_date   = $latest['date'];
-                    }
-                    ?>
-                    <div class="manga-item">
-                        <div class="manga-item-titlebar"><?php echo esc_html($manga_name); ?></div>
-                        <div class="manga-item-content">
-                            <a href="<?php echo esc_url(site_url('/manga/' . $normalized_manga_name)); ?>">
-                                <div class="manga-cover-wrapper">
-                                    <img src="<?php echo esc_url($cover_image); ?>" alt="<?php echo esc_attr($manga_name); ?> Cover">
-                                    <div class="manga-spinner"></div>
-                                </div>
-                                <h3><?php echo esc_html($manga_name); ?></h3>
-                                <p>Latest: <?php echo esc_html($latest_chapter); ?></p>
-                                <p>Updated: <?php echo esc_html($chapter_date); ?></p>
-                            </a>
-                        </div>
-                    </div>
-                    <?php
-                }
-            }
-        }
-        ?>
-    </div>
-</div>
 
 <?php get_footer(); ?>

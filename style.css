@@ -1,899 +1,2319 @@
 /*
-Theme Name: MangaViewer - Fluent version
-Author: HaSky
-Version: 1.0
+Theme Name: Manga Reader Theme
+Theme URI: https://your-site.com
+Author: Ha Sky
+Author URI: https://hasky.rf.gd
+Description: A complete manga reading theme with Windows 11 Fluent Design and Mica effect
+Version: 6.2
+License: GPL v2 or later
+Text Domain: manga-theme
 */
 
-/* Reset & Base */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ============================================
+   CSS RESET & BASE VARIABLES - Windows 11 Fluent Design
+   ============================================ */
+:root {
+    /* Windows 11 Colors */
+    --primary: #0078d4;
+    --primary-dark: #106ebe;
+    --primary-light: #3b9eff;
+    --primary-bg: #deecf9;
+    --accent: #0078d4;
+    --accent-hover: #106ebe;
+    
+    /* Mica Effect Colors - Light Mode */
+    --mica-bg: rgba(243, 242, 241, 0.85);
+    --mica-overlay: rgba(255, 255, 255, 0.5);
+    --surface: rgba(255, 255, 255, 0.7);
+    --surface-alt: rgba(255, 255, 255, 0.5);
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(0, 0, 0, 0.08);
+    
+    /* Text Colors */
+    --text: #202020;
+    --text-light: #605e5c;
+    --text-disabled: #a19f9d;
+    --white: #ffffff;
+    
+    /* Shadows - Windows 11 Style */
+    --shadow-sm: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+    --shadow-md: 0 3.2px 7.2px 0 rgba(0, 0, 0, 0.132), 0 0.6px 1.8px 0 rgba(0, 0, 0, 0.108);
+    --shadow-lg: 0 6.4px 14.4px 0 rgba(0, 0, 0, 0.132), 0 1.2px 3.6px 0 rgba(0, 0, 0, 0.108);
+    --shadow-xl: 0 12.8px 28.8px 0 rgba(0, 0, 0, 0.132), 0 2.4px 7.2px 0 rgba(0, 0, 0, 0.108);
+    
+    /* Radius - Windows 11 Style */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    
+    /* Transitions */
+    --transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    
+    /* Backdrop Blur */
+    --blur-amount: 24px;
 }
 
-html, body, body.site, body.home {
-  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
-  background-color: rgba(32, 32, 32, 0.8) !important; /* Windows 11 dark Mica */
-  color: rgb(255, 255, 255);
-  font-size: 10pt;
-  line-height: 1.4;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  backdrop-filter: blur(20px);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    font-family: 'Segoe UI', 'Segoe UI Variable', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.5;
+    color: var(--text);
+    background: #f3f2f1;
+    transition: background 0.3s, color 0.3s;
+    position: relative;
+}
 
-/* Links */
+/* Mica Background Effect - Light Mode */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.03"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="%230078d4" stroke-width="0.5"/><circle cx="50" cy="50" r="30" fill="none" stroke="%230078d4" stroke-width="0.5"/><path d="M20,50 L80,50 M50,20 L50,80" stroke="%230078d4" stroke-width="0.5" opacity="0.5"/></svg>');
+    background-repeat: repeat;
+    background-size: 30px 30px;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at 20% 30%, rgba(0, 120, 212, 0.03), transparent 50%);
+    backdrop-filter: blur(0px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ============================================
+   TYPOGRAPHY - Windows 11 Style
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+
 a {
-  color: rgb(0, 120, 212); /* Windows 11 accent */
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
 }
 
-a:hover,
-a:focus {
-  color: rgb(0, 94, 162); /* Accent hover */
-  text-decoration: underline;
-  outline: none;
+img {
+    max-width: 100%;
+    height: auto;
 }
 
-/* Manga Grid */
+/* ============================================
+   DARK MODE - Windows 11 Dark Theme with Mica
+   ============================================ */
+body.dark-mode {
+    --mica-bg: rgba(32, 32, 32, 0.85);
+    --mica-overlay: rgba(0, 0, 0, 0.3);
+    --surface: rgba(32, 32, 32, 0.7);
+    --surface-alt: rgba(32, 32, 32, 0.5);
+    --card-bg: rgba(32, 32, 32, 0.85);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text: #ffffff;
+    --text-light: #d0d0d0;
+    --text-disabled: #808080;
+    background: #1c1c1c;
+}
+
+body.dark-mode::before {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.02"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="%230078d4" stroke-width="0.5"/><circle cx="50" cy="50" r="30" fill="none" stroke="%230078d4" stroke-width="0.5"/><path d="M20,50 L80,50 M50,20 L50,80" stroke="%230078d4" stroke-width="0.5" opacity="0.3"/></svg>');
+}
+
+body.dark-mode .site-header,
+body.dark-mode .main-nav {
+    background: rgba(32, 32, 32, 0.85);
+    backdrop-filter: blur(var(--blur-amount));
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .manga-item,
+body.dark-mode .widget,
+body.dark-mode .alphabet-filter,
+body.dark-mode .single-manga .manga-header,
+body.dark-mode .single-manga .chapters-section,
+body.dark-mode .chapter-reader,
+body.dark-mode .featured-section,
+body.dark-mode .pagination a,
+body.dark-mode .pagination span,
+body.dark-mode .sort-btn,
+body.dark-mode .goto-page-container,
+body.dark-mode .settings-panel,
+body.dark-mode .chapter-card-link {
+    background: rgba(32, 32, 32, 0.7);
+    backdrop-filter: blur(var(--blur-amount));
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .search-modal-content,
+body.dark-mode .settings-panel {
+    background: rgba(32, 32, 32, 0.9);
+}
+
+/* ============================================
+   SEPIA MODE
+   ============================================ */
+body.sepia-mode {
+    --mica-bg: rgba(250, 240, 225, 0.85);
+    --surface: rgba(250, 240, 225, 0.7);
+    --card-bg: rgba(250, 240, 225, 0.85);
+    --text: #5b4636;
+    --text-light: #8b7355;
+    background: #f4ecd8;
+}
+
+body.sepia-mode .site-header,
+body.sepia-mode .main-nav {
+    background: rgba(74, 55, 41, 0.9);
+}
+
+body.sepia-mode .manga-item,
+body.sepia-mode .widget,
+body.sepia-mode .alphabet-filter,
+body.sepia-mode .single-manga .manga-header,
+body.sepia-mode .single-manga .chapters-section,
+body.sepia-mode .chapter-reader,
+body.sepia-mode .featured-section {
+    background: rgba(250, 240, 225, 0.8);
+}
+
+/* ============================================
+   HEADER - Windows 11 Style
+   ============================================ */
+.site-header {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(var(--blur-amount));
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--card-border);
+    transition: var(--transition);
+}
+
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-title {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.site-title a {
+    color: var(--text);
+    transition: var(--transition);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.site-description {
+    color: var(--text-light);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Header Actions */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Animated Dark Mode Toggle */
+.dark-mode-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    width: 48px;
+    height: 28px;
+    position: relative;
+    transition: var(--transition);
+}
+
+.toggle-track {
+    width: 48px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 34px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    backdrop-filter: blur(2px);
+}
+
+body.dark-mode .toggle-track {
+    background: rgba(0, 120, 212, 0.3);
+}
+
+.toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+body.dark-mode .toggle-thumb {
+    transform: translateX(20px);
+    background: var(--primary);
+}
+
+.toggle-thumb svg {
+    position: absolute;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.sun-icon {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    color: #f59e0b;
+}
+
+.moon-icon {
+    opacity: 0;
+    transform: scale(0.5) rotate(-90deg);
+    color: white;
+}
+
+body.dark-mode .sun-icon {
+    opacity: 0;
+    transform: scale(0.5) rotate(90deg);
+}
+
+body.dark-mode .moon-icon {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+.dark-mode-toggle:hover .toggle-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .dark-mode-toggle:hover .toggle-track {
+    background: rgba(0, 120, 212, 0.4);
+}
+
+.dark-mode-toggle:hover .toggle-thumb {
+    transform: scale(1.05);
+}
+
+body.dark-mode .dark-mode-toggle:hover .toggle-thumb {
+    transform: translateX(20px) scale(1.05);
+}
+
+/* Search Toggle */
+.search-toggle {
+    background: rgba(0, 0, 0, 0.04);
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-toggle:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: scale(1.02);
+}
+
+.search-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: rgba(0, 0, 0, 0.04);
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-menu-toggle span {
+    width: 18px;
+    height: 2px;
+    background: var(--text);
+    transition: var(--transition);
+    border-radius: 2px;
+}
+
+/* ============================================
+   NAVIGATION - Windows 11 Style
+   ============================================ */
+.main-nav {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(var(--blur-amount));
+    position: sticky;
+    top: 61px;
+    z-index: 999;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.primary-menu {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    padding: 0;
+    margin: 0;
+}
+
+.primary-menu li {
+    position: relative;
+}
+
+.primary-menu a {
+    color: var(--text);
+    padding: 12px 0;
+    display: inline-block;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    opacity: 0.8;
+    transition: var(--transition);
+}
+
+.primary-menu a:hover {
+    opacity: 1;
+    color: var(--primary);
+}
+
+/* Dropdown */
+.primary-menu .sub-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--surface);
+    backdrop-filter: blur(var(--blur-amount));
+    min-width: 200px;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: var(--transition);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--card-border);
+    z-index: 100;
+    list-style: none;
+}
+
+.primary-menu li:hover > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.primary-menu .sub-menu a {
+    padding: 8px 16px;
+    display: block;
+    font-size: 13px;
+}
+
+/* ============================================
+   SEARCH MODAL - Windows 11 Style
+   ============================================ */
+.search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-modal.active {
+    display: flex;
+}
+
+.search-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+}
+
+.search-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 520px;
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    z-index: 2001;
+    animation: modalSlideIn 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-xl);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.search-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 20px;
+    transition: var(--transition);
+    color: var(--text);
+}
+
+.search-modal-close:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.search-modal-content h3 {
+    margin-bottom: 24px;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.search-form-modal {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input-modal {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    transition: var(--transition);
+    background: var(--surface);
+    color: var(--text);
+}
+
+.search-input-modal:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+}
+
+.search-button-modal {
+    padding: 12px 24px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.search-button-modal:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.search-suggestions p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 12px;
+}
+
+.popular-manga-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.popular-manga-list a {
+    background: var(--surface);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    transition: var(--transition);
+    border: 1px solid var(--card-border);
+}
+
+.popular-manga-list a:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* ============================================
+   HERO SECTION - Windows 11 Style
+   ============================================ */
+.hero-section {
+    background: linear-gradient(135deg, rgba(0, 120, 212, 0.05) 0%, rgba(0, 120, 212, 0.02) 100%);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    margin: 32px 0 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(var(--blur-amount));
+    border: 1px solid var(--card-border);
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(0, 120, 212, 0.1), transparent 70%);
+    border-radius: 50%;
+}
+
+.hero-content h1 {
+    font-size: 38px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: 18px;
+    opacity: 0.8;
+    margin-bottom: 32px;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.stat-label {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* ============================================
+   SECTION HEADER
+   ============================================ */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.section-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+/* ============================================
+   MANGA GRID - Windows 11 Cards
+   ============================================ */
 .manga-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 10px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+    margin: 24px 0;
 }
 
 .manga-item {
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 360px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  user-select: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.manga-item:hover,
-.manga-item:focus-within {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  outline: none;
-}
-
-.manga-item-titlebar {
-  background: rgb(0, 120, 212); /* Windows 11 accent */
-  color: rgb(255, 255, 255);
-  padding: 4px 8px;
-  font-size: 9pt;
-  font-weight: bold;
-  text-align: center;
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: 1.3;
-}
-
-.manga-item-content {
-  flex: 1;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  overflow: hidden;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  border-radius: 0 0 8px 8px;
-}
-
-.manga-item-content a {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  color: rgb(255, 255, 255);
-  text-decoration: none;
-}
-
-.manga-cover-wrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  margin-bottom: 10px;
-  overflow: hidden;
-}
-
-.manga-cover-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  border: none;
-  border-radius: 4px;
-  transition: transform 0.2s ease;
-}
-
-.manga-cover-wrapper img:hover {
-  transform: scale(1.05);
-}
-
-.manga-spinner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  border-top-color: rgb(0, 120, 212);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-}
-
-.manga-item-content h3 {
-  font-size: 10pt;
-  margin: 0 0 8px;
-  font-weight: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: 1.3;
-  color: rgb(255, 255, 255);
-}
-
-.manga-item-content p {
-  font-size: 10pt;
-  color: rgb(200, 200, 200); /* Secondary text */
-  margin: 2px 0;
-  flex: 0 0 auto;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Header (Windows 11 Fluent Style) */
-.site-header {
-  background: rgba(32, 32, 32, 0.8); /* Mica */
-  padding: 4px 6px;
-  border: none;
-  border-radius: 8px;
-  user-select: none;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.site-header .site-title {
-  font-size: 12pt;
-  font-weight: 600;
-  color: rgb(255, 255, 255);
-  line-height: 1;
-}
-
-.site-header .header-close {
-  background-color: transparent;
-  color: rgb(255, 255, 255);
-  width: 18px;
-  height: 18px;
-  padding: 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10pt;
-  font-weight: bold;
-  text-align: center;
-  line-height: 16px;
-  transition: background-color 0.2s ease;
-}
-
-.site-header .header-close:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Navigation (Fluent Toolbar) */
-.main-navigation,
-.nav-menu,
-.menu-toggle,
-.navigation-main {
-  background: rgba(32, 32, 32, 0.8) !important; /* Mica */
-  padding: 6px;
-  border: none;
-  border-radius: 8px;
-  user-select: none;
-  margin: 8px 0;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.main-navigation .menu {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.main-navigation .menu li a {
-  padding: 4px 10px;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  border: none;
-  border-radius: 4px;
-  color: rgb(255, 255, 255);
-  font-size: 10pt;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-.main-navigation .menu li a:hover,
-.main-navigation .menu li a:focus {
-  background-color: rgb(0, 120, 212);
-  color: rgb(255, 255, 255);
-  transform: scale(1.05);
-  outline: none;
-}
-
-.main-navigation .menu li a:active {
-  transform: scale(0.95);
-}
-
-/* Announcement Section (Fluent Window) */
-.announcement-section {
-  max-width: 1100px;
-  margin: 8px auto;
-  border: none;
-  background-color: rgba(32, 32, 32, 0.8); /* Mica */
-  border-radius: 8px;
-  user-select: none;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.announcement-section .announcement-titlebar {
-  background: rgb(0, 120, 212);
-  color: rgb(255, 255, 255);
-  font-weight: bold;
-  font-size: 10pt;
-  padding: 4px 6px;
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-}
-
-.announcement-section .announcement-content {
-  padding: 6px;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  border-radius: 0 0 8px 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.announcement-section .announcement-statusbar {
-  background: rgba(32, 32, 32, 0.8);
-  border-top: none;
-  padding: 4px;
-  font-size: 10pt;
-  color: rgb(255, 255, 255);
-  text-align: left;
-  border-radius: 0 0 8px 8px;
-}
-
-/* Theme Selector Button */
-.theme-selector {
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  color: rgb(255, 255, 255);
-  padding: 4px 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10pt;
-  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.theme-selector:hover,
-.theme-selector:focus {
-  background-color: rgb(0, 120, 212); /* Windows 11 accent */
-  transform: scale(1.05);
-  outline: none;
-}
-
-.theme-selector:active {
-  transform: scale(0.95);
-}
-
-/* Theme Selector Dialog */
-#theme-selector-dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  color: rgb(255, 255, 255);
-  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
-  backdrop-filter: blur(20px);
-}
-
-#theme-selector-dialog h3 {
-  margin: 0 0 15px;
-  font-size: 16pt;
-  font-weight: 600;
-}
-
-#theme-selector-dialog select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  background-color: rgba(60, 60, 60, 0.9); /* Darker acrylic */
-  color: rgb(255, 255, 255);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 10pt;
-  cursor: pointer;
-  transition: border-color 0.2s ease;
-}
-
-#theme-selector-dialog select:hover,
-#theme-selector-dialog select:focus {
-  border-color: rgb(0, 120, 212);
-  outline: none;
-}
-
-#theme-selector-dialog button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10pt;
-  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-#theme-selector-dialog #theme-save {
-  background-color: rgb(0, 120, 212); /* Windows 11 accent */
-  color: rgb(255, 255, 255);
-  margin-right: 10px;
-}
-
-#theme-selector-dialog #theme-save:hover,
-#theme-selector-dialog #theme-save:focus {
-  background-color: rgb(0, 94, 162);
-  transform: scale(1.05);
-  outline: none;
-}
-
-#theme-selector-dialog #theme-save:active {
-  transform: scale(0.95);
-}
-
-#theme-selector-dialog #theme-cancel {
-  background-color: rgba(80, 80, 80, 0.9); /* Neutral acrylic */
-  color: rgb(255, 255, 255);
-}
-
-#theme-selector-dialog #theme-cancel:hover,
-#theme-selector-dialog #theme-cancel:focus {
-  background-color: rgba(100, 100, 100, 0.9);
-  transform: scale(1.05);
-  outline: none;
-}
-
-#theme-selector-dialog #theme-cancel:active {
-  transform: scale(0.95);
-}
-
-.announcement-image {
-  flex: 0 0 auto;
-  width: 100px;
-}
-
-.announcement-image img {
-  width: 100%;
-  height: auto;
-  border: none;
-  border-radius: 4px;
-  display: block;
-}
-
-.announcement-text {
-  flex: 1;
-  color: rgb(255, 255, 255);
-}
-
-.announcement-text h2 {
-  font-size: 12pt;
-  font-weight: bold;
-  margin-bottom: 4px;
-  line-height: 1.1;
-}
-
-.announcement-text p {
-  font-size: 10pt;
-  line-height: 1.4;
-}
-
-/* Container */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 8px;
-  background: rgba(32, 32, 32, 0.8); /* Mica */
-  border: none;
-  border-radius: 8px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Manga Viewer */
-.manga-viewer {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 15px;
-  background-color: transparent; /* Mica handled by container */
-  border: none;
-  border-radius: 8px;
-}
-
-#manga-heading {
-  font-size: 12pt;
-  margin-bottom: 15px;
-  text-align: center;
-  color: rgb(255, 255, 255);
-}
-
-#chapter-list-container {
-  margin-bottom: 20px;
-}
-
-#chapter-list-container h3 {
-  font-size: 10pt;
-  margin-bottom: 10px;
-  color: rgb(255, 255, 255);
-}
-
-#mangaview-chapterlist li {
-  margin-bottom: 5px;
-}
-
-#mangaview-chapterlist li a {
-  color: rgb(0, 120, 212);
-  padding: 5px;
-  display: block;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  border: none;
-  border-radius: 4px;
-  text-decoration: none;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-#mangaview-chapterlist li a:hover {
-  background-color: rgb(0, 120, 212);
-  color: rgb(255, 255, 255);
-}
-
-#mangaview-chapterlist li .chapter-date {
-  font-size: 9pt;
-  color: rgb(200, 200, 200);
-  margin-left: 5px;
-}
-
-#manga-images {
-  text-align: center;
-}
-
-.manga-image {
-  width: 65%;
-  height: auto;
-  margin-bottom: 20px;
-  border: none;
-  border-radius: 4px;
-  display: block;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.manga-spinner {
-  display: none;
-}
-
-.spinner-circle {
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  border-top: 4px solid rgb(0, 120, 212);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  display: inline-block;
-}
-
-.manga-loading-message {
-  display: none;
-}
-
-.view-toggle {
-  margin-bottom: 10px;
-}
-
-.view-toggle button {
-  padding: 5px 10px;
-  margin-right: 5px;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10pt;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.view-toggle button:hover {
-  background-color: rgb(0, 120, 212);
-  transform: scale(1.05);
-}
-
-.view-toggle button:active {
-  transform: scale(0.95);
-}
-
-#back-to-chapters {
-  padding: 5px 10px;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10pt;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-#back-to-chapters:hover {
-  background-color: rgb(0, 120, 212);
-  transform: scale(1.05);
-}
-
-#back-to-chapters:active {
-  transform: scale(0.95);
-}
-
-/* Paged View Controls */
-.paged-controls {
-  margin: 10px 0;
-}
-
-.paged-controls button {
-  padding: 5px 10px;
-  margin: 0 5px;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10pt;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.paged-controls button:hover {
-  background-color: rgb(0, 120, 212);
-  transform: scale(1.05);
-}
-
-.paged-controls button:active {
-  transform: scale(0.95);
-}
-
-.paged-controls span {
-  font-size: 10pt;
-  color: rgb(255, 255, 255);
-}
-
-/* Bottom Navigation */
-.bottom-nav {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.bottom-nav button {
-  padding: 5px 15px;
-  margin: 0 5px;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10pt;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.bottom-nav button:hover {
-  background-color: rgb(0, 120, 212);
-  transform: scale(1.05);
-}
-
-.bottom-nav button:active {
-  transform: scale(0.95);
-}
-
-/* Footer (Fluent Taskbar) */
-.site-footer {
-  background: rgba(32, 32, 32, 0.8); /* Mica */
-  color: rgb(255, 255, 255);
-  font-size: 10pt;
-  border: none;
-  border-radius: 8px;
-  margin-top: 16px;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  height: 31px;
-  padding: 0 4px;
-  position: relative;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.site-footer .footer-content {
-  flex: 1;
-  text-align: center;
-  padding: 0 60px;
-}
-
-.site-footer .footer-content span {
-  display: inline-block;
-  font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
-  color: rgb(255, 255, 255);
-}
-
-.start-button {
-  background: rgb(0, 120, 212);
-  color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 4px;
-  padding: 2px 10px;
-  font-weight: bold;
-  font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
-  font-size: 10pt;
-  cursor: pointer;
-  height: 23px;
-  line-height: 19px;
-  margin: 0 0 0 2px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.start-button:hover {
-  background: rgb(0, 94, 162);
-  transform: scale(1.05);
-}
-
-.start-button:active {
-  transform: scale(0.95);
-}
-
-.start-menu-wrapper {
-  position: relative;
-  display: flex;
-}
-
-.start-menu {
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  background-color: rgba(40, 40, 40, 0.9); /* Acrylic */
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  min-width: 200px;
-  z-index: 1000;
-  list-style: none;
-  padding: 4px;
-  backdrop-filter: blur(20px);
-}
-
-.start-menu li {
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.start-menu li:hover {
-  background-color: rgb(0, 120, 212);
-  color: rgb(255, 255, 255);
-  transform: scale(1.02);
-}
-
-.start-menu li a {
-  color: rgb(255, 255, 255);
-  text-decoration: none;
-  display: block;
-}
-
-.start-menu li:hover a {
-  color: rgb(255, 255, 255);
-}
-
-/* Style for the current-time span */
-#current-time {
-  display: inline-block;
-  background-color: transparent;
-  border: none;
-  padding: 2px 6px;
-  font-size: 10pt;
-  height: 23px;
-  line-height: 19px;
-  margin: 0 2px 0 0;
-  color: rgb(255, 255, 255);
-  position: absolute;
-  right: 4px;
-}
-
-/* Manga Main Images */
-#page #content #manga-main #chapter-list-container #manga-cover img {
-  width: 35% !important;
-  height: auto;
-  display: block;
-  border: none;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Masthead */
-#masthead {
-  background-color: rgba(32, 32, 32, 0.8); /* Mica */
-  user-select: none;
-  border: none;
-  border-radius: 8px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Animation Keyframes */
-@keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .container {
-    padding: 4px;
-  }
-
-  .manga-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 15px;
-  }
-
-  .manga-item {
-    height: 300px;
-    border-radius: 6px;
-  }
-
-  .manga-item-titlebar {
-    font-size: 8pt;
-    padding: 3px 6px;
-    line-height: 1.2;
-    -webkit-line-clamp: 3;
-  }
-
-  .manga-item-content {
-    padding: 8px;
-  }
-
-  .manga-item-content h3 {
-    font-size: 9pt;
-    line-height: 1.2;
-    -webkit-line-clamp: 3;
-  }
-
-  .manga-item-content p {
-    font-size: 8pt;
-    line-height: 1.2;
-    -webkit-line-clamp: 2;
-  }
-
-  .manga-cover-wrapper {
-    margin-bottom: 8px;
-  }
-
-  .manga-cover-wrapper img {
-    border-radius: 3px;
-  }
-
-  .manga-spinner {
-    width: 24px;
-    height: 24px;
-    border-width: 3px;
-  }
-
-  .announcement-section .announcement-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-
-  .announcement-image {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: var(--transition);
+    border: 1px solid var(--card-border);
+}
+
+.manga-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+}
+
+.manga-item-cover {
+    position: relative;
+    padding-top: 140%;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.manga-item-cover img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 140px;
-  }
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
 
-  .announcement-text {
-    text-align: center;
-  }
+.manga-item:hover .manga-item-cover img {
+    transform: scale(1.03);
+}
 
-  .main-navigation .menu {
-    flex-direction: column;
+.manga-item-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
     align-items: center;
-    gap: 2px;
-  }
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-  .site-footer {
+.manga-item-cover:hover .manga-item-overlay {
+    opacity: 1;
+}
+
+.view-details {
+    color: white;
+    font-size: 13px;
+    padding: 8px 16px;
+    background: var(--primary);
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.latest-chapter-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--primary);
+    color: white;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+.manga-item-info {
+    padding: 14px;
+}
+
+.manga-item-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.manga-item-title a:hover {
+    color: var(--primary);
+}
+
+.manga-item-chapters {
+    display: flex;
     flex-direction: column;
-    height: auto;
-    padding: 5px 10px;
-    min-height: 50px;
-  }
+    gap: 6px;
+}
 
-  .site-footer .footer-content {
-    padding: 0;
-    margin-bottom: 5px;
-  }
+.manga-item-chapters .chapter-link {
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--card-border);
+}
 
-  .start-button {
-    margin-bottom: 5px;
-    width: auto;
-  }
+.manga-item-chapters .chapter-link:hover {
+    color: var(--primary);
+}
 
-  .start-menu {
-    min-width: 150px;
-  }
+.no-chapters {
+    font-size: 11px;
+    color: var(--text-light);
+    text-align: center;
+    padding: 12px;
+}
 
-  .theme-selector {
-    font-size: 9pt;
-    padding: 3px 6px;
-  }
+/* ============================================
+   SORT OPTIONS - Windows 11 Buttons
+   ============================================ */
+.sort-options {
+    display: flex;
+    gap: 8px;
+}
 
-  #theme-selector-dialog {
-    padding: 15px;
-    width: 90%;
-    max-width: 300px;
-  }
+.sort-btn {
+    padding: 6px 16px;
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+}
 
-  #theme-selector-dialog h3 {
-    font-size: 14pt;
-  }
+.sort-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
 
-  #theme-selector-dialog select {
-    padding: 6px;
-    font-size: 9pt;
-  }
+.sort-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
 
-  #theme-selector-dialog button {
+/* ============================================
+   ALPHABET FILTER - Windows 11 Style
+   ============================================ */
+.alphabet-filter {
+    background: var(--surface);
+    backdrop-filter: blur(var(--blur-amount));
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin: 24px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    border: 1px solid var(--card-border);
+}
+
+.alphabet-filter a {
+    display: inline-block;
     padding: 6px 12px;
-    font-size: 9pt;
-  }
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    transition: var(--transition);
+    color: var(--text);
+}
+
+.alphabet-filter a:hover,
+.alphabet-filter a.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* ============================================
+   SIDEBAR - Windows 11 Widgets
+   ============================================ */
+.sidebar {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+}
+
+.widget {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid var(--card-border);
+}
+
+.widget h3 {
+    font-size: 15px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+    font-weight: 600;
+}
+
+.genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.genre-item {
+    background: rgba(0, 0, 0, 0.04);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    transition: var(--transition);
+    color: var(--text);
+}
+
+.genre-item:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* ============================================
+   READING STATUS - FIXED VERSION
+   ============================================ */
+.status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    cursor: pointer !important;
+    transition: var(--transition);
+    border: 1px solid var(--card-border);
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-filter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    z-index: 0;
+}
+
+.status-filter:hover::before {
+    opacity: 0.08;
+}
+
+.status-filter:hover {
+    transform: translateX(4px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+.status-filter:hover .status-name {
+    color: var(--primary);
+    transform: translateX(2px);
+}
+
+.status-filter:hover .status-count {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.05);
+}
+
+.status-filter.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.status-filter.active .status-name {
+    color: white;
+}
+
+.status-filter.active .status-count {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+}
+
+.status-filter.active::before {
+    opacity: 0;
+}
+
+.status-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    transition: var(--transition);
+    position: relative;
+    z-index: 1;
+}
+
+.status-count {
+    background: rgba(0, 0, 0, 0.08);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-light);
+    transition: var(--transition);
+    position: relative;
+    z-index: 1;
+}
+
+.status-filter[data-status="ongoing"]:hover .status-name {
+    color: #10b981;
+}
+
+.status-filter[data-status="ongoing"]:hover {
+    border-color: #10b981;
+}
+
+.status-filter[data-status="ongoing"]:hover::before {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+.status-filter[data-status="completed"]:hover .status-name {
+    color: var(--primary);
+}
+
+.status-filter[data-status="completed"]:hover {
+    border-color: var(--primary);
+}
+
+.status-filter[data-status="hiatus"]:hover .status-name {
+    color: #f59e0b;
+}
+
+.status-filter[data-status="hiatus"]:hover {
+    border-color: #f59e0b;
+}
+
+.status-filter[data-status="hiatus"]:hover::before {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.status-filter[data-status="cancelled"]:hover .status-name {
+    color: #ef4444;
+}
+
+.status-filter[data-status="cancelled"]:hover {
+    border-color: #ef4444;
+}
+
+.status-filter[data-status="cancelled"]:hover::before {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+}
+
+/* ============================================
+   SINGLE MANGA PAGE
+   ============================================ */
+.single-manga .manga-header {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin: 24px 0;
+    border: 1px solid var(--card-border);
+}
+
+.single-manga .manga-cover-large {
+    width: 100%;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.single-manga .manga-stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.single-manga .stat-box {
+    background: var(--surface);
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    min-width: 100px;
+    transition: var(--transition);
+    border: 1px solid var(--card-border);
+}
+
+.single-manga .stat-box:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.single-manga .stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.single-manga .stat-value.status-ongoing { color: #10b981; }
+.single-manga .stat-value.status-completed { color: var(--primary); }
+.single-manga .stat-value.status-hiatus { color: #f59e0b; }
+.single-manga .stat-value.status-cancelled { color: #ef4444; }
+
+.single-manga .stat-label {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 4px;
+}
+
+.single-manga .manga-meta {
+    margin: 20px 0;
+    padding: 16px 0;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+}
+
+.single-manga .meta-item {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.single-manga .meta-label {
+    font-weight: 600;
+    width: 80px;
+    display: inline-block;
+}
+
+.single-manga .genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.single-manga .genre-tag {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: white;
+}
+
+.single-manga .manga-description {
+    line-height: 1.7;
+    margin: 20px 0;
+    color: var(--text-light);
+}
+
+.single-manga .manga-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.single-manga .chapters-section {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin: 24px 0;
+    border: 1px solid var(--card-border);
+}
+
+.single-manga .chapters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--card-border);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.single-manga .chapters-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.single-manga .chapters-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.single-manga .chapter-sort-btn {
+    padding: 5px 14px;
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: var(--transition);
+    color: var(--text);
+}
+
+.single-manga .chapter-sort-btn:hover,
+.single-manga .chapter-sort-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.single-manga .chapters-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.single-manga .chapter-card-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.single-manga .chapter-card-link:hover {
+    background: var(--card-bg);
+    border-color: var(--primary);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-sm);
+}
+
+.single-manga .chapter-title {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.single-manga .chapter-date {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.single-manga .new-badge {
+    background: var(--primary);
+    color: white;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 10px;
+}
+
+/* ============================================
+   MANGA READER - FULLSCREEN READER STYLES
+   ============================================ */
+
+/* Manga Reader Container */
+.manga-reader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #0a0a0f;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Top Bar */
+.reader-top-bar {
+    background: rgba(16, 16, 20, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 101;
+}
+
+.reader-top-bar-left,
+.reader-top-bar-center,
+.reader-top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.reader-nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.reader-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.chapter-info-compact {
+    display: flex;
+    flex-direction: column;
+    padding-left: 8px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.compact-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+}
+
+.compact-chapter {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chapter-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chapter-selector-wrapper {
+    position: relative;
+}
+
+.chapter-selector {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    min-width: 140px;
+}
+
+.chapter-selector option {
+    background: #1a1a2e;
+}
+
+.reader-settings-btn,
+.reader-fullscreen-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reader-settings-btn:hover,
+.reader-fullscreen-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Progress Bar */
+.reader-progress-bar {
+    position: absolute;
+    top: 61px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 100;
+}
+
+.reader-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--primary, #0078d4);
+    transition: width 0.3s;
+}
+
+/* Main Content */
+.reader-main-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.reader-viewer {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Pages */
+.reader-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.reader-page:last-child {
+    margin-bottom: 0;
+}
+
+.reader-page img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+/* Long Strip Mode */
+.reading-mode-longstrip .reader-page {
+    margin-bottom: 0;
+}
+
+/* Navigation Arrows */
+.nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    padding: 12px;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s;
+    z-index: 100;
+    opacity: 0;
+}
+
+.manga-reader-container:hover .nav-arrow {
+    opacity: 1;
+}
+
+.nav-arrow:hover {
+    background: var(--primary, #0078d4);
+}
+
+.nav-arrow-left {
+    left: 20px;
+}
+
+.nav-arrow-right {
+    right: 20px;
+}
+
+/* Page Indicator */
+.page-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Settings Panel */
+.reader-settings-panel {
+    position: fixed;
+    top: 50%;
+    right: -300px;
+    transform: translateY(-50%);
+    width: 280px;
+    background: rgba(20, 20, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    transition: right 0.3s;
+    overflow: hidden;
+}
+
+.reader-settings-panel.open {
+    right: 20px;
+}
+
+.settings-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-panel-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 16px;
+}
+
+.close-settings-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.settings-panel-content {
+    padding: 20px;
+}
+
+.settings-section {
+    margin-bottom: 20px;
+}
+
+.settings-section label {
+    display: block;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 11px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.settings-buttons-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.settings-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.settings-btn.active {
+    background: var(--primary, #0078d4);
+}
+
+/* Zoom Controls */
+.reader-zoom-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 8px;
+    border-radius: 40px;
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+}
+
+.zoom-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zoom-btn:hover {
+    background: var(--primary, #0078d4);
+}
+
+.zoom-level {
+    color: white;
+    font-size: 12px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+}
+
+/* No Images Message */
+.no-images-message {
+    text-align: center;
+    padding: 60px;
+    color: white;
+}
+
+/* Light Mode Reader Styles */
+body:not(.dark-mode) .manga-reader-container {
+    background: #f5f5f5;
+}
+
+body:not(.dark-mode) .reader-top-bar {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark-mode) .reader-nav-btn,
+body:not(.dark-mode) .reader-settings-btn,
+body:not(.dark-mode) .reader-fullscreen-btn,
+body:not(.dark-mode) .chapter-selector {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+body:not(.dark-mode) .compact-title,
+body:not(.dark-mode) .chapter-info-compact span {
+    color: #333;
+}
+
+body:not(.dark-mode) .compact-chapter {
+    color: #666;
+}
+
+body:not(.dark-mode) .chapter-selector option {
+    background: white;
+    color: #333;
+}
+
+body:not(.dark-mode) .reader-settings-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark-mode) .settings-panel-header h3 {
+    color: #333;
+}
+
+body:not(.dark-mode) .settings-section label {
+    color: #666;
+}
+
+body:not(.dark-mode) .settings-btn {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+body:not(.dark-mode) .no-images-message {
+    color: #333;
+}
+
+/* Sepia Mode Reader Styles */
+body.sepia-mode .manga-reader-container {
+    background: #f4ecd8;
+}
+
+body.sepia-mode .reader-top-bar {
+    background: rgba(244, 236, 216, 0.95);
+}
+
+/* ============================================
+   BUTTONS - Windows 11 Style
+   ============================================ */
+.btn {
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-size: 14px;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text);
+    border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-large {
+    padding: 10px 24px;
+    font-size: 15px;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+.pagination a,
+.pagination span {
+    padding: 8px 14px;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--card-border);
+    transition: var(--transition);
+    min-width: 38px;
+    text-align: center;
+    color: var(--text);
+}
+
+.pagination a:hover,
+.pagination .current {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* ============================================
+   LOADING
+   ============================================ */
+.loading-container {
+    text-align: center;
+    padding: 60px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--card-border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.no-results {
+    text-align: center;
+    padding: 60px;
+    color: var(--text-light);
+}
+
+/* ============================================
+   FOOTER - Windows 11 Style
+   ============================================ */
+.site-footer {
+    background: var(--mica-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    color: var(--text-light);
+    padding: 40px 0 20px;
+    margin-top: 60px;
+    border-top: 1px solid var(--card-border);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 32px;
+}
+
+.footer-section h3 {
+    color: var(--text);
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section a {
+    color: var(--text-light);
+    line-height: 2;
+    font-size: 14px;
+}
+
+.footer-section a:hover {
+    color: var(--primary);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--card-border);
+    font-size: 12px;
+}
+
+/* ============================================
+   FEATURED SECTION (HOMEPAGE SLIDER) - Windows 11 Style
+   ============================================ */
+.featured-section {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin: 24px 0 40px;
+    border: 1px solid var(--card-border);
+}
+
+.featured-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.featured-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.featured-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.featured-prev, .featured-next {
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text);
+}
+
+.featured-prev:hover, .featured-next:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.featured-container {
+    overflow: hidden;
+    position: relative;
+}
+
+.featured-slider {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.featured-item {
+    flex: 0 0 100%;
+    display: flex;
+    gap: 24px;
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.featured-cover {
+    flex: 0 0 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.featured-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.featured-cover:hover .featured-overlay {
+    opacity: 1;
+}
+
+.featured-btn {
+    background: var(--primary);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.featured-info {
+    flex: 1;
+    padding: 20px 20px 20px 0;
+}
+
+.featured-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.featured-genre {
+    font-size: 11px;
+    color: var(--primary);
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.featured-stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.featured-stats span {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.featured-description {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.featured-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.featured-tag {
+    background: rgba(0, 0, 0, 0.04);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+}
+
+.featured-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--card-border);
+}
+
+.featured-chapter {
+    font-size: 12px;
+    color: #10b981;
+    font-weight: 500;
+}
+
+.featured-read {
+    color: var(--primary);
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.featured-read:hover {
+    transform: translateX(3px);
+}
+
+.featured-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.featured-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--card-border);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.featured-dot.active {
+    background: var(--primary);
+    width: 20px;
+    border-radius: 4px;
+}
+
+.featured-dot:hover {
+    background: var(--primary);
+}
+
+/* ============================================
+   CONTENT WRAPPER LAYOUT
+   ============================================ */
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 32px;
+}
+
+/* ============================================
+   ZOOM CONTROLS
+   ============================================ */
+#zoomControls {
+    display: flex;
+    gap: 8px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - Windows 11 Style
+   ============================================ */
+@media (max-width: 992px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .main-nav {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 280px;
+        height: 100%;
+        background: var(--card-bg);
+        backdrop-filter: blur(var(--blur-amount));
+        transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        z-index: 1001;
+        padding-top: 70px;
+        border-left: 1px solid var(--card-border);
+    }
+    
+    .main-nav.active {
+        right: 0;
+    }
+    
+    .primary-menu {
+        flex-direction: column;
+        gap: 0;
+        padding: 0 20px;
+    }
+    
+    .primary-menu a {
+        padding: 12px 0;
+        display: block;
+    }
+    
+    .primary-menu .sub-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        padding-left: 20px;
+        display: none;
+        box-shadow: none;
+        background: transparent;
+    }
+    
+    .primary-menu li.active .sub-menu {
+        display: block;
+    }
+    
+    .hero-section {
+        padding: 32px 24px;
+    }
+    
+    .hero-content h1 {
+        font-size: 28px;
+    }
+    
+    .hero-stats {
+        gap: 24px;
+    }
+    
+    .stat-number {
+        font-size: 28px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .manga-grid {
+        gap: 16px;
+    }
+    
+    .single-manga .manga-header {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .single-manga .chapters-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .chapter-nav {
+        flex-direction: column;
+    }
+    
+    .chapter-nav .btn {
+        text-align: center;
+    }
+    
+    .featured-item {
+        flex-direction: column;
+    }
+    
+    .featured-cover {
+        flex: 0 0 auto;
+        max-width: 180px;
+        margin: 0 auto;
+    }
+    
+    .featured-info {
+        padding: 20px;
+    }
+    
+    .featured-title {
+        font-size: 18px;
+    }
+    
+    .sidebar {
+        grid-template-columns: 1fr;
+    }
+    
+    .manga-images {
+        padding: 12px;
+    }
+    
+    .manga-images img {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
+    .status-filter {
+        padding: 8px 12px;
+    }
+    
+    .status-filter:hover {
+        transform: translateX(2px);
+    }
+    
+    /* Reader responsive */
+    .reader-top-bar {
+        padding: 10px 16px;
+    }
+    
+    .reader-nav-btn span {
+        display: none;
+    }
+    
+    .chapter-info-compact {
+        display: none;
+    }
+    
+    .chapter-selector {
+        min-width: 100px;
+        font-size: 11px;
+    }
+    
+    .nav-arrow {
+        opacity: 1;
+        padding: 8px;
+    }
+    
+    .reader-settings-panel.open {
+        right: 10px;
+        width: 260px;
+    }
+    
+    .reader-zoom-controls {
+        bottom: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .manga-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
+    
+    .search-modal-content {
+        padding: 24px;
+    }
+    
+    .search-form-modal {
+        flex-direction: column;
+    }
+    
+    .settings-panel {
+        width: 280px;
+        right: -300px;
+    }
+    
+    .settings-panel.open {
+        right: 16px;
+    }
+    
+    #zoomControls {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .chapter-reader {
+        padding: 16px;
+    }
+    
+    .manga-images {
+        padding: 8px;
+    }
+    
+    .status-filter {
+        padding: 6px 10px;
+    }
+    
+    .status-name {
+        font-size: 12px;
+    }
+    
+    .status-count {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+}
+
+/* Animation for theme switching */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.site-header,
+.main-nav,
+.manga-item,
+.widget,
+.chapter-reader,
+.featured-section,
+.settings-panel {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
