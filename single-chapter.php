@@ -26,7 +26,7 @@
         $images = array();
     }
     
-    // Get all chapters for this manga
+    // Get all chapters for this manga (Ordered descending: e.g., Ch 3, Ch 2, Ch 1)
     $all_chapters = get_posts(array(
         'post_type' => 'chapter',
         'posts_per_page' => -1,
@@ -53,7 +53,7 @@
             'post_status' => 'publish'
         ));
         
-        // Sort by volume and chapter number manually
+        // Sort by volume and chapter number manually (Descending)
         usort($all_chapters, function($a, $b) {
             $vol_a = get_post_meta($a->ID, 'volume_number', true) ?: 0;
             $vol_b = get_post_meta($b->ID, 'volume_number', true) ?: 0;
@@ -75,8 +75,10 @@
         }
     }
     
-    $prev_chapter = ($current_index > 0 && isset($all_chapters[$current_index - 1])) ? $all_chapters[$current_index - 1] : null;
-    $next_chapter = ($current_index < count($all_chapters) - 1 && isset($all_chapters[$current_index + 1])) ? $all_chapters[$current_index + 1] : null;
+    // FIX: Swapped the array index math to align chronological direction with the descending order list
+    $prev_chapter = ($current_index < count($all_chapters) - 1 && isset($all_chapters[$current_index + 1])) ? $all_chapters[$current_index + 1] : null;
+    $next_chapter = ($current_index > 0 && isset($all_chapters[$current_index - 1])) ? $all_chapters[$current_index - 1] : null;
+    
     $manga_url = $manga_id ? get_permalink($manga_id) : '#';
     $total_pages = count($images);
     
