@@ -51,11 +51,11 @@ A simple manga reading wordpress theme with a manga library, a fullscreen reader
 ## ⚠️ Required: create the Manga List page
 
 > [!IMPORTANT]
-> **You MUST create a page called "Manga" with the slug `manga` and set its page template to "Manga Archive".**
+> **You MUST create a page called "Manga List" with the slug `manga` and set its page template to "Manga Archive".**
 > The theme looks for a published page with the slug `manga-list`. If it doesn't exist, library links fall back to `/manga/`, which can give a **404 error**.
 
 1. In your dashboard, go to **Pages → Add New**.
-2. **Title:** type `Manga`.
+2. **Title:** type `Manga List`.
 3. **Slug:** open the **Settings** panel (gear icon, top right), click the **URL** field under **Page**, and make sure it is exactly `manga-list`.
 4. **Template:** in the same panel, choose **Manga Archive** under **Template**.
    *(Classic Editor: use **Page Attributes → Template**.)*
