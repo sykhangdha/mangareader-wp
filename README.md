@@ -4,7 +4,7 @@
 
 A complete manga reading theme with a MangaDex-style library, a fullscreen reader and four themes, including a Windows Phone style **MetroUI** theme.
 
-[**Live Demo**](https://skymanga.42web.io/) · [**Download (Beta)**](https://github.com/sykhangdha/mangareader-wp/releases/tag/Pre-Release) · [**Screenshots**](#screenshots)
+[**Live Demo**](https://skymanga.42web.io/) · [**Download (Beta)**](https://github.com/sykhangdha/mangareader-wp/releases) · [**Screenshots**](#screenshots)
 
 </div>
 
