@@ -2,7 +2,7 @@
 
 # 📚 Manga Reader Theme for WordPress
 
-A complete manga reading theme with a MangaDex-style library, a fullscreen reader and four themes, including a Windows Phone style **MetroUI** theme.
+A simple manga reading wordpress theme with a manga library, a fullscreen reader and four themes, including a Windows Phone style **MetroUI** theme.
 
 [**Live Demo**](https://skymanga.42web.io/) · [**Download (Beta)**](https://github.com/sykhangdha/mangareader-wp/releases) · [**Screenshots**](#screenshots)
 
