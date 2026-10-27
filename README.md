@@ -2,9 +2,9 @@
 
 # 📚 Manga Reader Theme for WordPress
 
-A simple manga reading wordpress theme with a manga library, a fullscreen reader and four themes, including a Windows Phone style **MetroUI** theme.
+A manga reading WordPress theme with a MangaDex-style library, a fullscreen reader, bookmarks, news updates and three looks: **FluentUI**, a Windows Phone style **MetroUI**, and a classic **MangaStreamUI**.
 
-[**Live Demo**](https://skymanga.42web.io/) · [**Download (Beta)**](https://github.com/sykhangdha/mangareader-wp/releases) · [**Screenshots**](#screenshots)
+[**Live Demo**](https://skymanga.42web.io/) · [**Download (Beta)**](https://github.com/sykhangdha/mangareader-wp/releases) · [**Changelog**](#changelog) · [**Screenshots**](#screenshots)
 
 </div>
 
@@ -14,16 +14,13 @@ A simple manga reading wordpress theme with a manga library, a fullscreen reader
 
 ---
 
-## Contents
+## 📑 Contents
 
-- [Installation](#installation)
-- [Required: create the Manga List page](#manga-list-page)
-- [Features](#features)
-- [Switching themes](#switching-themes)
-- [How to use Import from Folder](#import-from-folder)
-- [Changelog](#changelog)
-- [Updating from Alpha](#updating-from-alpha)
-- [Screenshots](#screenshots)
+| Getting started | Using the theme | Reference |
+|---|---|---|
+| [Installation](#installation) | [Using the features](#using-the-features) | [Changelog](#changelog) |
+| [Create the Manga List page](#manga-list-page) | [Import from Folder](#import-from-folder) | [Updating](#updating) |
+| [Features](#features) | | [Screenshots](#screenshots) |
 
 ---
 
@@ -42,6 +39,8 @@ A simple manga reading wordpress theme with a manga library, a fullscreen reader
 
 **After activating**
 1. **[Create the Manga List page](#manga-list-page)** (required).
+2. Open any wp-admin page once. This prepares the data used for sorting by "Recently updated" and "Most chapters".
+3. *(Optional)* Set up your [menus, footer, slider and music](#customizer-map).
 
 **Requirements:** WordPress 5.5+ (6.2+ recommended for title-only search), PHP 7.4+, MySQL 5.6+, and a modern browser with JavaScript enabled.
 
@@ -51,7 +50,7 @@ A simple manga reading wordpress theme with a manga library, a fullscreen reader
 ## ⚠️ Required: create the Manga List page
 
 > [!IMPORTANT]
-> **You MUST create a page called "Manga List" with the slug `manga` and set its page template to "Manga Archive".**
+> **You MUST create a page called "Manga List" with the slug `manga-list` and set its page template to "Manga Archive".**
 > The theme looks for a published page with the slug `manga-list`. If it doesn't exist, library links fall back to `/manga/`, which can give a **404 error**.
 
 1. In your dashboard, go to **Pages → Add New**.
@@ -62,10 +61,10 @@ A simple manga reading wordpress theme with a manga library, a fullscreen reader
 5. Leave the page content empty. The theme fills it in.
 6. Click **Publish**.
 7. Go to **Settings → Permalinks** and click **Save Changes**. You don't need to change anything. This prevents 404 errors.
-8. *(Optional)* Add it to your menu: **Appearance → Menus**, tick **Manga**, click **Add to Menu**, then **Save Menu**.
+8. *(Optional)* Add it to your menu: **Appearance → Menus**, tick **Manga List**, click **Add to Menu**, then **Save Menu**.
 
 **Check that it works**
-- Open `yoursite.com/manga/`. You should see the library with search, sort and filters.
+- Open `yoursite.com/manga-list/`. You should see the library with search, sort and filters.
 - On the homepage, click **Browse the full library**. It should open the same page.
 - `yoursite.com/manga/` redirects to the Manga List page.
 
@@ -86,59 +85,174 @@ A simple manga reading wordpress theme with a manga library, a fullscreen reader
 <a id="features"></a>
 ## ✨ Features
 
-### 🎨 Themes and design
-- **Four themes:** Light, Dark, Sepia and **MetroUI**, switchable from the header and remembered between visits
-- **MetroUI:** flat Windows Phone look with square tiles, large lowercase headings and 12 accent colours
-- **Fluent design:** clean Windows 11 style with smooth animations and blurred, translucent backgrounds
-- **Dark mode on first visit** if your device prefers it
-- **Responsive:** works on desktop, tablet and mobile
-- **Sticky header** so the menu is always within reach
+### 🎨 Themes
+- **Three themes**, switchable from the header and remembered between visits:
+  - **FluentUI:** clean Windows 11 style with blurred backgrounds. It has **Light, Dark and Sepia modes**.
+  - **MetroUI:** flat Windows Phone look with square tiles, large lowercase headings and 12 accent colours.
+  - **MangaStreamUI:** the classic blue-header MangaStream look with featured tiles, full news posts and a "New & Noteworthy" list.
+- **The reader matches your theme:** each UI gets its own reader style and a background that suits it.
+- **Dark mode on first visit** if your device prefers it.
+- **Responsive:** desktop, tablet and phone layouts.
+
+### 🏠 Homepage
+- **Slider:** choose what it shows: **New titles, Most viewed, Popular this week or your own Recommendations**. You can change its heading and the number of slides.
+- **News updates:** post announcements from the dashboard. They show as a short headline list in the sidebar, or as full posts in MangaStreamUI.
+- **Continue reading and bookmarks rows** for each visitor.
+- **Latest updates** grid with Recently updated and A-Z sorting.
 
 ### 📚 Manga library (MangaDex-style)
-- **Genres:** click once to include, twice to exclude
-- **Match mode:** match all included genres, or any of them
-- **Status:** Ongoing, Completed, Hiatus, Cancelled (pick several)
-- **Starts with:** A-Z and #
-- **Live title search** as you type
-- **Sorting:** A → Z, Z → A, Recently updated, Newly added, Most chapters
-- **No page reloads**, and **shareable links** (e.g. `?g=action&x=horror&st=ongoing`)
+- **Genres:** click once to include, twice to exclude, with match-all or match-any.
+- **Status**, **Starts with (A-Z and #)** and **live title search**.
+- **Sorting:** A → Z, Z → A, Recently updated, Newly added, Most chapters.
+- **No page reloads**, and **shareable links** (e.g. `?g=action&x=horror&st=ongoing`).
+- **Random** button that opens a random series.
 
-### 📖 Manga management
-- **Manga and Chapter post types**
-- **Genres and Status** to organise your library
-- **Details:** author, artist, year and cover image
-- **Chapters link to their manga**, and titles are generated automatically (e.g. "Series - Vol. 2 Ch. 5")
-- **Media Library picker** for chapter pages, with a live preview and natural sorting
+### 📖 Manga pages
+- **Bookmark**, **Continue reading** and **read marks (✓)** for each visitor.
+- **Chapter list** with newest/oldest sorting, optional chapter titles and a "Latest" badge.
+- **"You might also like"** related series.
+- **NEW tag** on cards updated in the last 3 days.
 
 ### 📱 Fullscreen reader
-- **Two reading modes:** Paged and Long Strip
-- **Image fit:** Fit width, Fit height or Original, plus zoom (50% - 250%)
-- **Backgrounds:** Dark (default), Light, Sepia
-- **Navigation:**
-  - Click (left third goes back, the rest goes forward)
-  - Swipe on touch devices
-  - Buttons only
-  - Keyboard: ← → arrows, **F** for fullscreen, **S** for settings
-  - The end of a chapter opens the next one
-- **Chapter selector, progress bar and page indicator**
-- **Settings are remembered** in your browser
+- **Two reading modes:** Paged and Long Strip.
+- **Reading direction:** left-to-right or **right-to-left (manga)**.
+- **Image fit:** Fit width, Fit height or Original, plus zoom (50% - 250%).
+- **Backgrounds:** Dark, Light and Sepia, plus a **brightness slider** for night reading.
+- **Calm layout:** nothing floats over the pages. The page number and music button sit in a slim strip, and the arrows fade when idle. There is an optional **auto-hide toolbar**.
+- **Smooth chapter changes:** the next chapter loads in the background, and moving between chapters doesn't reload the page.
+- **Mini music player:** a lofi player with a playlist you control.
+- **Remembers your place** and your settings.
 
-### 📁 Folder import
-- Import many chapters at once from `wp-content/manga-import/`
-- Creates manga entries from folder names
-- Skips chapters you've already imported
-- **Your original files are copied, never moved or deleted**
-- Pages import in natural order (`2.jpg` before `10.jpg`)
-- **[How to use it →](#import-from-folder)**
-
-> **Note:** on free shared hosting, importing can use a lot of CPU and may slow your site or hit rate limits.
+### 🛠️ Admin tools
+- **Manga and Chapter post types** with genres, status, author, artist and year.
+- **Chapter editor:** Media Library picker with live preview and natural sorting. Titles are generated automatically (e.g. "Series - Vol. 2 Ch. 5"), with an optional chapter title.
+- **Recommendations box** on each manga.
+- **Views column** in the manga list.
+- **News Updates** menu.
+- **[Import from Folder](#import-from-folder)** for adding many chapters at once.
+- **Customizer options** and **footer menus**.
 
 ---
 
-<a id="switching-themes"></a>
-## 🎨 Switching themes
+<a id="using-the-features"></a>
+## 🧭 Using the features
 
-Click the **theme button** in the header (next to the search icon) and choose **Light, Dark, Sepia or MetroUI**. With MetroUI selected, an **Accent colour** picker appears. Your choice is saved in your browser.
+<a id="customizer-map"></a>
+### Where to find the settings
+
+| What | Where |
+|---|---|
+| Homepage slider | **Appearance → Customize → Homepage Slider** |
+| News and support box | **Appearance → Customize → MangaStreamUI** |
+| Music player playlist | **Appearance → Customize → Reader Music Player** |
+| Footer About text | **Appearance → Customize → Footer** |
+| Header and footer links | **Appearance → Menus** |
+| News posts | **Dashboard → News Updates** |
+| Recommendations | **Edit a manga → Recommendation box** (right-hand side) |
+| Folder import | **Manga → Import from Folder** |
+
+### 🎨 Switching themes
+
+1. Click the **theme button** in the header (next to the search icon).
+2. Pick **FluentUI, MetroUI or MangaStreamUI**.
+3. With **FluentUI**, choose **Light, Dark or Sepia** under *Mode*.
+4. With **MetroUI**, choose an **accent colour**.
+
+Your choice is saved in your browser. People who used the old Light, Dark or Sepia themes are moved to FluentUI in the same mode automatically.
+
+### 🖼️ Homepage slider and recommendations
+
+1. Go to **Appearance → Customize → Homepage Slider**.
+2. **Show:** pick *New titles*, *Most viewed*, *Popular (this week)* or *Recommendations*.
+3. **Heading:** type your own, or leave it empty to use the default name.
+4. **Number of slides:** 1 to 10.
+5. Click **Publish**.
+
+**To use Recommendations**
+1. Edit a manga and find the **Recommendation** box on the right.
+2. Tick **Recommend this manga**.
+3. *(Optional)* write a short reason. It replaces the description on that slide.
+4. *(Optional)* set an order number. The lowest number shows first.
+5. Set the slider to *Recommendations* as above.
+
+> **Good to know:** views start counting from the day you install this version. Until there are enough views, the "Most viewed" and "Popular" lists are topped up with your newest titles. If you haven't recommended anything yet, the slider shows your newest titles.
+
+### 📰 News updates
+
+1. Go to **News Updates → Add New** in the dashboard.
+2. Write a title and your post, then **Publish**.
+3. For long posts, add a **Read more** break so only the first part shows on the homepage.
+
+| Theme | How news shows |
+|---|---|
+| FluentUI and MetroUI | A short **"Latest news"** headline list at the top of the sidebar, with an "All news" link |
+| MangaStreamUI | **Full news posts** in the main column |
+
+Set how many appear under **Appearance → Customize → MangaStreamUI**. The page for all posts is at `yoursite.com/news/`. If you don't see a news section, add your first post. You can also set up the optional **"Love [site]? Support us"** box in the same Customizer section.
+
+### 🔖 Bookmarks and continue reading
+
+- **Bookmark:** open a manga page and click **Bookmark**. It then reads **Bookmarked**. Click it again to remove it.
+- **Your bookmarks** appear in a row at the top of the homepage.
+- **Continue reading:** the manga page shows a **Continue** button, and the homepage shows a **Continue reading** row. A half-read chapter reopens on the page you left.
+- **Read marks:** chapters you've read through about 70% get a ✓ in the chapter list.
+
+> **Note:** this data is saved in your own browser only. It doesn't follow you to another device or a private window, and clearing your browser data erases it.
+
+### 📖 Reader settings and shortcuts
+
+Open the settings with the **gear icon** or press **S**.
+
+| Setting | Options |
+|---|---|
+| Reading mode | Paged · Long Strip |
+| Image fit | Fit width · Fit height · Original |
+| Zoom | − / + / reset (50% - 250%) |
+| Background | Dark · Light · Sepia |
+| Brightness | Slider (dim the pages) |
+| Reading direction | Left to right · Right to left (manga) |
+| Toolbar | Always show · Auto-hide |
+| Navigation | Click to advance · Buttons only |
+
+**Shortcuts**
+
+| Key | Action |
+|---|---|
+| ← → | Previous / next page (swapped in right-to-left mode) |
+| ↑ ↓ | Scroll in Long Strip mode |
+| F | Fullscreen |
+| S | Open or close settings |
+| Esc | Close panels |
+| Tab | Shows the toolbar when Auto-hide is on |
+
+- **Tap zones (paged mode):** the left third goes back and the rest goes forward. In right-to-left mode the right third goes back.
+- **Phones:** swipe to turn pages, and tap the top edge to show the toolbar in Auto-hide. A **home icon** replaces the back arrow.
+- **End of a chapter:** in Paged mode, going past the last page opens the next chapter. In Long Strip mode a card at the bottom offers "Next chapter".
+
+### 🎵 Music player
+
+The music button sits at the left of the strip under the pages. Click it to open the player, then play, skip and pick tracks. Music keeps playing when you move between chapters.
+
+**Edit the playlist:** **Appearance → Customize → Reader Music Player**. Add one track per line as `Title | Link`:
+
+```
+Lofi Girl - lofi hip hop radio | https://www.youtube.com/watch?v=jfKfPfyJRdk
+Late Night Lofi | https://yoursite.com/wp-content/uploads/late-night.mp3
+```
+
+- Links can be **YouTube videos or live streams**, or **direct audio files** (mp3, ogg, wav) from your Media Library.
+- YouTube tracks show a small video in the panel. For listening in the background, use audio files.
+- The default playlist uses two YouTube streams that may stop working. If one doesn't play, replace the link.
+- Only add music you are allowed to use.
+
+### 🦶 Footer and menus
+
+- **Footer links:** go to **Appearance → Menus**, create a menu, and tick **Footer Menu: Quick Links** or **Footer Menu: Browse** under *Display location*.
+- **About text:** go to **Appearance → Customize → Footer**. Change the heading and text, or hide it. If you leave the text empty, your site tagline is shown.
+
+### ✏️ Chapter titles
+
+When you edit a chapter, you can add an **optional chapter title** (for example "Who Is The Reaper's Enemy?"). It shows in MangaStreamUI's lists and tiles and on the manga page.
 
 ---
 
@@ -198,7 +312,7 @@ Importing adds the chapters, but not the extras. Go to **Manga → All Manga**, 
 - **Your original files are never moved or deleted.** Images are copied into your Media Library.
 - **Already imported chapters are hidden** so you can't import them twice.
 - **Need a chapter to show up again?** Click **Clear import history** at the top of the page.
-- **Import stops or times out?** Import fewer chapters at a time. On free shared hosting, start with 1-3.
+- **Import stops or times out?** Import fewer chapters at a time. On free shared hosting, start with 1-3, because importing can use a lot of CPU.
 - **Page order looks wrong?** Rename the images with leading numbers (`01`, `02`, …). You can also fix the order later in the chapter's **Chapter Images** box using **Sort naturally**.
 
 <details>
@@ -218,42 +332,150 @@ Importing adds the chapters, but not the extras. Go to **Manga → All Manga**, 
 <a id="changelog"></a>
 ## 📜 Changelog
 
-#### Beta Update 1
+**Key:** ✨ New · 🔧 Improved · 🐛 Fixed · 🔄 Changed
 
-**Added**
-- Library filters like MangaDex: include/exclude genres, status, A-Z letters, title search and sorting
-- Sort by A → Z, Z → A, Recently updated, Newly added or Most chapters
-- Filters and pages update without reloading, and filtered links can be shared
-- Theme switcher: **Light, Dark, Sepia and the new MetroUI theme** (12 accent colours)
-- Genre and status links now open the filtered library
-- Reader: tap zones, swipe navigation, and automatic jump to the next chapter
-- Chapter editor: Media Library picker with page preview
-- Admin chapter list now shows manga, chapter and page count
+| Update | Highlights |
+|---|---|
+| [**Beta Update 4**](#beta-update-4) | FluentUI, bookmarks, continue reading, right-to-left reader, calmer reader layout |
+| [**Beta Update 3**](#beta-update-3) | News on every theme, slider options, recommendations, music player, footer menus |
+| [**Beta Update 2**](#beta-update-2) | MangaStreamUI theme, News Updates, Manga List page |
+| [**Beta Update 1**](#beta-update-1) | MangaDex-style library filters, MetroUI theme, many reader fixes |
+| [**Alpha Update 2**](#alpha-update-2) | Chapter order and reader fixes |
 
-**Fixed**
-- Chapter order when volumes and loose chapters are mixed, and decimal chapters (e.g. 10.5)
-- "Chapter 1" style titles showing as "Ch. ?"
-- Wrong "Latest" chapter after uploading older chapters
-- Manga cards now look the same everywhere, including after filtering
-- Mobile menu not opening, and submenus closing the whole menu
-- Reader: page counter resetting, double-click skipping pages, zoom clipping the page, blocked shortcuts (Ctrl+F, Ctrl+S) and a broken mobile layout
-- Importer deleting your original files, and pages importing out of order
-- Security, speed and accessibility improvements
+<a id="beta-update-4"></a>
+<details open>
+<summary><b>Beta Update 4</b> · latest</summary>
 
-**Changed**
-- Import folder is now `wp-content/manga-import/`
-- Reader image fit options are now Fit width, Fit height and Original
-- Genre and status pages redirect to the filtered library
+<br>
 
-#### Alpha Update 2
-- Fixed next/prev chapter being reversed
-- Updated code to fix manga list page
-- Added code to fix some functions not working properly on the reader page
+| Type | Change |
+|---|---|
+| ✨ New | **FluentUI.** Light, Dark and Sepia are now one theme with three modes. Saved choices carry over automatically. |
+| ✨ New | **Reader themes.** The reader matches the UI you picked and starts with a background that suits it. |
+| ✨ New | **Bookmarks.** A Bookmark button on every manga page and a "Your bookmarks" row on the homepage. |
+| ✨ New | **Continue reading.** A Continue button on the manga page, a "Continue reading" row on the homepage, and half-read chapters reopen on your page. |
+| ✨ New | **Read marks.** Chapters you've read are dimmed with a ✓ in the chapter list. |
+| ✨ New | **Right-to-left reading** option, which flips taps, arrow keys and swipes. |
+| ✨ New | **Brightness slider** in the reader settings. |
+| ✨ New | **Auto-hide toolbar** option in the reader settings. |
+| ✨ New | **End-of-chapter card** in Long Strip mode with a "Next chapter" button. |
+| ✨ New | The **next chapter loads in the background** while you read. |
+| ✨ New | **"You might also like"** related manga on each manga page. |
+| ✨ New | **Random** button in the library and footer. |
+| ✨ New | **NEW tag** on cards updated in the last 3 days. |
+| ✨ New | **Editable footer About section** (Appearance → Customize → Footer). |
+| ✨ New | **Home icon** on the phone reader, replacing the back arrow. |
+| 🔧 Improved | The music player keeps playing between chapters, and audio files continue where they stopped. |
+| 🔧 Improved | **Calmer reader:** the page number and music button sit in a slim strip, zoom moved into settings, and the arrows fade when idle. |
+| 🔧 Improved | MangaStreamUI top tiles show the whole cover with the title, chapter and date, and become a swipe row on phones. |
+| 🔧 Improved | Slider arrow buttons are now icons that match each theme. |
+| 🐛 Fixed | MangaStreamUI chapter badges showing just a number. They now read "Ch. 7". |
+| 🐛 Fixed | Bookmarks not showing on the homepage. |
+| 🐛 Fixed | Old scripts and styles being served after an update. |
+| 🐛 Fixed | Music not resuming between pages. |
+
+</details>
+
+<a id="beta-update-3"></a>
+<details>
+<summary><b>Beta Update 3</b></summary>
+
+<br>
+
+| Type | Change |
+|---|---|
+| ✨ New | **News on every theme.** Light, Dark, Sepia and MetroUI show a "Latest news" headline list in the sidebar. MangaStreamUI shows full posts in the main column. |
+| ✨ New | **Homepage slider options:** New titles, Most viewed, Popular this week or Recommendations, with your own heading and number of slides. |
+| ✨ New | **Recommendations.** Hand-pick manga for the slider, with an optional note and order number. |
+| ✨ New | **View counter.** Counts visits to manga and chapter pages (bots and logged-in editors are ignored) and adds a Views column to the manga list. |
+| ✨ New | **Mini music player** on the reader page with a lofi playlist (YouTube links, live streams or audio files). |
+| ✨ New | **Footer menus.** The Quick Links and Browse columns now use WordPress menus. |
+| 🔧 Improved | MangaStreamUI has a cleaner layout, with a tidier sidebar, Bootstrap-style buttons, inputs and pagination, and a striped chapter list. |
+| 🔧 Improved | The sidebar no longer sticks while scrolling, so nothing gets cut off on shorter screens. |
+| 🐛 Fixed | Bullet points and numbered lists in news posts, pages and descriptions. |
+| 🐛 Fixed | "Browse the full library" 404. Library links now point to your Manga List page. |
+| 🐛 Fixed | The site title looking different on the homepage than on other pages. |
+| 🐛 Fixed | Old CSS being served after an update. |
+
+</details>
+
+<a id="beta-update-2"></a>
+<details>
+<summary><b>Beta Update 2</b></summary>
+
+<br>
+
+| Type | Change |
+|---|---|
+| ✨ New | **MangaStreamUI theme,** based on the classic MangaStream site (blue header band, white logo text, grey cards and an overlapping nav bar). |
+| ✨ New | **News Updates** menu for posting news to the front page, with "Read more" support and an "Older news" archive at `/news/`. |
+| ✨ New | **"New & Noteworthy"** sidebar list of the 12 newest chapters, highlighted when posted in the last 3 days. |
+| ✨ New | **Three featured tiles** for the most recently updated manga. |
+| ✨ New | **Optional chapter title** field in the chapter editor. |
+| ✨ New | **Customizer options for MangaStreamUI:** number of news posts and an optional support box. |
+| ✨ New | The library now lives on a page called **Manga List** (slug `manga-list`), and `/manga/` redirects to it. |
+| 🐛 Fixed | "Browse the full library" and other library links showing a 404. |
+| 🔄 Changed | The theme refreshes its page addresses once after updating so the new News pages work. |
+
+</details>
+
+<a id="beta-update-1"></a>
+<details>
+<summary><b>Beta Update 1</b></summary>
+
+<br>
+
+| Type | Change |
+|---|---|
+| ✨ New | **MangaDex-style library filters:** include/exclude genres, status, A-Z letters, title search and sorting. |
+| ✨ New | Sort by A → Z, Z → A, Recently updated, Newly added or Most chapters. |
+| ✨ New | Filters and pages update without reloading, and filtered links can be shared. |
+| ✨ New | **Theme switcher** with Light, Dark, Sepia and the new **MetroUI** theme (12 accent colours). |
+| ✨ New | Genre and status links now open the filtered library. |
+| ✨ New | Reader: tap zones, swipe navigation, and an automatic jump to the next chapter. |
+| ✨ New | Chapter editor: Media Library picker with page preview. |
+| ✨ New | The admin chapter list shows manga, chapter and page count. |
+| 🐛 Fixed | Chapter order when volumes and loose chapters are mixed, and decimal chapters (e.g. 10.5). |
+| 🐛 Fixed | "Chapter 1" style titles showing as "Ch. ?". |
+| 🐛 Fixed | Wrong "Latest" chapter after uploading older chapters. |
+| 🐛 Fixed | Manga cards looking different after filtering. |
+| 🐛 Fixed | Mobile menu not opening, and submenus closing the whole menu. |
+| 🐛 Fixed | Reader: page counter resetting, double-click skipping pages, zoom clipping the page, blocked shortcuts (Ctrl+F, Ctrl+S) and a broken mobile layout. |
+| 🐛 Fixed | Importer deleting your original files, and pages importing out of order. |
+| 🔧 Improved | Security, speed and accessibility across the theme. |
+| 🔄 Changed | Import folder is now `wp-content/manga-import/`. |
+| 🔄 Changed | Reader image fit options are now Fit width, Fit height and Original. |
+| 🔄 Changed | Genre and status pages redirect to the filtered library. |
+
+</details>
+
+<a id="alpha-update-2"></a>
+<details>
+<summary><b>Alpha Update 2</b></summary>
+
+<br>
+
+| Type | Change |
+|---|---|
+| 🐛 Fixed | Next/prev chapter being reversed. |
+| 🐛 Fixed | The manga list page. |
+| 🐛 Fixed | Some functions not working properly on the reader page. |
+
+</details>
 
 ---
 
-<a id="updating-from-alpha"></a>
-## 🛠️ Updating from Alpha
+<a id="updating"></a>
+## 🛠️ Updating
+
+### Updating a Beta install
+
+1. Back up your site.
+2. Go to **Appearance → Themes → Add New → Upload Theme**, choose the new zip and click **Replace current with uploaded**.
+3. **Empty your caches** (caching plugin and host cache), then hard refresh with **Ctrl+F5**. This makes sure your site loads the new scripts and styles.
+4. Visitors' saved choices carry over: old Light, Dark or Sepia choices become FluentUI in the same mode.
+
+### Updating from Alpha
 
 - Move your old `ABSPATH/manga/` import folder to `wp-content/manga-import/`.
 - Create the **[Manga List page](#manga-list-page)**.
@@ -271,6 +493,8 @@ add_filter( 'manga_redirect_taxonomies', '__return_false' );
 
 <a id="screenshots"></a>
 ## 🖼️ Screenshots
+
+> These screenshots show an earlier look of the theme.
 
 **Homepage**
 <img width="1193" height="905" alt="Homepage" src="https://github.com/user-attachments/assets/5605547c-bc57-4801-9f20-1fbe833012ec" />
