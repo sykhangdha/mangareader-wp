@@ -3,2317 +3,807 @@ Theme Name: Manga Reader Theme
 Theme URI: https://your-site.com
 Author: Ha Sky
 Author URI: https://hasky.rf.gd
-Description: A complete manga reading theme with Windows 11 Fluent Design and Mica effect
-Version: 6.2
+Description: A complete manga reading theme with three themes: FluentUI (Light, Dark and Sepia modes), MetroUI and MangaStreamUI, a MangaDex-style library filter and a fullscreen reader.
+Version: 7.2
 License: GPL v2 or later
 Text Domain: manga-theme
 */
 
-/* ============================================
-   CSS RESET & BASE VARIABLES - Windows 11 Fluent Design
-   ============================================ */
+/* ============================================================
+   TOKENS (themes only change these variables)
+   ============================================================ */
 :root {
-    /* Windows 11 Colors */
-    --primary: #0078d4;
-    --primary-dark: #106ebe;
-    --primary-light: #3b9eff;
-    --primary-bg: #deecf9;
-    --accent: #0078d4;
-    --accent-hover: #106ebe;
-    
-    /* Mica Effect Colors - Light Mode */
-    --mica-bg: rgba(243, 242, 241, 0.85);
-    --mica-overlay: rgba(255, 255, 255, 0.5);
-    --surface: rgba(255, 255, 255, 0.7);
-    --surface-alt: rgba(255, 255, 255, 0.5);
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --card-border: rgba(0, 0, 0, 0.08);
-    
-    /* Text Colors */
-    --text: #202020;
-    --text-light: #605e5c;
-    --text-disabled: #a19f9d;
-    --white: #ffffff;
-    
-    /* Shadows - Windows 11 Style */
-    --shadow-sm: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132), 0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
-    --shadow-md: 0 3.2px 7.2px 0 rgba(0, 0, 0, 0.132), 0 0.6px 1.8px 0 rgba(0, 0, 0, 0.108);
-    --shadow-lg: 0 6.4px 14.4px 0 rgba(0, 0, 0, 0.132), 0 1.2px 3.6px 0 rgba(0, 0, 0, 0.108);
-    --shadow-xl: 0 12.8px 28.8px 0 rgba(0, 0, 0, 0.132), 0 2.4px 7.2px 0 rgba(0, 0, 0, 0.108);
-    
-    /* Radius - Windows 11 Style */
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
-    
-    /* Transitions */
-    --transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    
-    /* Backdrop Blur */
-    --blur-amount: 24px;
+	--primary: #0078d4; --primary-dark: #106ebe; --primary-light: #3b9eff; --primary-bg: #deecf9; --on-primary: #fff;
+	--bg: #f3f2f1; --header-bg: rgba(255,255,255,.8); --card-bg: rgba(255,255,255,.9); --surface: rgba(255,255,255,.7);
+	--card-border: rgba(0,0,0,.08); --hover-bg: rgba(0,0,0,.05);
+	--text: #202020; --text-light: #605e5c; --text-disabled: #a19f9d;
+	--success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+	--shadow-sm: 0 1.6px 3.6px rgba(0,0,0,.13), 0 .3px .9px rgba(0,0,0,.1);
+	--shadow-md: 0 3.2px 7.2px rgba(0,0,0,.13), 0 .6px 1.8px rgba(0,0,0,.1);
+	--shadow-lg: 0 6.4px 14.4px rgba(0,0,0,.13), 0 1.2px 3.6px rgba(0,0,0,.1);
+	--shadow-xl: 0 12.8px 28.8px rgba(0,0,0,.13), 0 2.4px 7.2px rgba(0,0,0,.1);
+	--radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 20px;
+	--transition: all .2s cubic-bezier(.2,.9,.4,1.1);
+	--blur: blur(24px);
+	--font: 'Segoe UI','Segoe UI Variable',-apple-system,BlinkMacSystemFont,Roboto,'Helvetica Neue',Arial,sans-serif;
+	--heading-weight: 600; --heading-transform: none;
+	color-scheme: light;
+}
+html[data-theme="fluent"][data-mode="dark"] {
+	--bg: #1c1c1c; --header-bg: rgba(32,32,32,.85); --card-bg: rgba(44,44,44,.85); --surface: rgba(255,255,255,.06);
+	--card-border: rgba(255,255,255,.1); --hover-bg: rgba(255,255,255,.08);
+	--text: #fff; --text-light: #d0d0d0; --text-disabled: #808080; --primary-bg: rgba(0,120,212,.22);
+	color-scheme: dark;
+}
+html[data-theme="fluent"][data-mode="sepia"] {
+	--primary: #9a6b3f; --primary-dark: #7d5530; --primary-light: #b58559; --primary-bg: #ead9bd;
+	--bg: #f4ecd8; --header-bg: rgba(244,236,216,.9); --card-bg: rgba(250,242,226,.92); --surface: rgba(120,90,50,.07);
+	--card-border: rgba(91,70,54,.18); --hover-bg: rgba(91,70,54,.09);
+	--text: #5b4636; --text-light: #8b7355; --text-disabled: #b3a283;
+}
+html[data-theme="metro"] {
+	--primary: var(--metro-accent, #0050ef); --primary-dark: var(--primary); --primary-light: var(--primary);
+	--primary-bg: rgba(255,255,255,.12); --on-primary: var(--metro-on-accent, #fff);
+	--bg: #000; --header-bg: #000; --card-bg: #1b1b1b; --surface: #2b2b2b; --card-border: transparent; --hover-bg: rgba(255,255,255,.16);
+	--text: #fff; --text-light: #b3b3b3; --text-disabled: #6b6b6b; --danger: #e51400;
+	--shadow-sm: none; --shadow-md: none; --shadow-lg: none; --shadow-xl: none;
+	--radius-sm: 0; --radius-md: 0; --radius-lg: 0; --radius-pill: 0;
+	--transition: all .15s ease-out; --blur: none;
+	--font: 'Segoe WP','Segoe UI','Selawik','Helvetica Neue',Arial,sans-serif;
+	--heading-weight: 300; --heading-transform: lowercase;
+	color-scheme: dark;
+}
+@supports (color: color-mix(in srgb, red, blue)) {
+	html[data-theme="metro"] { --primary-dark: color-mix(in srgb, var(--primary) 80%, #000); }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* ============================================================
+   BASE
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
-    font-family: 'Segoe UI', 'Segoe UI Variable', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-    line-height: 1.5;
-    color: var(--text);
-    background: #f3f2f1;
-    transition: background 0.3s, color 0.3s;
-    position: relative;
+	font-family: var(--font); line-height: 1.5; color: var(--text); background: var(--bg);
+	background-image: radial-gradient(ellipse at 20% 0%, rgba(0,120,212,.07), transparent 55%);
+	background-attachment: fixed; transition: background-color .3s, color .3s;
 }
+.site { display: flex; flex-direction: column; min-height: 100vh; }
+.site-main { flex: 1; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-/* Mica Background Effect - Light Mode */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.03"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="%230078d4" stroke-width="0.5"/><circle cx="50" cy="50" r="30" fill="none" stroke="%230078d4" stroke-width="0.5"/><path d="M20,50 L80,50 M50,20 L50,80" stroke="%230078d4" stroke-width="0.5" opacity="0.5"/></svg>');
-    background-repeat: repeat;
-    background-size: 30px 30px;
-    z-index: -2;
-    pointer-events: none;
-}
+h1, h2, h3, h4, h5, h6 { font-weight: var(--heading-weight); text-transform: var(--heading-transform); line-height: 1.3; letter-spacing: -.01em; }
+a { text-decoration: none; color: inherit; transition: var(--transition); }
+img { max-width: 100%; height: auto; }
+button, input, select { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.description { color: var(--text-light); font-size: 13px; }
 
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(ellipse at 20% 30%, rgba(0, 120, 212, 0.03), transparent 50%);
-    backdrop-filter: blur(0px);
-    z-index: -1;
-    pointer-events: none;
-}
+.screen-reader-text { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip-link:focus { position: fixed !important; top: 8px; left: 8px; width: auto; height: auto; clip: auto; padding: 8px 14px; background: var(--primary); color: var(--on-primary); z-index: 3000; }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-}
-
-/* ============================================
-   TYPOGRAPHY - Windows 11 Style
-   ============================================ */
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: var(--transition);
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* ============================================
-   DARK MODE - Windows 11 Dark Theme with Mica
-   ============================================ */
-body.dark-mode {
-    --mica-bg: rgba(32, 32, 32, 0.85);
-    --mica-overlay: rgba(0, 0, 0, 0.3);
-    --surface: rgba(32, 32, 32, 0.7);
-    --surface-alt: rgba(32, 32, 32, 0.5);
-    --card-bg: rgba(32, 32, 32, 0.85);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --text: #ffffff;
-    --text-light: #d0d0d0;
-    --text-disabled: #808080;
-    background: #1c1c1c;
-}
-
-body.dark-mode::before {
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.02"><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="%230078d4" stroke-width="0.5"/><circle cx="50" cy="50" r="30" fill="none" stroke="%230078d4" stroke-width="0.5"/><path d="M20,50 L80,50 M50,20 L50,80" stroke="%230078d4" stroke-width="0.5" opacity="0.3"/></svg>');
-}
-
-body.dark-mode .site-header,
-body.dark-mode .main-nav {
-    background: rgba(32, 32, 32, 0.85);
-    backdrop-filter: blur(var(--blur-amount));
-    border-bottom-color: rgba(255, 255, 255, 0.05);
-}
-
-body.dark-mode .manga-item,
-body.dark-mode .widget,
-body.dark-mode .alphabet-filter,
-body.dark-mode .single-manga .manga-header,
-body.dark-mode .single-manga .chapters-section,
-body.dark-mode .chapter-reader,
-body.dark-mode .featured-section,
-body.dark-mode .pagination a,
-body.dark-mode .pagination span,
-body.dark-mode .sort-btn,
-body.dark-mode .goto-page-container,
-body.dark-mode .settings-panel,
-body.dark-mode .chapter-card-link {
-    background: rgba(32, 32, 32, 0.7);
-    backdrop-filter: blur(var(--blur-amount));
-    border-color: rgba(255, 255, 255, 0.08);
-}
-
-body.dark-mode .search-modal-content,
-body.dark-mode .settings-panel {
-    background: rgba(32, 32, 32, 0.9);
-}
-
-/* ============================================
-   SEPIA MODE
-   ============================================ */
-body.sepia-mode {
-    --mica-bg: rgba(250, 240, 225, 0.85);
-    --surface: rgba(250, 240, 225, 0.7);
-    --card-bg: rgba(250, 240, 225, 0.85);
-    --text: #5b4636;
-    --text-light: #8b7355;
-    background: #f4ecd8;
-}
-
-body.sepia-mode .site-header,
-body.sepia-mode .main-nav {
-    background: rgba(74, 55, 41, 0.9);
-}
-
-body.sepia-mode .manga-item,
-body.sepia-mode .widget,
-body.sepia-mode .alphabet-filter,
-body.sepia-mode .single-manga .manga-header,
-body.sepia-mode .single-manga .chapters-section,
-body.sepia-mode .chapter-reader,
-body.sepia-mode .featured-section {
-    background: rgba(250, 240, 225, 0.8);
-}
-
-/* ============================================
-   HEADER - Windows 11 Style
-   ============================================ */
+/* ============================================================
+   HEADER + NAV
+   ============================================================ */
 .site-header {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(var(--blur-amount));
-    padding: 12px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 1px solid var(--card-border);
-    transition: var(--transition);
+	position: sticky; top: 0; z-index: 1000; padding: 10px 0;
+	background: var(--header-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+	border-bottom: 1px solid var(--card-border);
 }
-
-.header-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
+.header-wrapper { display: flex; align-items: center; gap: 24px; }
+.site-branding { flex: none; }
 .site-title {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -0.5px;
+	/* Same look whether it is an <h1> (homepage) or a <p> (other pages) */
+	margin: 0; font-family: var(--font); font-size: 22px; font-weight: var(--heading-weight);
+	text-transform: var(--heading-transform); letter-spacing: -.5px; line-height: 1.2;
 }
-
 .site-title a {
-    color: var(--text);
-    transition: var(--transition);
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+	background: linear-gradient(135deg, var(--primary), var(--primary-light));
+	-webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
+.site-description { margin: 0; color: var(--text-light); font-size: 12px; font-weight: 400; line-height: 1.5; text-transform: none; }
 
-.site-description {
-    color: var(--text-light);
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-/* Header Actions */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Animated Dark Mode Toggle */
-.dark-mode-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    width: 48px;
-    height: 28px;
-    position: relative;
-    transition: var(--transition);
-}
-
-.toggle-track {
-    width: 48px;
-    height: 28px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 34px;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    backdrop-filter: blur(2px);
-}
-
-body.dark-mode .toggle-track {
-    background: rgba(0, 120, 212, 0.3);
-}
-
-.toggle-thumb {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 24px;
-    height: 24px;
-    background: white;
-    border-radius: 50%;
-    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-body.dark-mode .toggle-thumb {
-    transform: translateX(20px);
-    background: var(--primary);
-}
-
-.toggle-thumb svg {
-    position: absolute;
-    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-}
-
-.sun-icon {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-    color: #f59e0b;
-}
-
-.moon-icon {
-    opacity: 0;
-    transform: scale(0.5) rotate(-90deg);
-    color: white;
-}
-
-body.dark-mode .sun-icon {
-    opacity: 0;
-    transform: scale(0.5) rotate(90deg);
-}
-
-body.dark-mode .moon-icon {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-}
-
-.dark-mode-toggle:hover .toggle-track {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-body.dark-mode .dark-mode-toggle:hover .toggle-track {
-    background: rgba(0, 120, 212, 0.4);
-}
-
-.dark-mode-toggle:hover .toggle-thumb {
-    transform: scale(1.05);
-}
-
-body.dark-mode .dark-mode-toggle:hover .toggle-thumb {
-    transform: translateX(20px) scale(1.05);
-}
-
-/* Search Toggle */
-.search-toggle {
-    background: rgba(0, 0, 0, 0.04);
-    border: none;
-    color: var(--text);
-    cursor: pointer;
-    padding: 8px;
-    border-radius: var(--radius-sm);
-    transition: var(--transition);
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.search-toggle:hover {
-    background: rgba(0, 0, 0, 0.08);
-    transform: scale(1.02);
-}
-
-.search-toggle svg {
-    width: 18px;
-    height: 18px;
-}
-
-.mobile-menu-toggle {
-    display: none;
-    background: rgba(0, 0, 0, 0.04);
-    border: none;
-    cursor: pointer;
-    flex-direction: column;
-    gap: 5px;
-    padding: 8px;
-    border-radius: var(--radius-sm);
-    width: 36px;
-    height: 36px;
-    align-items: center;
-    justify-content: center;
-}
-
-.mobile-menu-toggle span {
-    width: 18px;
-    height: 2px;
-    background: var(--text);
-    transition: var(--transition);
-    border-radius: 2px;
-}
-
-/* ============================================
-   NAVIGATION - Windows 11 Style
-   ============================================ */
-.main-nav {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(var(--blur-amount));
-    position: sticky;
-    top: 61px;
-    z-index: 999;
-    border-bottom: 1px solid var(--card-border);
-}
-
-.primary-menu {
-    list-style: none;
-    display: flex;
-    gap: 24px;
-    padding: 0;
-    margin: 0;
-}
-
-.primary-menu li {
-    position: relative;
-}
-
-.primary-menu a {
-    color: var(--text);
-    padding: 12px 0;
-    display: inline-block;
-    font-weight: 500;
-    font-size: 14px;
-    position: relative;
-    opacity: 0.8;
-    transition: var(--transition);
-}
-
-.primary-menu a:hover {
-    opacity: 1;
-    color: var(--primary);
-}
-
-/* Dropdown */
+.main-nav { flex: 1; min-width: 0; }
+.primary-menu { list-style: none; display: flex; flex-wrap: wrap; gap: 22px; }
+.primary-menu li { position: relative; }
+.primary-menu a { display: inline-block; padding: 10px 0; font-size: 14px; font-weight: 500; opacity: .8; }
+.primary-menu a:hover, .primary-menu .current-menu-item > a { opacity: 1; color: var(--primary); }
 .primary-menu .sub-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: var(--surface);
-    backdrop-filter: blur(var(--blur-amount));
-    min-width: 200px;
-    padding: 8px 0;
-    border-radius: var(--radius-md);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: var(--transition);
-    box-shadow: var(--shadow-lg);
-    border: 1px solid var(--card-border);
-    z-index: 100;
-    list-style: none;
+	position: absolute; top: 100%; left: 0; min-width: 200px; padding: 8px 0; list-style: none;
+	background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border);
+	border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+	opacity: 0; visibility: hidden; transform: translateY(-8px); transition: var(--transition); z-index: 100;
 }
+.primary-menu li:hover > .sub-menu, .primary-menu li:focus-within > .sub-menu { opacity: 1; visibility: visible; transform: none; }
+.primary-menu .sub-menu a { display: block; padding: 8px 16px; font-size: 13px; }
 
-.primary-menu li:hover > .sub-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+.header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.icon-btn {
+	display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+	background: var(--hover-bg); border: 0; border-radius: var(--radius-sm); color: var(--text); cursor: pointer; transition: var(--transition);
 }
+.icon-btn:hover { opacity: .75; }
+.mobile-menu-toggle { display: none; flex-direction: column; gap: 5px; }
+.mobile-menu-toggle span { width: 18px; height: 2px; background: currentColor; border-radius: 2px; transition: var(--transition); }
+.mobile-menu-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.mobile-menu-toggle.active span:nth-child(2) { opacity: 0; }
+.mobile-menu-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-.primary-menu .sub-menu a {
-    padding: 8px 16px;
-    display: block;
-    font-size: 13px;
+/* Theme switcher */
+.theme-switcher { position: relative; }
+.theme-menu {
+	position: absolute; right: 0; top: calc(100% + 8px); min-width: 230px; padding: 12px; z-index: 1100;
+	background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border);
+	border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
 }
-
-/* ============================================
-   SEARCH MODAL - Windows 11 Style
-   ============================================ */
-.search-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2000;
-    display: none;
-    align-items: center;
-    justify-content: center;
+.theme-menu[hidden], .accent-picker[hidden] { display: none; }
+.theme-menu-title { margin: 4px 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-light); }
+.theme-option {
+	display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; background: none; border: 0;
+	border-radius: var(--radius-sm); color: var(--text); font-size: 14px; text-align: left; cursor: pointer;
 }
+.theme-option:hover { background: var(--hover-bg); }
+.theme-option[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
+.theme-swatch { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(128,128,128,.5); }
+.theme-swatch-fluent { background: linear-gradient(135deg, #fff 50%, #0078d4 50%); }
+.theme-swatch-light { background: #fff; }
+.theme-swatch-dark { background: #1c1c1c; }
+.theme-swatch-sepia { background: #f4ecd8; }
+.theme-swatch-metro { background: linear-gradient(135deg, #000 50%, var(--metro-accent, #0050ef) 50%); border-radius: 0; }
+.accent-picker, .mode-picker { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--card-border); }
+.mode-picker[hidden] { display: none; }
+.accent-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.accent-swatch { aspect-ratio: 1; border: 2px solid transparent; border-radius: var(--radius-sm); cursor: pointer; }
+.accent-swatch[aria-pressed="true"] { border-color: var(--text); box-shadow: inset 0 0 0 2px var(--bg); }
 
-.search-modal.active {
-    display: flex;
-}
-
-.search-modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
-}
-
+/* Search modal */
+.search-modal { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; }
+.search-modal.active { display: flex; }
+.search-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(8px); }
 .search-modal-content {
-    position: relative;
-    width: 90%;
-    max-width: 520px;
-    background: var(--card-bg);
-    backdrop-filter: blur(var(--blur-amount));
-    border-radius: var(--radius-lg);
-    padding: 32px;
-    z-index: 2001;
-    animation: modalSlideIn 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--shadow-xl);
+	position: relative; width: 90%; max-width: 520px; padding: 32px; z-index: 1;
+	background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border);
+	border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); animation: modalIn .25s cubic-bezier(.2,.9,.4,1.1);
 }
-
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+@keyframes modalIn { from { opacity: 0; transform: translateY(-20px) scale(.96); } to { opacity: 1; transform: none; } }
+.search-modal-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; background: none; border: 0; border-radius: var(--radius-sm); color: var(--text); font-size: 22px; cursor: pointer; }
+.search-modal-close:hover { background: var(--hover-bg); }
+.search-modal-content h3 { margin-bottom: 20px; font-size: 24px; text-align: center; }
+.search-form-modal { display: flex; gap: 12px; margin-bottom: 20px; }
+.search-input-modal, .library-search, .library-select {
+	padding: 11px 14px; background: var(--surface); color: var(--text); border: 1px solid var(--card-border);
+	border-radius: var(--radius-md); font-size: 15px;
 }
+.search-input-modal { flex: 1; min-width: 0; }
+.search-input-modal:focus, .library-search:focus, .library-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0,120,212,.2); }
+.search-button-modal { padding: 11px 22px; background: var(--primary); color: var(--on-primary); border: 0; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; }
+.search-suggestions p { margin-bottom: 10px; font-size: 13px; color: var(--text-light); }
+.popular-manga-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.popular-manga-list a { padding: 5px 12px; background: var(--surface); border: 1px solid var(--card-border); border-radius: var(--radius-pill); font-size: 12px; }
+.popular-manga-list a:hover { background: var(--primary); color: var(--on-primary); }
 
-.search-modal-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: none;
-    border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-size: 20px;
-    transition: var(--transition);
-    color: var(--text);
-}
+/* ============================================================
+   LAYOUT + SECTIONS
+   ============================================================ */
+.content-wrapper { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 32px; }
+.main-content { min-width: 0; }
+.page-content { padding: 32px 0; }
+.entry-title { margin-bottom: 20px; font-size: 32px; }
+.entry-content > * + * { margin-top: 1em; }
+.entry-summary { margin-bottom: 24px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin: 28px 0 20px; }
+.section-header h1, .section-header h2 { font-size: 22px; }
+.view-all-link { margin-top: 32px; text-align: center; }
 
-.search-modal-close:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-.search-modal-content h3 {
-    margin-bottom: 24px;
-    font-size: 24px;
-    text-align: center;
-    font-weight: 600;
-}
-
-.search-form-modal {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.search-input-modal {
-    flex: 1;
-    padding: 12px 16px;
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-md);
-    font-size: 16px;
-    transition: var(--transition);
-    background: var(--surface);
-    color: var(--text);
-}
-
-.search-input-modal:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
-}
-
-.search-button-modal {
-    padding: 12px 24px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-.search-button-modal:hover {
-    background: var(--primary-dark);
-    transform: translateY(-1px);
-}
-
-.search-suggestions p {
-    font-size: 13px;
-    color: var(--text-light);
-    margin-bottom: 12px;
-}
-
-.popular-manga-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.popular-manga-list a {
-    background: var(--surface);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    transition: var(--transition);
-    border: 1px solid var(--card-border);
-}
-
-.popular-manga-list a:hover {
-    background: var(--primary);
-    color: white;
-}
-
-/* ============================================
-   HERO SECTION - Windows 11 Style
-   ============================================ */
-.hero-section {
-    background: linear-gradient(135deg, rgba(0, 120, 212, 0.05) 0%, rgba(0, 120, 212, 0.02) 100%);
-    border-radius: var(--radius-lg);
-    padding: 48px;
-    margin: 32px 0 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(var(--blur-amount));
-    border: 1px solid var(--card-border);
-}
-
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -30%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(0, 120, 212, 0.1), transparent 70%);
-    border-radius: 50%;
-}
-
-.hero-content h1 {
-    font-size: 38px;
-    margin-bottom: 12px;
-    font-weight: 600;
-    background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.hero-content p {
-    font-size: 18px;
-    opacity: 0.8;
-    margin-bottom: 32px;
-}
-
-.hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 48px;
-}
-
-.stat {
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 32px;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-.stat-label {
-    font-size: 13px;
-    opacity: 0.7;
-}
-
-/* ============================================
-   SECTION HEADER
-   ============================================ */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
-
-.section-header h2 {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-}
-
-/* ============================================
-   MANGA GRID - Windows 11 Cards
-   ============================================ */
-.manga-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 24px;
-    margin: 24px 0;
-}
-
-.manga-item {
-    background: var(--card-bg);
-    backdrop-filter: blur(var(--blur-amount));
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    transition: var(--transition);
-    border: 1px solid var(--card-border);
-}
-
-.manga-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
-}
-
-.manga-item-cover {
-    position: relative;
-    padding-top: 140%;
-    overflow: hidden;
-    background: #f0f0f0;
-}
-
-.manga-item-cover img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.manga-item:hover .manga-item-cover img {
-    transform: scale(1.03);
-}
-
-.manga-item-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.manga-item-cover:hover .manga-item-overlay {
-    opacity: 1;
-}
-
-.view-details {
-    color: white;
-    font-size: 13px;
-    padding: 8px 16px;
-    background: var(--primary);
-    border-radius: 20px;
-    font-weight: 500;
-}
-
-.latest-chapter-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: var(--primary);
-    color: white;
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-    box-shadow: var(--shadow-sm);
-}
-
-.manga-item-info {
-    padding: 14px;
-}
-
-.manga-item-title {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.manga-item-title a:hover {
-    color: var(--primary);
-}
-
-.manga-item-chapters {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.manga-item-chapters .chapter-link {
-    font-size: 11px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 0;
-    border-bottom: 1px solid var(--card-border);
-}
-
-.manga-item-chapters .chapter-link:hover {
-    color: var(--primary);
-}
-
-.no-chapters {
-    font-size: 11px;
-    color: var(--text-light);
-    text-align: center;
-    padding: 12px;
-}
-
-/* ============================================
-   SORT OPTIONS - Windows 11 Buttons
-   ============================================ */
-.sort-options {
-    display: flex;
-    gap: 8px;
-}
-
+.sort-options { display: flex; flex-wrap: wrap; gap: 8px; }
 .sort-btn {
-    padding: 6px 16px;
-    background: var(--surface);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-}
-
-.sort-btn:hover {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: white;
-}
-
-.sort-btn.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: white;
-}
-
-/* ============================================
-   ALPHABET FILTER - Windows 11 Style
-   ============================================ */
-.alphabet-filter {
-    background: var(--surface);
-    backdrop-filter: blur(var(--blur-amount));
-    padding: 16px;
-    border-radius: var(--radius-md);
-    margin: 24px 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: center;
-    border: 1px solid var(--card-border);
-}
-
-.alphabet-filter a {
-    display: inline-block;
-    padding: 6px 12px;
-    background: rgba(0, 0, 0, 0.04);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    font-weight: 500;
-    transition: var(--transition);
-    color: var(--text);
-}
-
-.alphabet-filter a:hover,
-.alphabet-filter a.active {
-    background: var(--primary);
-    color: white;
-}
-
-/* ============================================
-   SIDEBAR - Windows 11 Widgets
-   ============================================ */
-.sidebar {
-    position: sticky;
-    top: 100px;
-    align-self: start;
-}
-
-.widget {
-    background: var(--card-bg);
-    backdrop-filter: blur(var(--blur-amount));
-    border-radius: var(--radius-md);
-    padding: 20px;
-    margin-bottom: 24px;
-    border: 1px solid var(--card-border);
-}
-
-.widget h3 {
-    font-size: 15px;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--primary);
-    display: inline-block;
-    font-weight: 600;
-}
-
-.genre-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.genre-item {
-    background: rgba(0, 0, 0, 0.04);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    transition: var(--transition);
-    color: var(--text);
-}
-
-.genre-item:hover {
-    background: var(--primary);
-    color: white;
-}
-
-/* ============================================
-   READING STATUS - FIXED VERSION
-   ============================================ */
-.status-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.status-filter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    background: var(--surface);
-    border-radius: var(--radius-md);
-    cursor: pointer !important;
-    transition: var(--transition);
-    border: 1px solid var(--card-border);
-    margin-bottom: 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.status-filter::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    opacity: 0;
-    transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    z-index: 0;
-}
-
-.status-filter:hover::before {
-    opacity: 0.08;
-}
-
-.status-filter:hover {
-    transform: translateX(4px);
-    border-color: var(--primary);
-    box-shadow: var(--shadow-md);
-}
-
-.status-filter:hover .status-name {
-    color: var(--primary);
-    transform: translateX(2px);
-}
-
-.status-filter:hover .status-count {
-    background: var(--primary);
-    color: white;
-    transform: scale(1.05);
-}
-
-.status-filter.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    box-shadow: var(--shadow-sm);
-}
-
-.status-filter.active .status-name {
-    color: white;
-}
-
-.status-filter.active .status-count {
-    background: rgba(255, 255, 255, 0.25);
-    color: white;
-}
-
-.status-filter.active::before {
-    opacity: 0;
-}
-
-.status-name {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    transition: var(--transition);
-    position: relative;
-    z-index: 1;
-}
-
-.status-count {
-    background: rgba(0, 0, 0, 0.08);
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-light);
-    transition: var(--transition);
-    position: relative;
-    z-index: 1;
-}
-
-.status-filter[data-status="ongoing"]:hover .status-name {
-    color: #10b981;
-}
-
-.status-filter[data-status="ongoing"]:hover {
-    border-color: #10b981;
-}
-
-.status-filter[data-status="ongoing"]:hover::before {
-    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-}
-
-.status-filter[data-status="completed"]:hover .status-name {
-    color: var(--primary);
-}
-
-.status-filter[data-status="completed"]:hover {
-    border-color: var(--primary);
-}
-
-.status-filter[data-status="hiatus"]:hover .status-name {
-    color: #f59e0b;
-}
-
-.status-filter[data-status="hiatus"]:hover {
-    border-color: #f59e0b;
-}
-
-.status-filter[data-status="hiatus"]:hover::before {
-    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-}
-
-.status-filter[data-status="cancelled"]:hover .status-name {
-    color: #ef4444;
-}
-
-.status-filter[data-status="cancelled"]:hover {
-    border-color: #ef4444;
-}
-
-.status-filter[data-status="cancelled"]:hover::before {
-    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
-}
-
-/* ============================================
-   SINGLE MANGA PAGE
-   ============================================ */
-.single-manga .manga-header {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 32px;
-    background: var(--card-bg);
-    backdrop-filter: blur(var(--blur-amount));
-    border-radius: var(--radius-lg);
-    padding: 32px;
-    margin: 24px 0;
-    border: 1px solid var(--card-border);
-}
-
-.single-manga .manga-cover-large {
-    width: 100%;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
-}
-
-.single-manga .manga-stats {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-}
-
-.single-manga .stat-box {
-    background: var(--surface);
-    padding: 12px 20px;
-    border-radius: var(--radius-md);
-    text-align: center;
-    min-width: 100px;
-    transition: var(--transition);
-    border: 1px solid var(--card-border);
-}
-
-.single-manga .stat-box:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
-}
-
-.single-manga .stat-value {
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-.single-manga .stat-value.status-ongoing { color: #10b981; }
-.single-manga .stat-value.status-completed { color: var(--primary); }
-.single-manga .stat-value.status-hiatus { color: #f59e0b; }
-.single-manga .stat-value.status-cancelled { color: #ef4444; }
-
-.single-manga .stat-label {
-    font-size: 12px;
-    color: var(--text-light);
-    margin-top: 4px;
-}
-
-.single-manga .manga-meta {
-    margin: 20px 0;
-    padding: 16px 0;
-    border-top: 1px solid var(--card-border);
-    border-bottom: 1px solid var(--card-border);
-}
-
-.single-manga .meta-item {
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.single-manga .meta-label {
-    font-weight: 600;
-    width: 80px;
-    display: inline-block;
-}
-
-.single-manga .genres {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 20px 0;
-}
-
-.single-manga .genre-tag {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    color: white;
-}
-
-.single-manga .manga-description {
-    line-height: 1.7;
-    margin: 20px 0;
-    color: var(--text-light);
-}
-
-.single-manga .manga-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-}
-
-.single-manga .chapters-section {
-    background: var(--card-bg);
-    backdrop-filter: blur(var(--blur-amount));
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    margin: 24px 0;
-    border: 1px solid var(--card-border);
-}
-
-.single-manga .chapters-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--card-border);
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.single-manga .chapters-header h2 {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.single-manga .chapters-controls {
-    display: flex;
-    gap: 8px;
-}
-
-.single-manga .chapter-sort-btn {
-    padding: 5px 14px;
-    background: var(--surface);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: var(--transition);
-    color: var(--text);
-}
-
-.single-manga .chapter-sort-btn:hover,
-.single-manga .chapter-sort-btn.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: white;
-}
-
-.single-manga .chapters-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.single-manga .chapter-card-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background: var(--surface);
-    border-radius: var(--radius-sm);
-    transition: var(--transition);
-    border: 1px solid transparent;
-}
-
-.single-manga .chapter-card-link:hover {
-    background: var(--card-bg);
-    border-color: var(--primary);
-    transform: translateX(4px);
-    box-shadow: var(--shadow-sm);
-}
-
-.single-manga .chapter-title {
-    font-weight: 500;
-    font-size: 14px;
-}
-
-.single-manga .chapter-date {
-    font-size: 12px;
-    color: var(--text-light);
-}
-
-.single-manga .new-badge {
-    background: var(--primary);
-    color: white;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    margin-left: 10px;
-}
-
-/* ============================================
-   MANGA READER - FULLSCREEN READER STYLES
-   ============================================ */
-
-/* Manga Reader Container */
-.manga-reader-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #0a0a0f;
-    z-index: 10000;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-/* Top Bar */
-.reader-top-bar {
-    background: rgba(16, 16, 20, 0.95);
-    backdrop-filter: blur(20px);
-    padding: 12px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 101;
-}
-
-.reader-top-bar-left,
-.reader-top-bar-center,
-.reader-top-bar-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.reader-nav-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
-    transition: all 0.2s;
-}
-
-.reader-nav-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.chapter-info-compact {
-    display: flex;
-    flex-direction: column;
-    padding-left: 8px;
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.compact-title {
-    font-size: 13px;
-    font-weight: 500;
-    color: white;
-}
-
-.compact-chapter {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.chapter-nav {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.chapter-selector-wrapper {
-    position: relative;
-}
-
-.chapter-selector {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
-    padding: 6px 12px;
-    color: white;
-    font-size: 13px;
-    cursor: pointer;
-    min-width: 140px;
-}
-
-.chapter-selector option {
-    background: #1a1a2e;
-}
-
-.reader-settings-btn,
-.reader-fullscreen-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border: none;
-    border-radius: 8px;
-    padding: 8px;
-    cursor: pointer;
-    color: white;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.reader-settings-btn:hover,
-.reader-fullscreen-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Progress Bar */
-.reader-progress-bar {
-    position: absolute;
-    top: 61px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 100;
-}
-
-.reader-progress-fill {
-    width: 0%;
-    height: 100%;
-    background: var(--primary, #0078d4);
-    transition: width 0.3s;
-}
-
-/* Main Content */
-.reader-main-content {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 20px;
-}
-
-.reader-viewer {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-/* Pages */
-.reader-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    cursor: pointer;
-}
-
-.reader-page:last-child {
-    margin-bottom: 0;
-}
-
-.reader-page img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    border-radius: 4px;
-    transition: transform 0.2s;
-}
-
-/* Long Strip Mode */
-.reading-mode-longstrip .reader-page {
-    margin-bottom: 0;
-}
-
-/* Navigation Arrows */
-.nav-arrow {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    border-radius: 50%;
-    padding: 12px;
-    cursor: pointer;
-    color: white;
-    transition: all 0.2s;
-    z-index: 100;
-    opacity: 0;
-}
-
-.manga-reader-container:hover .nav-arrow {
-    opacity: 1;
-}
-
-.nav-arrow:hover {
-    background: var(--primary, #0078d4);
-}
-
-.nav-arrow-left {
-    left: 20px;
-}
-
-.nav-arrow-right {
-    right: 20px;
-}
-
-/* Page Indicator */
-.page-indicator {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    padding: 6px 12px;
-    border-radius: 20px;
-    color: white;
-    font-size: 12px;
-    z-index: 100;
-    pointer-events: none;
-}
-
-/* Settings Panel */
-.reader-settings-panel {
-    position: fixed;
-    top: 50%;
-    right: -300px;
-    transform: translateY(-50%);
-    width: 280px;
-    background: rgba(20, 20, 30, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 1000;
-    transition: right 0.3s;
-    overflow: hidden;
-}
-
-.reader-settings-panel.open {
-    right: 20px;
-}
-
-.settings-panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.settings-panel-header h3 {
-    color: white;
-    margin: 0;
-    font-size: 16px;
-}
-
-.close-settings-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    color: white;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-.settings-panel-content {
-    padding: 20px;
-}
-
-.settings-section {
-    margin-bottom: 20px;
-}
-
-.settings-section label {
-    display: block;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 11px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.settings-buttons-group {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.settings-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    color: white;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s;
-}
-
-.settings-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.settings-btn.active {
-    background: var(--primary, #0078d4);
-}
-
-/* Zoom Controls */
-.reader-zoom-controls {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    padding: 8px;
-    border-radius: 40px;
-    display: flex;
-    gap: 8px;
-    z-index: 100;
-}
-
-.zoom-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    padding: 8px;
-    border-radius: 50%;
-    cursor: pointer;
-    color: white;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.zoom-btn:hover {
-    background: var(--primary, #0078d4);
-}
-
-.zoom-level {
-    color: white;
-    font-size: 12px;
-    padding: 0 8px;
-    display: flex;
-    align-items: center;
-}
-
-/* No Images Message */
-.no-images-message {
-    text-align: center;
-    padding: 60px;
-    color: white;
-}
-
-/* Light Mode Reader Styles */
-body:not(.dark-mode) .manga-reader-container {
-    background: #f5f5f5;
-}
-
-body:not(.dark-mode) .reader-top-bar {
-    background: rgba(255, 255, 255, 0.95);
-    border-bottom-color: rgba(0, 0, 0, 0.1);
-}
-
-body:not(.dark-mode) .reader-nav-btn,
-body:not(.dark-mode) .reader-settings-btn,
-body:not(.dark-mode) .reader-fullscreen-btn,
-body:not(.dark-mode) .chapter-selector {
-    background: rgba(0, 0, 0, 0.05);
-    color: #333;
-}
-
-body:not(.dark-mode) .compact-title,
-body:not(.dark-mode) .chapter-info-compact span {
-    color: #333;
-}
-
-body:not(.dark-mode) .compact-chapter {
-    color: #666;
-}
-
-body:not(.dark-mode) .chapter-selector option {
-    background: white;
-    color: #333;
-}
-
-body:not(.dark-mode) .reader-settings-panel {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
-body:not(.dark-mode) .settings-panel-header h3 {
-    color: #333;
-}
-
-body:not(.dark-mode) .settings-section label {
-    color: #666;
-}
-
-body:not(.dark-mode) .settings-btn {
-    background: rgba(0, 0, 0, 0.05);
-    color: #333;
-}
-
-body:not(.dark-mode) .no-images-message {
-    color: #333;
-}
-
-/* Sepia Mode Reader Styles */
-body.sepia-mode .manga-reader-container {
-    background: #f4ecd8;
-}
-
-body.sepia-mode .reader-top-bar {
-    background: rgba(244, 236, 216, 0.95);
-}
-
-/* ============================================
-   BUTTONS - Windows 11 Style
-   ============================================ */
-.btn {
-    padding: 8px 20px;
-    border-radius: var(--radius-sm);
-    display: inline-block;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    border: none;
-    font-size: 14px;
-    text-align: center;
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-1px);
-}
-
-.btn-secondary {
-    background: rgba(0, 0, 0, 0.05);
-    color: var(--text);
-    border: 1px solid var(--card-border);
-}
-
-.btn-secondary:hover {
-    background: rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
-}
-
-.btn-outline-primary {
-    background: transparent;
-    border: 1px solid var(--primary);
-    color: var(--primary);
-}
-
-.btn-outline-primary:hover {
-    background: var(--primary);
-    color: white;
-}
-
-.btn-large {
-    padding: 10px 24px;
-    font-size: 15px;
-}
-
-/* ============================================
-   PAGINATION
-   ============================================ */
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 40px 0;
-    flex-wrap: wrap;
-}
-
-.pagination a,
-.pagination span {
-    padding: 8px 14px;
-    background: var(--surface);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--card-border);
-    transition: var(--transition);
-    min-width: 38px;
-    text-align: center;
-    color: var(--text);
-}
-
-.pagination a:hover,
-.pagination .current {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: white;
-}
-
-/* ============================================
-   LOADING
-   ============================================ */
-.loading-container {
-    text-align: center;
-    padding: 60px;
-}
-
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--card-border);
-    border-top-color: var(--primary);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.no-results {
-    text-align: center;
-    padding: 60px;
-    color: var(--text-light);
-}
-
-/* ============================================
-   FOOTER - Windows 11 Style
-   ============================================ */
-.site-footer {
-    background: var(--mica-bg);
-    backdrop-filter: blur(var(--blur-amount));
-    color: var(--text-light);
-    padding: 40px 0 20px;
-    margin-top: 60px;
-    border-top: 1px solid var(--card-border);
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    margin-bottom: 32px;
-}
-
-.footer-section h3 {
-    color: var(--text);
-    margin-bottom: 16px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.footer-section ul {
-    list-style: none;
-}
-
-.footer-section a {
-    color: var(--text-light);
-    line-height: 2;
-    font-size: 14px;
-}
-
-.footer-section a:hover {
-    color: var(--primary);
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid var(--card-border);
-    font-size: 12px;
-}
-
-/* ============================================
-   FEATURED SECTION (HOMEPAGE SLIDER) - Windows 11 Style
-   ============================================ */
-.featured-section {
-    background: var(--card-bg);
-    backdrop-filter: blur(var(--blur-amount));
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    margin: 24px 0 40px;
-    border: 1px solid var(--card-border);
-}
-
-.featured-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--card-border);
-}
-
-.featured-header h2 {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.featured-nav {
-    display: flex;
-    gap: 8px;
-}
-
-.featured-prev, .featured-next {
-    background: var(--surface);
-    border: 1px solid var(--card-border);
-    width: 34px;
-    height: 34px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: var(--transition);
-    color: var(--text);
-}
-
-.featured-prev:hover, .featured-next:hover {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-}
-
-.featured-container {
-    overflow: hidden;
-    position: relative;
-}
-
-.featured-slider {
-    display: flex;
-    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-}
-
-.featured-item {
-    flex: 0 0 100%;
-    display: flex;
-    gap: 24px;
-    background: var(--surface);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-}
-
-.featured-cover {
-    flex: 0 0 180px;
-    position: relative;
-    overflow: hidden;
-}
-
-.featured-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.featured-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.featured-cover:hover .featured-overlay {
-    opacity: 1;
-}
-
-.featured-btn {
-    background: var(--primary);
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-}
-
-.featured-info {
-    flex: 1;
-    padding: 20px 20px 20px 0;
-}
-
-.featured-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.featured-genre {
-    font-size: 11px;
-    color: var(--primary);
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-}
-
-.featured-stats {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 12px;
-}
-
-.featured-stats span {
-    font-size: 12px;
-    color: var(--text-light);
-}
-
-.featured-description {
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--text-light);
-    margin-bottom: 12px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.featured-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 12px;
-}
-
-.featured-tag {
-    background: rgba(0, 0, 0, 0.04);
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-}
-
-.featured-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid var(--card-border);
-}
-
-.featured-chapter {
-    font-size: 12px;
-    color: #10b981;
-    font-weight: 500;
-}
-
-.featured-read {
-    color: var(--primary);
-    font-weight: 500;
-    font-size: 13px;
-}
-
-.featured-read:hover {
-    transform: translateX(3px);
-}
-
-.featured-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
-}
-
-.featured-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--card-border);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.featured-dot.active {
-    background: var(--primary);
-    width: 20px;
-    border-radius: 4px;
-}
-
-.featured-dot:hover {
-    background: var(--primary);
-}
-
-/* ============================================
-   CONTENT WRAPPER LAYOUT
-   ============================================ */
-.content-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 32px;
-}
-
-/* ============================================
-   ZOOM CONTROLS
-   ============================================ */
-#zoomControls {
-    display: flex;
-    gap: 8px;
-}
-
-/* ============================================
-   RESPONSIVE DESIGN - Windows 11 Style
-   ============================================ */
+	padding: 6px 16px; background: var(--surface); color: var(--text); border: 1px solid var(--card-border);
+	border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; cursor: pointer; transition: var(--transition);
+}
+.sort-btn:hover, .sort-btn.active { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+
+/* Featured slider */
+.featured-section { margin: 24px 0 40px; padding: 24px; background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border); border-radius: var(--radius-lg); }
+.featured-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--card-border); }
+.featured-header h2 { font-size: 20px; }
+.featured-nav { display: flex; gap: 8px; }
+.featured-prev, .featured-next { width: 34px; height: 34px; background: var(--surface); color: var(--text); border: 1px solid var(--card-border); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+.featured-prev:hover, .featured-next:hover { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.featured-container { overflow: hidden; }
+.featured-slider { display: flex; transition: transform .4s cubic-bezier(.2,.9,.4,1.1); }
+.featured-item { flex: 0 0 100%; display: flex; gap: 24px; background: var(--surface); border-radius: var(--radius-md); overflow: hidden; }
+.featured-cover { position: relative; flex: 0 0 180px; overflow: hidden; }
+.featured-cover img { width: 100%; height: 100%; object-fit: cover; }
+.featured-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.6); opacity: 0; transition: opacity .3s; }
+.featured-cover:hover .featured-overlay, .featured-overlay:focus-within { opacity: 1; }
+.featured-btn { padding: 5px 12px; background: var(--primary); color: var(--on-primary); border-radius: var(--radius-pill); font-size: 12px; }
+.featured-info { flex: 1; min-width: 0; padding: 20px 20px 20px 0; }
+.featured-title { margin-bottom: 6px; font-size: 20px; text-transform: none; }
+.featured-title a:hover { color: var(--primary); }
+.featured-genre { margin-bottom: 8px; font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: var(--primary); }
+.featured-stats { margin-bottom: 10px; font-size: 12px; color: var(--text-light); }
+.featured-stats span + span::before { content: '·'; margin: 0 6px; }
+.featured-description { margin-bottom: 12px; font-size: 13px; line-height: 1.6; color: var(--text-light); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.featured-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.featured-tag { padding: 3px 8px; background: var(--hover-bg); border-radius: var(--radius-sm); font-size: 10px; }
+.featured-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--card-border); }
+.featured-chapter { font-size: 12px; font-weight: 500; color: var(--success); }
+.featured-read { font-size: 13px; font-weight: 500; color: var(--primary); }
+.featured-dots { display: flex; justify-content: center; gap: 8px; margin-top: 18px; }
+.featured-dot { width: 6px; height: 6px; padding: 0; background: var(--text-disabled); border: 0; border-radius: 50%; cursor: pointer; transition: var(--transition); }
+.featured-dot.active { width: 20px; background: var(--primary); border-radius: 4px; }
+
+/* Sidebar */
+.sidebar { align-self: start; }
+.widget { margin-bottom: 24px; padding: 20px; background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border); border-radius: var(--radius-md); }
+.widget h3 { display: inline-block; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); font-size: 15px; }
+.genre-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.genre-item { padding: 5px 12px; background: var(--hover-bg); border-radius: var(--radius-pill); font-size: 12px; }
+.genre-item:hover { background: var(--primary); color: var(--on-primary); }
+.status-list { display: flex; flex-direction: column; gap: 8px; }
+.status-filter { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--surface); border: 1px solid var(--card-border); border-radius: var(--radius-md); }
+.status-filter:hover { transform: translateX(4px); border-color: var(--primary); }
+.status-name { font-size: 13px; font-weight: 500; }
+.status-count { padding: 2px 10px; background: var(--hover-bg); border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; color: var(--text-light); }
+.status-filter:hover .status-count { background: var(--primary); color: var(--on-primary); }
+.status-ongoing:hover { border-color: #10b981; } .status-hiatus:hover { border-color: #f59e0b; } .status-cancelled:hover { border-color: #ef4444; }
+
+/* ============================================================
+   MANGA GRID + CARDS
+   ============================================================ */
+.manga-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; margin: 20px 0; }
+.manga-item { overflow: hidden; background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border); border-radius: var(--radius-md); transition: var(--transition); }
+.manga-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.manga-item-cover { position: relative; padding-top: 140%; overflow: hidden; background: var(--surface); }
+.manga-item-cover > a { position: absolute; inset: 0; }
+.manga-item-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.manga-item:hover .manga-item-cover img { transform: scale(1.03); }
+.manga-item-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.7); opacity: 0; transition: opacity .3s; }
+.manga-item-cover:hover .manga-item-overlay, .manga-item-cover a:focus-visible .manga-item-overlay { opacity: 1; }
+.view-details { padding: 8px 16px; background: var(--primary); color: var(--on-primary); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; }
+.latest-chapter-badge { position: absolute; top: 10px; right: 10px; padding: 4px 10px; background: var(--primary); color: var(--on-primary); border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; pointer-events: none; }
+.manga-item-info { padding: 14px; }
+.manga-item-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; font-size: 14px; line-height: 1.4; text-transform: none; }
+.manga-item-title a:hover { color: var(--primary); }
+.manga-item-chapters { display: flex; flex-direction: column; gap: 4px; }
+.manga-item-chapters .chapter-link { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--card-border); font-size: 11px; }
+.manga-item-chapters .chapter-link:hover { color: var(--primary); }
+.chapter-date { color: var(--text-light); }
+.no-chapters { padding: 12px; font-size: 11px; text-align: center; color: var(--text-light); }
+
+/* ============================================================
+   LIBRARY (search, sort, genre/status filters)
+   ============================================================ */
+.archive-header { margin: 32px 0 24px; text-align: center; }
+.archive-header h1 { margin-bottom: 8px; font-size: 36px; }
+.archive-header p { color: var(--text-light); }
+.library-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px; }
+.library-search { flex: 1 1 240px; }
+.filter-toggle { display: inline-flex; align-items: center; gap: 8px; }
+.filter-count { min-width: 20px; padding: 0 6px; background: var(--primary); color: var(--on-primary); border-radius: var(--radius-pill); font-size: 12px; text-align: center; }
+.filter-count[hidden], .filter-panel[hidden] { display: none; }
+.filter-panel { display: grid; gap: 20px; margin-bottom: 24px; padding: 20px; background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border); border-radius: var(--radius-md); }
+.filter-group { border: 0; min-width: 0; }
+.filter-group legend { margin-bottom: 10px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--text-light); }
+.filter-group-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.filter-hint { font-size: 12px; color: var(--text-light); }
+.filter-group-head .library-select { padding: 6px 10px; font-size: 13px; }
+.chip-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+	padding: 6px 14px; background: var(--surface); color: var(--text); border: 1px solid var(--card-border);
+	border-radius: var(--radius-pill); font-size: 13px; cursor: pointer; transition: var(--transition); user-select: none;
+}
+.chip:hover { border-color: var(--primary); }
+.chip-small { min-width: 34px; padding: 4px 8px; font-size: 12px; text-align: center; }
+.chip[data-state="include"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.chip[data-state="exclude"] { background: var(--danger); border-color: var(--danger); color: #fff; text-decoration: line-through; }
+.chip[data-state="include"]:not(.chip-small)::before { content: '+ '; }
+.chip[data-state="exclude"]::before { content: '− '; display: inline-block; text-decoration: none; }
+.filter-actions { display: flex; justify-content: flex-end; }
+.results-count { margin: 4px 0 0; font-size: 13px; color: var(--text-light); }
+#manga-container.is-loading { opacity: .5; pointer-events: none; transition: opacity .2s; }
+
+/* Pagination, loading, empty */
+.pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 36px 0; }
+.pagination a, .pagination span { min-width: 38px; padding: 8px 14px; background: var(--surface); color: var(--text); border: 1px solid var(--card-border); border-radius: var(--radius-sm); text-align: center; }
+.pagination .dots { background: none; border-color: transparent; }
+.pagination a:hover, .pagination .current { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.loading-container { padding: 60px; text-align: center; }
+.spinner { width: 40px; height: 40px; margin: 0 auto; border: 3px solid var(--card-border); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.no-results { padding: 60px 20px; text-align: center; color: var(--text-light); }
+.no-results .btn { margin-top: 16px; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn { display: inline-block; padding: 8px 20px; border: 1px solid transparent; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; text-align: center; cursor: pointer; transition: var(--transition); }
+.btn-large { padding: 10px 24px; font-size: 15px; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.btn-secondary { background: var(--hover-bg); color: var(--text); border-color: var(--card-border); }
+.btn-secondary:hover { transform: translateY(-1px); opacity: .85; }
+.btn-outline-primary { background: transparent; border-color: var(--primary); color: var(--primary); }
+.btn-outline-primary:hover { background: var(--primary); color: var(--on-primary); }
+
+/* ============================================================
+   SINGLE MANGA
+   ============================================================ */
+.single-manga .manga-header { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 32px; margin: 24px 0; padding: 32px; background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border); border-radius: var(--radius-lg); }
+.single-manga .manga-cover-large { width: 100%; border-radius: var(--radius-md); box-shadow: var(--shadow-md); }
+.single-manga .manga-stats { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 24px; }
+.single-manga .stat-box { min-width: 100px; padding: 12px 20px; background: var(--surface); border: 1px solid var(--card-border); border-radius: var(--radius-md); text-align: center; }
+.single-manga .stat-value, .single-manga .stat-label { display: block; }
+.single-manga .stat-value { font-size: 24px; font-weight: 600; color: var(--primary); }
+.single-manga .stat-value.status-ongoing { color: #10b981; } .single-manga .stat-value.status-hiatus { color: #f59e0b; } .single-manga .stat-value.status-cancelled { color: #ef4444; }
+.single-manga .stat-label { margin-top: 4px; font-size: 12px; color: var(--text-light); }
+.single-manga .manga-meta { margin: 20px 0; padding: 16px 0; border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+.single-manga .meta-item { margin-bottom: 6px; font-size: 14px; }
+.single-manga .meta-label { display: inline-block; width: 80px; font-weight: 600; }
+.single-manga .genres { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+.single-manga .genre-tag { padding: 5px 12px; background: var(--primary); color: var(--on-primary); border-radius: var(--radius-pill); font-size: 12px; }
+.single-manga .genre-tag:hover { background: var(--primary-dark); }
+.single-manga .manga-description { margin: 20px 0; line-height: 1.7; color: var(--text-light); }
+.single-manga .manga-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.single-manga .chapters-section { margin: 24px 0; padding: 24px; background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border); border-radius: var(--radius-lg); }
+.single-manga .chapters-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--card-border); }
+.single-manga .chapters-header h2 { font-size: 20px; }
+.single-manga .chapters-controls { display: flex; gap: 8px; }
+.single-manga .chapter-sort-btn { padding: 5px 14px; background: var(--surface); color: var(--text); border: 1px solid var(--card-border); border-radius: var(--radius-pill); font-size: 12px; cursor: pointer; transition: var(--transition); }
+.single-manga .chapter-sort-btn:hover, .single-manga .chapter-sort-btn.active { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.single-manga .chapters-grid { display: flex; flex-direction: column; gap: 8px; }
+.single-manga .chapter-card-link { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--card-border); border-radius: var(--radius-sm); }
+.single-manga .chapter-card-link:hover { border-color: var(--primary); transform: translateX(4px); }
+.single-manga .chapter-title { font-size: 14px; font-weight: 500; }
+.single-manga .chapter-card-meta { display: flex; align-items: center; gap: 12px; }
+.single-manga .chapter-date { font-size: 12px; }
+.single-manga .new-badge { padding: 2px 8px; background: var(--primary); color: var(--on-primary); border-radius: 12px; font-size: 10px; font-weight: 500; }
+.single-manga .no-chapters-message { padding: 40px; text-align: center; background: var(--surface); border-radius: var(--radius-md); color: var(--text-light); }
+
+/* 404 */
+.error-404 { margin: 40px 0; padding: 80px 24px; text-align: center; background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border); border-radius: var(--radius-lg); }
+.error-404-code { font-size: 96px; line-height: 1; margin-bottom: 8px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.error-404 p { margin: 12px 0 28px; color: var(--text-light); }
+.error-404-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer { margin-top: 60px; padding: 40px 0 20px; background: var(--header-bg); backdrop-filter: var(--blur); border-top: 1px solid var(--card-border); color: var(--text-light); }
+.footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 28px; }
+.footer-section h3 { margin-bottom: 14px; font-size: 16px; color: var(--text); }
+.footer-section ul, .footer-menu { list-style: none; }
+.footer-section a { display: inline-block; padding: 2px 0; font-size: 14px; color: var(--text-light); }
+.footer-about p, .footer-section > p { margin: 0 0 .8em; font-size: 14px; line-height: 1.6; }
+.footer-about > :last-child { margin-bottom: 0; }
+.footer-about a { display: inline; padding: 0; text-decoration: underline; color: var(--primary); }
+.footer-section a:hover { color: var(--primary); }
+.footer-bottom { padding-top: 18px; border-top: 1px solid var(--card-border); font-size: 12px; text-align: center; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 @media (max-width: 992px) {
-    .content-wrapper {
-        grid-template-columns: 1fr;
-    }
-    
-    .sidebar {
-        position: static;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
+	.content-wrapper { grid-template-columns: 1fr; }
+	.sidebar { position: static; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 }
-
 @media (max-width: 768px) {
-    .container {
-        padding: 0 16px;
-    }
-    
-    .mobile-menu-toggle {
-        display: flex;
-    }
-    
-    .main-nav {
-        position: fixed;
-        top: 0;
-        right: -300px;
-        width: 280px;
-        height: 100%;
-        background: var(--card-bg);
-        backdrop-filter: blur(var(--blur-amount));
-        transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        z-index: 1001;
-        padding-top: 70px;
-        border-left: 1px solid var(--card-border);
-    }
-    
-    .main-nav.active {
-        right: 0;
-    }
-    
-    .primary-menu {
-        flex-direction: column;
-        gap: 0;
-        padding: 0 20px;
-    }
-    
-    .primary-menu a {
-        padding: 12px 0;
-        display: block;
-    }
-    
-    .primary-menu .sub-menu {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        padding-left: 20px;
-        display: none;
-        box-shadow: none;
-        background: transparent;
-    }
-    
-    .primary-menu li.active .sub-menu {
-        display: block;
-    }
-    
-    .hero-section {
-        padding: 32px 24px;
-    }
-    
-    .hero-content h1 {
-        font-size: 28px;
-    }
-    
-    .hero-stats {
-        gap: 24px;
-    }
-    
-    .stat-number {
-        font-size: 28px;
-    }
-    
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-    }
-    
-    .manga-grid {
-        gap: 16px;
-    }
-    
-    .single-manga .manga-header {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-    
-    .single-manga .chapters-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .chapter-nav {
-        flex-direction: column;
-    }
-    
-    .chapter-nav .btn {
-        text-align: center;
-    }
-    
-    .featured-item {
-        flex-direction: column;
-    }
-    
-    .featured-cover {
-        flex: 0 0 auto;
-        max-width: 180px;
-        margin: 0 auto;
-    }
-    
-    .featured-info {
-        padding: 20px;
-    }
-    
-    .featured-title {
-        font-size: 18px;
-    }
-    
-    .sidebar {
-        grid-template-columns: 1fr;
-    }
-    
-    .manga-images {
-        padding: 12px;
-    }
-    
-    .manga-images img {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: auto !important;
-    }
-    
-    .status-filter {
-        padding: 8px 12px;
-    }
-    
-    .status-filter:hover {
-        transform: translateX(2px);
-    }
-    
-    /* Reader responsive */
-    .reader-top-bar {
-        padding: 10px 16px;
-    }
-    
-    .reader-nav-btn span {
-        display: none;
-    }
-    
-    .chapter-info-compact {
-        display: none;
-    }
-    
-    .chapter-selector {
-        min-width: 100px;
-        font-size: 11px;
-    }
-    
-    .nav-arrow {
-        opacity: 1;
-        padding: 8px;
-    }
-    
-    .reader-settings-panel.open {
-        right: 10px;
-        width: 260px;
-    }
-    
-    .reader-zoom-controls {
-        bottom: 70px;
-    }
+	.container { padding: 0 16px; }
+	.site-description { display: none; }
+	.header-wrapper { gap: 12px; }
+	.mobile-menu-toggle { display: flex; }
+	.main-nav {
+		position: absolute; top: 100%; left: 0; right: 0; flex: none; display: none; padding: 8px 16px 16px;
+		background: var(--header-bg); backdrop-filter: var(--blur); border-bottom: 1px solid var(--card-border);
+	}
+	.main-nav.is-open { display: block; }
+	.primary-menu { flex-direction: column; gap: 0; }
+	.primary-menu a { display: block; padding: 12px 0; }
+	.primary-menu .sub-menu { position: static; display: none; opacity: 1; visibility: visible; transform: none; padding: 0 0 0 16px; background: transparent; border: 0; box-shadow: none; }
+	.primary-menu li.active > .sub-menu { display: block; }
+	.featured-item { flex-direction: column; }
+	.featured-cover { flex: 0 0 auto; max-width: 180px; margin: 0 auto; }
+	.featured-info { padding: 20px; }
+	.single-manga .manga-header { grid-template-columns: 1fr; gap: 24px; padding: 20px; }
+	.single-manga .manga-cover-wrapper { max-width: 240px; margin: 0 auto; }
+	.single-manga .chapters-header { flex-direction: column; align-items: flex-start; }
+	.sidebar { grid-template-columns: 1fr; }
+	.archive-header h1 { font-size: 28px; }
+	.manga-grid { gap: 16px; }
 }
-
 @media (max-width: 480px) {
-    .manga-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 12px;
-    }
-    
-    .search-modal-content {
-        padding: 24px;
-    }
-    
-    .search-form-modal {
-        flex-direction: column;
-    }
-    
-    .settings-panel {
-        width: 280px;
-        right: -300px;
-    }
-    
-    .settings-panel.open {
-        right: 16px;
-    }
-    
-    #zoomControls {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .chapter-reader {
-        padding: 16px;
-    }
-    
-    .manga-images {
-        padding: 8px;
-    }
-    
-    .status-filter {
-        padding: 6px 10px;
-    }
-    
-    .status-name {
-        font-size: 12px;
-    }
-    
-    .status-count {
-        font-size: 10px;
-        padding: 2px 6px;
-    }
+	.manga-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+	.search-modal-content { padding: 24px; }
+	.search-form-modal { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
 
-/* Animation for theme switching */
-body {
-    transition: background-color 0.3s ease, color 0.3s ease;
+/* ============================================================
+   METROUI (Windows Phone look): flat, square, big light type
+   ============================================================ */
+html[data-theme="metro"] { scrollbar-color: var(--primary) #000; }
+html[data-theme="metro"] body { background-image: none; }
+html[data-theme="metro"] :focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+
+/* App bar */
+html[data-theme="metro"] .site-header { border-bottom: 2px solid var(--primary); }
+html[data-theme="metro"] .site-title { font-family: var(--font); font-size: 30px; font-weight: 300; letter-spacing: 0; line-height: 1.2; text-transform: lowercase; }
+html[data-theme="metro"] .site-title a { background: none; -webkit-text-fill-color: currentColor; color: var(--text); }
+html[data-theme="metro"] .site-title a::before { content: ''; display: inline-block; width: .42em; height: .42em; margin-right: .35em; background: var(--primary); }
+html[data-theme="metro"] .primary-menu a { font-size: 18px; font-weight: 300; text-transform: lowercase; opacity: .55; }
+html[data-theme="metro"] .primary-menu a:hover, html[data-theme="metro"] .primary-menu .current-menu-item > a { opacity: 1; color: var(--text); }
+html[data-theme="metro"] .primary-menu .sub-menu { background: #1f1f1f; border: 0; }
+html[data-theme="metro"] .icon-btn { background: transparent; border: 2px solid var(--text); border-radius: 50%; width: 38px; height: 38px; }
+html[data-theme="metro"] .icon-btn:hover { opacity: 1; background: var(--hover-bg); }
+html[data-theme="metro"] .icon-btn:active { background: var(--text); color: #000; }
+html[data-theme="metro"] .theme-menu { background: #1f1f1f; border: 0; border-top: 2px solid var(--primary); }
+html[data-theme="metro"] .theme-option { text-transform: lowercase; font-weight: 300; font-size: 16px; }
+html[data-theme="metro"] .theme-option[aria-pressed="true"] { background: var(--primary); }
+html[data-theme="metro"] .accent-swatch[aria-pressed="true"] { border-color: #fff; box-shadow: none; }
+html[data-theme="metro"] .main-nav { background: #000; }
+
+/* Pivot-style headings */
+html[data-theme="metro"] .section-header h1, html[data-theme="metro"] .section-header h2 { font-size: 40px; line-height: 1.1; }
+html[data-theme="metro"] .archive-header h1 { font-size: 56px; font-weight: 200; text-align: left; }
+html[data-theme="metro"] .archive-header { text-align: left; }
+html[data-theme="metro"] .widget h3, html[data-theme="metro"] .featured-header h2 { font-size: 24px; border: 0; padding: 0; }
+html[data-theme="metro"] .manga-item-title, html[data-theme="metro"] .featured-title { text-transform: none; font-weight: 400; }
+
+/* Tiles */
+html[data-theme="metro"] .manga-grid { gap: 8px; }
+html[data-theme="metro"] .manga-item { background: #1b1b1b; border: 0; }
+html[data-theme="metro"] .manga-item:hover { transform: none; box-shadow: none; outline: 2px solid var(--primary); outline-offset: -2px; }
+html[data-theme="metro"] .manga-item:active { transform: perspective(600px) scale(.96); }
+html[data-theme="metro"] .manga-item-info { background: #1b1b1b; padding: 10px 12px 12px; }
+html[data-theme="metro"] .manga-item-title { font-size: 15px; }
+html[data-theme="metro"] .latest-chapter-badge { top: 0; right: 0; background: var(--primary); color: var(--on-primary); padding: 4px 10px; }
+html[data-theme="metro"] .view-details { background: transparent; border: 2px solid #fff; color: #fff; }
+html[data-theme="metro"] .manga-item-chapters .chapter-link { border-bottom-color: #333; }
+html[data-theme="metro"] .manga-item-chapters .chapter-link:hover { color: var(--primary); }
+
+/* Flat panels */
+html[data-theme="metro"] .featured-section, html[data-theme="metro"] .widget, html[data-theme="metro"] .filter-panel,
+html[data-theme="metro"] .single-manga .manga-header, html[data-theme="metro"] .single-manga .chapters-section,
+html[data-theme="metro"] .error-404, html[data-theme="metro"] .search-modal-content { background: #111; border: 0; }
+html[data-theme="metro"] .featured-item { background: #1b1b1b; }
+html[data-theme="metro"] .featured-dot { border-radius: 0; height: 4px; width: 20px; }
+html[data-theme="metro"] .featured-dot.active { background: var(--primary); }
+html[data-theme="metro"] .site-footer { background: #000; border-top: 2px solid #1b1b1b; }
+html[data-theme="metro"] .search-modal-content { border-top: 4px solid var(--primary); }
+html[data-theme="metro"] .search-input-modal, html[data-theme="metro"] .library-search, html[data-theme="metro"] .library-select { background: #fff; color: #000; border: 2px solid #fff; }
+html[data-theme="metro"] .search-input-modal:focus, html[data-theme="metro"] .library-search:focus, html[data-theme="metro"] .library-select:focus { border-color: var(--primary); box-shadow: none; }
+
+/* Buttons + chips */
+html[data-theme="metro"] .btn { padding: 10px 24px; background: transparent; color: var(--text); border: 2px solid var(--text); font-weight: 400; }
+html[data-theme="metro"] .btn:hover { background: var(--hover-bg); transform: none; opacity: 1; }
+html[data-theme="metro"] .btn:active { background: var(--text); color: #000; transform: scale(.97); }
+html[data-theme="metro"] .btn-primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+html[data-theme="metro"] .btn-primary:hover { background: var(--primary-dark); }
+html[data-theme="metro"] .search-button-modal { border-radius: 0; }
+html[data-theme="metro"] .sort-btn, html[data-theme="metro"] .chip, html[data-theme="metro"] .genre-item, html[data-theme="metro"] .chapter-sort-btn,
+html[data-theme="metro"] .popular-manga-list a { background: #2b2b2b; border: 0; }
+html[data-theme="metro"] .chip[data-state="exclude"] { background: var(--danger); }
+html[data-theme="metro"] .pagination a, html[data-theme="metro"] .pagination span { background: #2b2b2b; border: 0; }
+html[data-theme="metro"] .pagination .dots { background: none; }
+html[data-theme="metro"] .featured-prev, html[data-theme="metro"] .featured-next { background: transparent; border: 2px solid var(--text); border-radius: 50%; }
+
+/* Single page + status tiles */
+html[data-theme="metro"] .single-manga .stat-box { background: var(--primary); border: 0; }
+html[data-theme="metro"] .single-manga .stat-value, html[data-theme="metro"] .single-manga .stat-label { color: var(--on-primary); }
+html[data-theme="metro"] .single-manga .chapter-card-link { background: #1b1b1b; border: 0; border-left: 4px solid var(--primary); }
+html[data-theme="metro"] .single-manga .chapter-card-link:hover { background: var(--primary); color: var(--on-primary); transform: none; }
+html[data-theme="metro"] .single-manga .chapter-card-link:hover .chapter-date { color: var(--on-primary); }
+html[data-theme="metro"] .single-manga .new-badge { background: #fff; color: #000; border-radius: 0; }
+html[data-theme="metro"] .single-manga .genre-tag { border-radius: 0; }
+html[data-theme="metro"] .status-filter { background: #1b1b1b; border: 0; border-left: 4px solid var(--primary); }
+html[data-theme="metro"] .status-filter:hover { background: var(--primary); color: var(--on-primary); transform: none; }
+html[data-theme="metro"] .status-filter:hover .status-count { background: rgba(0,0,0,.25); color: inherit; }
+html[data-theme="metro"] .error-404-code { background: none; -webkit-text-fill-color: currentColor; color: var(--primary); font-weight: 200; }
+
+/* ============================================================
+   CHAPTER SUBTITLE (all themes)
+   ============================================================ */
+.chapter-subtitle { margin-left: 8px; font-size: 12px; font-weight: 400; color: var(--text-light); }
+
+/* ============================================================
+   MANGASTREAMUI (classic blue header, grey cards, news + "New & Noteworthy")
+   News and the front page extras are hidden in every other theme.
+   ============================================================ */
+.ms-only { display: none; }
+.theme-swatch-mangastream { background: linear-gradient(#2e6cb5 60%, #f0f0f0 60%); border-radius: 3px; }
+
+html[data-theme="mangastream"] {
+	--primary: #2e6cb5; --primary-dark: #1f4f8b; --primary-light: #4d8bd0; --primary-bg: #e3edf8; --on-primary: #fff;
+	--bg: #fff; --header-bg: transparent; --card-bg: #f0f0f0; --surface: #f7f7f7; --card-border: #d7d7d7; --hover-bg: rgba(0,0,0,.06);
+	--text: #222; --text-light: #888; --text-disabled: #b5b5b5;
+	--shadow-sm: none; --shadow-md: none; --shadow-lg: 0 2px 6px rgba(0,0,0,.15); --shadow-xl: 0 4px 14px rgba(0,0,0,.25);
+	--radius-sm: 3px; --radius-md: 4px; --radius-lg: 4px; --radius-pill: 3px;
+	--transition: all .15s ease; --blur: none;
+	--font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	--heading-weight: 700; --heading-transform: none;
+	color-scheme: light;
+}
+html[data-theme="mangastream"] body { background-image: none; font-size: 14px; }
+html[data-theme="mangastream"] .container { max-width: 1218px; }
+html[data-theme="mangastream"] .ms-only { display: block; }
+html[data-theme="mangastream"] .ms-featured { display: grid; }
+html[data-theme="mangastream"] .ms-hide { display: none; }
+html[data-theme="mangastream"] .site-main { padding-top: 20px; }
+
+/* Blue band, white logo, nav bar overlapping the band */
+html[data-theme="mangastream"] .site-header { position: relative; padding: 0; border: 0; background: #2d6bb4; backdrop-filter: none; }
+html[data-theme="mangastream"] .header-wrapper { flex-wrap: wrap; gap: 0 24px; }
+html[data-theme="mangastream"] .site-branding { flex: 1 1 auto; padding: 22px 0 26px; }
+html[data-theme="mangastream"] .site-title {
+	font-family: 'Arial Rounded MT Bold', 'Varela Round', 'Nunito', 'Trebuchet MS', sans-serif;
+	font-size: 52px; font-weight: 800; letter-spacing: -2px; line-height: 1; text-transform: lowercase;
+}
+html[data-theme="mangastream"] .site-title a { background: none; -webkit-text-fill-color: #fff; color: #fff; }
+html[data-theme="mangastream"] .site-description { margin-top: 6px; color: rgba(255,255,255,.8); }
+html[data-theme="mangastream"] .header-actions { align-self: flex-start; margin-top: 16px; }
+html[data-theme="mangastream"] .icon-btn { background: rgba(255,255,255,.2); color: #fff; }
+html[data-theme="mangastream"] .icon-btn:hover { background: rgba(255,255,255,.32); opacity: 1; }
+
+html[data-theme="mangastream"] .primary-menu { gap: 0; flex-wrap: nowrap; }
+html[data-theme="mangastream"] .primary-menu a { padding: 0 15px; font-size: 14px; font-weight: 400; line-height: 40px; color: #666; opacity: 1; }
+html[data-theme="mangastream"] .primary-menu a:hover { background: #ececec; color: #222; }
+html[data-theme="mangastream"] .primary-menu .current-menu-item > a,
+html[data-theme="mangastream"] .primary-menu .current_page_item > a { background: #e2e2e2; color: #222; }
+html[data-theme="mangastream"] .primary-menu .menu-item-has-children > a::after { content: ''; display: inline-block; margin-left: 6px; border: 4px solid transparent; border-top-color: currentColor; vertical-align: -2px; }
+html[data-theme="mangastream"] .primary-menu .sub-menu { background: #fff; border: 1px solid #d7d7d7; border-radius: 3px; }
+html[data-theme="mangastream"] .primary-menu .sub-menu a { line-height: 1.4; padding: 8px 16px; }
+html[data-theme="mangastream"] .main-nav { background: #fff; border-bottom: 1px solid #d7d7d7; }
+
+@media (min-width: 769px) {
+	html[data-theme="mangastream"] .site-header { background: linear-gradient(180deg, #2b66ae 0, #3875c2 calc(100% - 21px), rgba(255,255,255,0) calc(100% - 21px)); }
+	html[data-theme="mangastream"] .main-nav { order: 3; flex: 0 0 100%; background: linear-gradient(#fff, #f2f2f2); border: 1px solid #d9d9d9; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
 }
 
-.site-header,
-.main-nav,
-.manga-item,
-.widget,
-.chapter-reader,
-.featured-section,
-.settings-panel {
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+/* Featured tiles: full cover on the left, details on the right (no cropping) */
+.ms-featured { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 22px; }
+.ms-tile { display: flex; gap: 14px; min-width: 0; padding: 10px; background: #f0f0f0; border: 1px solid #d7d7d7; border-radius: 4px; box-shadow: 0 1px 1px rgba(0,0,0,.04); transition: background-color .15s, border-color .15s; }
+.ms-tile:hover { background: #fff; border-color: var(--primary); }
+.ms-tile-cover { flex: 0 0 96px; align-self: flex-start; aspect-ratio: 5 / 7; overflow: hidden; background: #ddd; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.ms-tile-cover img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.ms-tile-info { display: flex; flex-direction: column; min-width: 0; padding: 2px 0; }
+.ms-tile-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 15px; font-weight: 700; line-height: 1.25; }
+.ms-tile:hover .ms-tile-title { color: var(--primary); }
+.ms-tile-chapter { align-self: flex-start; margin-top: 8px; padding: 2px 8px; background: #d9eeb1; border: 1px solid #c6df94; border-radius: 3px; font-size: 12px; font-weight: 700; color: #3d5a14; }
+.ms-tile-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 6px; font-size: 12px; line-height: 1.35; color: var(--text-light); }
+.ms-tile-date { margin-top: auto; padding-top: 6px; font-size: 12px; color: var(--text-light); }
+
+/* ============================================================
+   RICH TEXT: news, pages and manga descriptions (lists, quotes, images…)
+   The global reset removes list indents, so they are restored here.
+   ============================================================ */
+:is(.entry-content, .news-content, .manga-description) { line-height: 1.65; overflow-wrap: break-word; }
+:is(.entry-content, .news-content, .manga-description)::after { content: ''; display: block; clear: both; }
+:is(.entry-content, .news-content, .manga-description) :is(p, ul, ol, dl, blockquote, pre, table, figure) { margin: 0 0 1em; }
+:is(.entry-content, .news-content, .manga-description) > :last-child { margin-bottom: 0; }
+:is(.entry-content, .news-content, .manga-description) :is(ul, ol) { padding-left: 1.7em; }
+:is(.entry-content, .news-content, .manga-description) ul { list-style: disc outside; }
+:is(.entry-content, .news-content, .manga-description) ol { list-style: decimal outside; }
+:is(.entry-content, .news-content, .manga-description) :is(ul ul, ol ul) { list-style-type: circle; }
+:is(.entry-content, .news-content, .manga-description) :is(ul ul ul, ol ul ul) { list-style-type: square; }
+:is(.entry-content, .news-content, .manga-description) li { margin: .3em 0; padding-left: .2em; }
+:is(.entry-content, .news-content, .manga-description) li > :is(ul, ol) { margin: .3em 0 0; }
+:is(.entry-content, .news-content, .manga-description) :is(h1, h2, h3, h4, h5, h6) { margin: 1.3em 0 .5em; line-height: 1.3; }
+:is(.entry-content, .news-content, .manga-description) > :is(h1, h2, h3, h4, h5, h6):first-child { margin-top: 0; }
+:is(.entry-content, .news-content, .manga-description) a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+:is(.entry-content, .news-content, .manga-description) a:hover { text-decoration: none; }
+:is(.entry-content, .news-content, .manga-description) blockquote { padding: .6em 1em; border-left: 4px solid var(--primary); background: var(--hover-bg); }
+:is(.entry-content, .news-content, .manga-description) hr { margin: 1.5em 0; border: 0; border-top: 1px solid var(--card-border); }
+:is(.entry-content, .news-content, .manga-description) :is(img, video, iframe) { max-width: 100%; }
+:is(.entry-content, .news-content, .manga-description) img { height: auto; border-radius: var(--radius-sm); }
+:is(.entry-content, .news-content, .manga-description) :is(code, pre) { font-family: Consolas, Menlo, monospace; font-size: .9em; background: var(--hover-bg); border-radius: var(--radius-sm); }
+:is(.entry-content, .news-content, .manga-description) code { padding: .1em .35em; }
+:is(.entry-content, .news-content, .manga-description) pre { padding: .8em 1em; overflow: auto; }
+:is(.entry-content, .news-content, .manga-description) pre code { padding: 0; background: none; }
+:is(.entry-content, .news-content, .manga-description) table { width: 100%; border-collapse: collapse; display: block; overflow-x: auto; }
+:is(.entry-content, .news-content, .manga-description) :is(th, td) { padding: 6px 10px; border: 1px solid var(--card-border); text-align: left; }
+:is(.entry-content, .news-content, .manga-description) figcaption { font-size: 12px; color: var(--text-light); }
+:is(.entry-content, .news-content, .manga-description) .alignleft { float: left; margin: 0 1em .5em 0; }
+:is(.entry-content, .news-content, .manga-description) .alignright { float: right; margin: 0 0 .5em 1em; }
+:is(.entry-content, .news-content, .manga-description) .aligncenter { display: block; margin-left: auto; margin-right: auto; }
+
+/* ============================================================
+   NEWS (front page, every theme)
+   ============================================================ */
+.news { margin-bottom: 32px; }
+.news-item { margin-bottom: 20px; padding: 20px 22px; background: var(--card-bg); backdrop-filter: var(--blur); border: 1px solid var(--card-border); border-radius: var(--radius-md); }
+.news-title { font-size: 22px; line-height: 1.25; text-transform: none; }
+.news-title a:hover { color: var(--primary); }
+.news-meta { margin: 4px 0 14px; padding-bottom: 12px; border-bottom: 1px solid var(--card-border); font-size: 12px; color: var(--text-light); }
+.news-empty p { color: var(--text-light); }
+.news-empty a, .news-more a { color: var(--primary); }
+.news-more { margin: 0; font-weight: 600; }
+.news-more a:hover { text-decoration: underline; }
+.entry > .news-meta { margin-top: -10px; }
+html[data-theme="metro"] .news-item { background: #111; border: 0; border-left: 4px solid var(--primary); }
+html[data-theme="metro"] .news-title { font-size: 28px; font-weight: 300; }
+html[data-theme="metro"] .news-meta { border-bottom-color: #2b2b2b; }
+
+html[data-theme="mangastream"] .content-wrapper { grid-template-columns: minmax(0, 1fr) 370px; gap: 30px; }
+
+/* Full news posts: MangaStreamUI only. Everyone else gets the compact sidebar list. */
+.news-full { display: none; }
+html[data-theme="mangastream"] .news-full { display: block; }
+html[data-theme="mangastream"] .news-compact { display: none; }
+
+.news-list { list-style: none; }
+.news-list a { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--card-border); }
+.news-list li:last-child a { border-bottom: 0; }
+.news-list-title { font-size: 14px; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.news-list a:hover .news-list-title { color: var(--primary); }
+.news-list-date { flex: none; font-size: 12px; color: var(--text-light); }
+.news-list-all { display: inline-block; margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--primary); }
+.news-list-all:hover { text-decoration: underline; }
+html[data-theme="metro"] .news-list a { border-bottom-color: #2b2b2b; }
+
+/* Sidebar: support box + New & Noteworthy */
+.ms-support { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 22px; padding: 12px; background: #eee; border-radius: 3px; font-size: 14px; }
+.ms-support strong, .ms-support span { display: block; }
+.ms-support span { color: #555; }
+.ms-support-btn { flex: none; padding: 6px 16px; background: #5cb85c; color: #fff; border: 1px solid #4cae4c; border-radius: 3px; font-size: 14px; }
+.ms-support-btn:hover { background: #4cae4c; }
+.ms-noteworthy { margin-bottom: 24px; }
+.ms-noteworthy h2 { margin-bottom: 8px; font-size: 20px; }
+.ms-rows { background: #f7f7f7; }
+.ms-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 5px; border-bottom: 1px solid #e0e0e0; }
+.ms-row:hover { background: #eee; }
+.ms-row-main { min-width: 0; }
+.ms-row-title { display: block; font-size: 14px; }
+.ms-row-title strong { font-weight: 700; }
+.ms-row-sub { display: block; margin-top: 2px; font-size: 11px; color: var(--text-light); }
+.ms-row-date { flex: none; font-size: 14px; color: var(--text-light); }
+.ms-row.is-new { background: #d9eeb1; border-bottom-color: #c6df94; }
+.ms-row.is-new:hover { background: #cfe8a1; }
+.ms-flame { margin-right: 2px; vertical-align: -1px; }
+
+/* Rest of the site in the MangaStream look */
+html[data-theme="mangastream"] .manga-item { border-radius: 3px; }
+html[data-theme="mangastream"] .manga-item:hover { transform: none; box-shadow: none; }
+html[data-theme="mangastream"] .widget h3 { border-bottom-width: 1px; }
+html[data-theme="mangastream"] .site-footer { margin-top: 40px; background: #f0f0f0; border-top: 1px solid #d7d7d7; }
+html[data-theme="mangastream"] .error-404-code { background: none; -webkit-text-fill-color: currentColor; color: var(--primary); }
+
+@media (max-width: 992px) {
+	html[data-theme="mangastream"] .content-wrapper { grid-template-columns: 1fr; }
 }
+@media (max-width: 768px) {
+	html[data-theme="mangastream"] .site-title { font-size: 38px; }
+	html[data-theme="mangastream"] .site-branding { padding: 16px 0 18px; }
+	html[data-theme="mangastream"] .header-actions { margin-top: 12px; }
+	html[data-theme="mangastream"] .primary-menu a { line-height: 1.4; padding: 12px 0; }
+}
+
+/* ============================================================
+   MANGASTREAMUI POLISH
+   ============================================================ */
+html[data-theme="mangastream"] .news { margin-bottom: 4px; }
+html[data-theme="mangastream"] .news .section-header { display: none; }
+html[data-theme="mangastream"] .news-item { padding: 16px 18px 14px; background: #f0f0f0; border-radius: 4px; box-shadow: 0 1px 1px rgba(0,0,0,.04); }
+html[data-theme="mangastream"] .news-title { font-size: 26px; font-weight: 700; letter-spacing: -.3px; }
+html[data-theme="mangastream"] .news-meta { margin: 2px 0 12px; padding-bottom: 0; border: 0; }
+html[data-theme="mangastream"] .news-content { font-size: 14px; }
+html[data-theme="mangastream"] .news-more { padding: 0 2px 20px; }
+
+/* Sidebar */
+html[data-theme="mangastream"] .widget { margin-bottom: 26px; padding: 0; background: transparent; backdrop-filter: none; border: 0; }
+html[data-theme="mangastream"] .widget h3 { display: block; margin-bottom: 10px; padding: 0; border: 0; font-size: 20px; }
+html[data-theme="mangastream"] .genre-list { gap: 6px; }
+html[data-theme="mangastream"] .genre-item { padding: 5px 10px; background: #ececec; border: 1px solid #d7d7d7; border-radius: 3px; font-size: 12px; }
+html[data-theme="mangastream"] .genre-item:hover { background: var(--primary); border-color: var(--primary-dark); color: #fff; }
+html[data-theme="mangastream"] .status-list { gap: 0; background: #f7f7f7; }
+html[data-theme="mangastream"] .status-filter { padding: 8px; background: transparent; border: 0; border-bottom: 1px solid #e0e0e0; border-radius: 0; }
+html[data-theme="mangastream"] .status-filter:hover { background: #eee; transform: none; }
+html[data-theme="mangastream"] .status-count { background: #e4e4e4; border-radius: 3px; }
+
+/* Buttons, inputs, chips */
+html[data-theme="mangastream"] .btn { border-radius: 3px; font-weight: 400; }
+html[data-theme="mangastream"] .btn-primary { background: linear-gradient(#3a7bc8, #2e6cb5); border-color: #285c9a; }
+html[data-theme="mangastream"] .btn-primary:hover { background: #285c9a; transform: none; }
+html[data-theme="mangastream"] .btn-secondary { background: linear-gradient(#fff, #e6e6e6); border-color: #ccc; color: #333; }
+html[data-theme="mangastream"] .btn-secondary:hover { background: #e0e0e0; opacity: 1; transform: none; }
+html[data-theme="mangastream"] .btn-outline-primary:hover { transform: none; }
+html[data-theme="mangastream"] .search-input-modal,
+html[data-theme="mangastream"] .library-search,
+html[data-theme="mangastream"] .library-select { background: #fff; border: 1px solid #ccc; border-radius: 3px; box-shadow: inset 0 1px 1px rgba(0,0,0,.075); }
+html[data-theme="mangastream"] .search-input-modal:focus,
+html[data-theme="mangastream"] .library-search:focus,
+html[data-theme="mangastream"] .library-select:focus { border-color: var(--primary-light); box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px rgba(46,108,181,.35); }
+html[data-theme="mangastream"] .filter-panel { background: #f7f7f7; border-radius: 4px; }
+html[data-theme="mangastream"] .chip { background: #f7f7f7; border: 1px solid #ccc; border-radius: 3px; }
+html[data-theme="mangastream"] .chip[data-state="include"] { background: var(--primary); border-color: var(--primary-dark); }
+html[data-theme="mangastream"] .sort-btn { background: linear-gradient(#fff, #e6e6e6); border-color: #ccc; border-radius: 3px; }
+html[data-theme="mangastream"] .sort-btn:hover,
+html[data-theme="mangastream"] .sort-btn.active { background: var(--primary); border-color: var(--primary-dark); color: #fff; }
+
+/* Pagination: joined squares */
+html[data-theme="mangastream"] .pagination { gap: 0; }
+html[data-theme="mangastream"] .pagination a,
+html[data-theme="mangastream"] .pagination span { margin-left: -1px; background: #fff; border-color: #ddd; border-radius: 0; color: var(--primary); }
+html[data-theme="mangastream"] .pagination > :first-child { margin-left: 0; border-radius: 3px 0 0 3px; }
+html[data-theme="mangastream"] .pagination > :last-child { border-radius: 0 3px 3px 0; }
+html[data-theme="mangastream"] .pagination a:hover { background: #eee; color: var(--primary-dark); }
+html[data-theme="mangastream"] .pagination .current { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+/* Library, cards and manga page */
+html[data-theme="mangastream"] .archive-header { margin: 8px 0 20px; padding-bottom: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+html[data-theme="mangastream"] .archive-header h1 { font-size: 30px; }
+html[data-theme="mangastream"] .manga-item { background: #f7f7f7; box-shadow: 0 1px 1px rgba(0,0,0,.04); }
+html[data-theme="mangastream"] .manga-item:hover { border-color: var(--primary); }
+html[data-theme="mangastream"] .manga-item-chapters .chapter-link { border-bottom-color: #e3e3e3; }
+html[data-theme="mangastream"] .single-manga .manga-header,
+html[data-theme="mangastream"] .single-manga .chapters-section { background: #f0f0f0; }
+html[data-theme="mangastream"] .single-manga .stat-box { background: #fff; }
+html[data-theme="mangastream"] .single-manga .chapters-grid { gap: 0; background: #f7f7f7; }
+html[data-theme="mangastream"] .single-manga .chapter-card-link { background: transparent; border: 0; border-bottom: 1px solid #e0e0e0; border-radius: 0; }
+html[data-theme="mangastream"] .single-manga .chapter-card-link:hover { background: #eee; transform: none; }
+html[data-theme="mangastream"] .footer-section h3 { font-size: 15px; }
+
+/* Phones and small tablets: compact swipe row instead of three tall stacked cards */
+@media (max-width: 900px) {
+	html[data-theme="mangastream"] .ms-featured {
+		display: flex; gap: 10px; margin-bottom: 14px; padding-bottom: 6px;
+		overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+	}
+	.ms-tile { flex: 0 0 min(300px, 84%); gap: 10px; padding: 8px; scroll-snap-align: start; }
+	.ms-tile-cover { flex-basis: 64px; }
+	.ms-tile-title { font-size: 14px; }
+	.ms-tile-chapter { margin-top: 6px; }
+	.ms-tile-sub { display: none; }
+}
+
+/* ============================================================
+   SLIDER ARROWS (drawn as icons so they follow each theme, no emoji glyphs)
+   ============================================================ */
+.featured-prev, .featured-next { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; border-radius: var(--radius-md); }
+.featured-prev svg, .featured-next svg { display: block; }
+.featured-prev:active, .featured-next:active { transform: scale(.94); }
+
+/* MetroUI: round outline buttons that fill on press */
+html[data-theme="metro"] .featured-prev:hover, html[data-theme="metro"] .featured-next:hover { background: var(--hover-bg); }
+html[data-theme="metro"] .featured-prev:active, html[data-theme="metro"] .featured-next:active { background: var(--text); color: #000; }
+
+/* MangaStreamUI: grey Bootstrap-style buttons that turn blue */
+html[data-theme="mangastream"] .featured-prev, html[data-theme="mangastream"] .featured-next { background: linear-gradient(#fff, #e6e6e6); border: 1px solid #ccc; border-radius: 3px; color: #555; }
+html[data-theme="mangastream"] .featured-prev:hover, html[data-theme="mangastream"] .featured-next:hover { background: var(--primary); border-color: var(--primary-dark); color: #fff; }
+
+/* ============================================================
+   READER-FRIENDLY EXTRAS: rails, bookmarks, read marks, NEW flag, related
+   ============================================================ */
+/* Continue reading / bookmarks rails on the homepage (only shown when this browser has data) */
+.my-rails { margin-bottom: 8px; }
+.rail[hidden] { display: none; }
+.rail .section-header { margin: 8px 0 12px; }
+.rail .section-header h2 { font-size: 18px; }
+.rail-clear { padding: 4px 10px; background: none; border: 0; color: var(--text-light); font-size: 12px; cursor: pointer; text-decoration: underline; }
+.rail-clear:hover { color: var(--primary); }
+.rail-row { display: flex; gap: 12px; padding-bottom: 8px; overflow-x: auto; scroll-snap-type: x proximity; }
+.rail-item { flex: 0 0 112px; display: block; scroll-snap-align: start; }
+.rail-cover { display: block; aspect-ratio: 5 / 7; overflow: hidden; background: var(--surface); border: 1px solid var(--card-border); border-radius: var(--radius-sm); transition: var(--transition); }
+.rail-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.rail-item:hover .rail-cover { border-color: var(--primary); transform: translateY(-2px); }
+.rail-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 6px; font-size: 13px; font-weight: 600; line-height: 1.3; }
+.rail-meta { display: block; margin-top: 2px; font-size: 11px; color: var(--text-light); }
+
+/* Bookmark button + read chapters */
+.bookmark-btn { display: inline-flex; align-items: center; gap: 8px; }
+.bookmark-btn[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.bookmark-btn[aria-pressed="true"] svg { fill: currentColor; }
+.single-manga .chapter-card-link.is-read { opacity: .6; }
+.single-manga .chapter-card-link.is-read .chapter-title::after { content: ' ✓'; color: var(--success); font-weight: 700; }
+#continueBtn[hidden] { display: none; }
+
+/* NEW flag on cards */
+.new-flag { position: absolute; top: 10px; left: 10px; padding: 2px 8px; background: var(--danger); color: #fff; border-radius: var(--radius-sm); font-size: 10px; font-weight: 700; letter-spacing: .5px; pointer-events: none; }
+
+/* Related manga + random button */
+.related-manga { margin: 32px 0 8px; }
+.random-btn { white-space: nowrap; }
+
+html[data-theme="metro"] .rail-cover, html[data-theme="metro"] .rail-clear { border: 0; }
+html[data-theme="metro"] .rail-item:hover .rail-cover { outline: 2px solid var(--primary); outline-offset: -2px; transform: none; }
+html[data-theme="mangastream"] .rail-cover { border-radius: 3px; background: #f0f0f0; }

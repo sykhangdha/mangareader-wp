@@ -1,251 +1,131 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php wp_head(); ?>
-    <style>
-        /* Prevent flash of incorrect theme */
-        .dark-mode-transition {
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        /* Toggle ripple effect */
-        .toggle-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(0);
-            animation: rippleAnimation 0.6s linear;
-            pointer-events: none;
-        }
-        
-        @keyframes rippleAnimation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-        
-        .dark-mode-toggle {
-            position: relative;
-            overflow: hidden;
-        }
-    </style>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<?php wp_head(); ?>
+	<script>
+	/* Apply the saved theme before first paint (no flash). */
+	(function () {
+		var d = document.documentElement, t = null, m = null, a = null;
+		try {
+			t = localStorage.getItem('mangaTheme');
+			m = localStorage.getItem('mangaMode');
+			a = localStorage.getItem('mangaAccent');
+			if (!t) { var o = localStorage.getItem('theme'); if (o === 'dark' || o === 'light') { t = o; } }
+		} catch (e) {}
+		// Older versions saved Light, Dark and Sepia as separate themes: they are now FluentUI modes.
+		if (t === 'light' || t === 'dark' || t === 'sepia') { m = t; t = 'fluent'; }
+		if (['fluent', 'metro', 'mangastream'].indexOf(t) < 0) { t = 'fluent'; }
+		if (['light', 'dark', 'sepia'].indexOf(m) < 0) {
+			m = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+		}
+		d.setAttribute('data-theme', t);
+		d.setAttribute('data-mode', m);
+		if (a && /^#[0-9a-f]{6}$/i.test(a)) {
+			var n = parseInt(a.slice(1), 16);
+			d.style.setProperty('--metro-accent', a);
+			d.style.setProperty('--metro-on-accent', ((((n >> 16) & 255) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000) > 150 ? '#000' : '#fff');
+		}
+	})();
+	</script>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<a class="skip-link screen-reader-text" href="#main"><?php esc_html_e( 'Skip to content', 'manga-theme' ); ?></a>
 
 <div id="page" class="site">
-    <header class="site-header">
-        <div class="container">
-            <div class="header-wrapper">
-                <div class="site-branding">
-                    <h1 class="site-title">
-                        <a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a>
-                    </h1>
-                    <p class="site-description"><?php bloginfo('description'); ?></p>
-                </div>
-                
-                <div class="header-actions">
-                    <!-- Animated Dark Mode Toggle -->
-                    <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle Dark Mode">
-                        <div class="toggle-track">
-                            <div class="toggle-thumb">
-                                <svg class="sun-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="5"></circle>
-                                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                                </svg>
-                                <svg class="moon-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </button>
-                    
-                    <button class="search-toggle" id="searchToggle" aria-label="Search">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </button>
-                    
-                    <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-    
-    <nav class="main-nav">
-        <div class="container">
-            <?php
-            wp_nav_menu(array(
-                'theme_location' => 'primary',
-                'menu_class' => 'primary-menu',
-                'container' => false,
-                'fallback_cb' => false,
-                'depth' => 2
-            ));
-            ?>
-        </div>
-    </nav>
-    
-    <main id="main" class="site-main">
-        <div class="container">
+	<header class="site-header" id="siteHeader">
+		<div class="container">
+			<div class="header-wrapper">
+				<div class="site-branding">
+					<?php $title_tag = is_front_page() ? 'h1' : 'p'; ?>
+					<<?php echo esc_attr( $title_tag ); ?> class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a></<?php echo esc_attr( $title_tag ); ?>>
+					<?php if ( get_bloginfo( 'description' ) ) : ?>
+						<p class="site-description"><?php bloginfo( 'description' ); ?></p>
+					<?php endif; ?>
+				</div>
 
-<!-- Search Modal - Moved outside header for better positioning -->
-<div class="search-modal" id="searchModal">
-    <div class="search-modal-content">
-        <button class="search-modal-close" id="searchModalClose">×</button>
-        <h3>Search Manga</h3>
-        <form role="search" method="get" class="search-form-modal" action="<?php echo home_url('/'); ?>">
-            <input type="search" class="search-input-modal" placeholder="Search by manga title..." value="<?php echo get_search_query(); ?>" name="s">
-            <input type="hidden" name="post_type" value="manga">
-            <button type="submit" class="search-button-modal">Search</button>
-        </form>
-        <div class="search-suggestions">
-            <p>Popular Manga:</p>
-            <div class="popular-manga-list">
-                <?php
-                $popular_manga = get_posts(array(
-                    'post_type' => 'manga',
-                    'posts_per_page' => 6,
-                    'orderby' => 'comment_count',
-                    'order' => 'DESC'
-                ));
-                foreach ($popular_manga as $manga) {
-                    echo '<a href="' . get_permalink($manga->ID) . '">' . esc_html($manga->post_title) . '</a>';
-                }
-                ?>
-            </div>
-        </div>
-    </div>
-</div>
+				<nav class="main-nav" id="mainNav" aria-label="<?php esc_attr_e( 'Primary', 'manga-theme' ); ?>">
+					<?php
+					wp_nav_menu( array(
+						'theme_location' => 'primary',
+						'menu_class'     => 'primary-menu',
+						'container'      => false,
+						'fallback_cb'    => 'manga_default_menu',
+						'depth'          => 2,
+					) );
+					?>
+				</nav>
 
-<script>
-// Animated Dark Mode Toggle
-(function() {
-    // Check for saved theme preference or system preference
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-        document.body.classList.add('dark-mode');
-    }
-    
-    // Dark mode toggle button with animation
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', function(e) {
-            // Add ripple effect
-            const ripple = document.createElement('span');
-            ripple.classList.add('toggle-ripple');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-            this.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-            
-            // Toggle dark mode
-            document.body.classList.toggle('dark-mode');
-            
-            // Save preference to localStorage
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-            } else {
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    }
-})();
+				<div class="header-actions">
+					<div class="theme-switcher">
+						<button type="button" class="icon-btn" id="themeToggle" aria-haspopup="true" aria-expanded="false" aria-controls="themeMenu" aria-label="<?php esc_attr_e( 'Change theme', 'manga-theme' ); ?>">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+						</button>
+						<div class="theme-menu" id="themeMenu" role="group" aria-label="<?php esc_attr_e( 'Theme', 'manga-theme' ); ?>" hidden>
+							<p class="theme-menu-title"><?php esc_html_e( 'Theme', 'manga-theme' ); ?></p>
+							<?php foreach ( manga_themes() as $slug => $label ) : ?>
+								<button type="button" class="theme-option" data-theme-value="<?php echo esc_attr( $slug ); ?>" aria-pressed="false">
+									<span class="theme-swatch theme-swatch-<?php echo esc_attr( $slug ); ?>" aria-hidden="true"></span>
+									<?php echo esc_html( $label ); ?>
+								</button>
+							<?php endforeach; ?>
+							<div class="mode-picker" id="modePicker" hidden>
+								<p class="theme-menu-title"><?php esc_html_e( 'Mode', 'manga-theme' ); ?></p>
+								<?php foreach ( manga_fluent_modes() as $slug => $label ) : ?>
+									<button type="button" class="theme-option" data-mode-value="<?php echo esc_attr( $slug ); ?>" aria-pressed="false">
+										<span class="theme-swatch theme-swatch-<?php echo esc_attr( $slug ); ?>" aria-hidden="true"></span>
+										<?php echo esc_html( $label ); ?>
+									</button>
+								<?php endforeach; ?>
+							</div>
+							<div class="accent-picker" id="accentPicker" hidden>
+								<p class="theme-menu-title"><?php esc_html_e( 'Accent colour', 'manga-theme' ); ?></p>
+								<div class="accent-grid">
+									<?php foreach ( manga_metro_accents() as $name => $hex ) : ?>
+										<button type="button" class="accent-swatch" data-accent="<?php echo esc_attr( $hex ); ?>" style="background:<?php echo esc_attr( $hex ); ?>" aria-label="<?php echo esc_attr( $name ); ?>" aria-pressed="false"></button>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						</div>
+					</div>
 
-// Search Modal Functionality
-(function() {
-    const searchModal = document.getElementById('searchModal');
-    const searchToggle = document.getElementById('searchToggle');
-    const searchModalClose = document.getElementById('searchModalClose');
-    
-    // Open search modal
-    if (searchToggle && searchModal) {
-        searchToggle.addEventListener('click', function() {
-            searchModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            // Focus on input after animation
-            setTimeout(() => {
-                const searchInput = searchModal.querySelector('.search-input-modal');
-                if (searchInput) searchInput.focus();
-            }, 100);
-        });
-    }
-    
-    // Close search modal
-    function closeSearchModal() {
-        if (searchModal) {
-            searchModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-    
-    if (searchModalClose) {
-        searchModalClose.addEventListener('click', closeSearchModal);
-    }
-    
-    // Close on escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && searchModal && searchModal.classList.contains('active')) {
-            closeSearchModal();
-        }
-    });
-    
-    // Close on overlay click (click outside content)
-    if (searchModal) {
-        searchModal.addEventListener('click', function(e) {
-            if (e.target === searchModal) {
-                closeSearchModal();
-            }
-        });
-    }
-})();
+					<button type="button" class="icon-btn" id="searchToggle" data-open-search aria-label="<?php esc_attr_e( 'Search', 'manga-theme' ); ?>">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+					</button>
 
-// Mobile Menu Toggle
-(function() {
-    const mobileToggle = document.getElementById('mobileMenuToggle');
-    const mainNav = document.querySelector('.main-nav');
-    
-    if (mobileToggle && mainNav) {
-        mobileToggle.addEventListener('click', function() {
-            mainNav.classList.toggle('active');
-            this.classList.toggle('active');
-            
-            // Animate hamburger to X
-            const spans = this.querySelectorAll('span');
-            if (mainNav.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        });
-    }
-})();
-</script>
+					<button type="button" class="icon-btn mobile-menu-toggle" id="mobileMenuToggle" aria-label="<?php esc_attr_e( 'Menu', 'manga-theme' ); ?>" aria-expanded="false" aria-controls="mainNav">
+						<span></span><span></span><span></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="search-modal" id="searchModal" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle" aria-hidden="true">
+		<div class="search-modal-overlay"></div>
+		<div class="search-modal-content">
+			<button type="button" class="search-modal-close" id="searchModalClose" aria-label="<?php esc_attr_e( 'Close search', 'manga-theme' ); ?>">&times;</button>
+			<h3 id="searchModalTitle"><?php esc_html_e( 'Search manga', 'manga-theme' ); ?></h3>
+			<form role="search" method="get" class="search-form-modal" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+				<input type="search" class="search-input-modal" placeholder="<?php esc_attr_e( 'Search by title…', 'manga-theme' ); ?>" value="<?php echo esc_attr( get_search_query( false ) ); ?>" name="s">
+				<input type="hidden" name="post_type" value="manga">
+				<button type="submit" class="search-button-modal"><?php esc_html_e( 'Search', 'manga-theme' ); ?></button>
+			</form>
+			<?php $popular = manga_popular_ids( 6 ); ?>
+			<?php if ( $popular ) : ?>
+				<div class="search-suggestions">
+					<p><?php esc_html_e( 'Top series', 'manga-theme' ); ?></p>
+					<div class="popular-manga-list">
+						<?php foreach ( $popular as $popular_id ) : ?>
+							<a href="<?php echo esc_url( get_permalink( $popular_id ) ); ?>"><?php echo esc_html( get_the_title( $popular_id ) ); ?></a>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+
+	<main id="main" class="site-main">
+		<div class="container">
